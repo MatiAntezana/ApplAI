@@ -1,0 +1,6 @@
+Intrucciónes para correr el entorno (funciona en Windows, no en los otros OS)
+
+Orden de ejecución de comandos en la terminal 
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass   
+.\.venv\Scripts\Activate.ps1
+python calls.py      
