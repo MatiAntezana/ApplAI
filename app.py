@@ -26,3 +26,4 @@ def evaluar():
 
     mejor = max(resultados, key=lambda x: x[1])
     return f"El mejor CV es: {mejor[0]} con score {mejor[1]}"
+#
