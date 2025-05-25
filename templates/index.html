@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head><title>Selector de CVs</title></head>
+<head>
+  <title>Comparador de CVs</title>
+</head>
 <body>
-  <h1>Introduce la especificación del puesto</h1>
-  <form method="post">
-    <textarea name="especificacion" rows="5" cols="40"></textarea><br>
-    <button type="submit">Buscar mejor CV</button>
+  <h1>Subí los CVs y la descripción del puesto</h1>
+  <form action="/evaluar" method="post" enctype="multipart/form-data">
+    <label>Descripción del puesto:</label><br>
+    <textarea name="descripcion" rows="6" cols="60" required></textarea><br><br>
+
+    <label>Subir CVs (PDF o DOCX):</label><br>
+    <input type="file" name="cv_files" multiple required><br><br>
+
+    <button type="submit">Evaluar</button>
   </form>
 </body>
 </html>
