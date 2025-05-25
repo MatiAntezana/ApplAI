@@ -12,6 +12,6 @@ def index():
         especificacion = request.form['especificacion']
         cvs = ["CV de Ana", "CV de Juan", "CV de Pedro"]  # Simulados
         mejor_cv = seleccionar_mejor_cv(cvs, especificacion)
-        mejor_cv = "CV de Ana""
+        mejor_cv = "CV de Ana"
         return render_template('resultado.html', cv=mejor_cv)
     return render_template('index.html')
