@@ -20,7 +20,7 @@ def evaluar():
     for archivo in archivos:
         path = os.path.join(UPLOAD_FOLDER, archivo.filename)
         archivo.save(path)
-
+        # 
         # Acá deberías extraer texto del CV y compararlo con `descripcion`
         # Simulación:
         score = len(descripcion) % 100  # solo de ejemplo
