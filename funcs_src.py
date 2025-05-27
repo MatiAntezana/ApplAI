@@ -67,23 +67,29 @@ def extract_config_from_file(file_path: str) -> Dict[str, Any]:
 
     return config
 
+
 def save_final_model(gs, config_py_path, base_name="finalmodel", out_root="."):
-    # 1) Encuentra el siguiente índice libre
+    out_root_path = Path(out_root)
+    out_root_path.mkdir(parents=True, exist_ok=True)
+
     existing = []
     pattern = re.compile(rf"^{re.escape(base_name)}(\d+)$")
-    for entry in os.listdir(out_root):
+    for entry in os.listdir(out_root_path):
         m = pattern.match(entry)
         if m:
             existing.append(int(m.group(1)))
     next_idx = max(existing, default=0) + 1
+
     folder_name = f"{base_name}{next_idx}"
-    folder_path = Path(out_root) / folder_name
+    folder_path = out_root_path / folder_name
     folder_path.mkdir(parents=True, exist_ok=False)
 
-    # 2) Copia el .py de configuración
     config_dest = folder_path / Path(config_py_path).name
     shutil.copy(config_py_path, config_dest)
 
-    # 3) Guarda el modelo
     model_dest = folder_path / "best_model.pkl"
     joblib.dump(gs.best_estimator_, model_dest)
+
+    params_dest = folder_path / "best_params.json"
+    with open(params_dest, "w") as f:
+        json.dump(gs.best_params_, f, indent=4)
