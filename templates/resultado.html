@@ -1,83 +1,82 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license
+-->
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Resultado - Comparador de CVs</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-    }
-    header {
-      background-color: #ffffff;
-      padding: 20px 0;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    header img {
-      height: 60px;
-    }
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: calc(100vh - 100px);
-      padding: 20px;
-    }
-    .card {
-      background-color: #ffffff;
-      padding: 30px;
-      max-width: 500px;
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      text-align: center;
-    }
-    .card h1 {
-      margin-top: 0;
-      font-weight: 600;
-      font-size: 1.75rem;
-    }
-    .card p {
-      font-size: 1.1rem;
-      margin: 10px 0;
-    }
-    .btn {
-      background-color: #0069d9;
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 20px;
-      text-decoration: none;
-      display: inline-block;
-      transition: background-color 0.2s;
-    }
-    .btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
+	<title>Resultados - Stellar</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+	<noscript><link rel="stylesheet" href="{{ url_for('static', filename='assets/css/noscript.css') }}" /></noscript>
 </head>
-<body>
+<body class="is-preload">
 
-  <header>
-    <img src="{{ url_for('static', filename='APPLAI/ImagesWeb/imageLogo.png') }}" alt="Logo de la empresa">
-  </header>
+	<!-- Wrapper -->
+	<div id="wrapper">
 
-  <main>
-    <div class="card">
-      <h1>Resultado de la evaluación</h1>
-      <p><strong>Mejor CV:</strong> {{ cv }}</p>
-      <a href="/" class="btn">Volver al inicio</a>
-    </div>
-  </main>
+		<!-- Header -->
+		<header id="header">
+			<h1>Resultados de Evaluación</h1>
+			<p>Puntajes obtenidos por cada CV</p>
+		</header>
+
+		<!-- Main -->
+		<div id="main">
+			<section id="content" class="main">
+
+				<section>
+					<h2>Descripción ingresada</h2>
+					<p>{{ descripcion }}</p>
+
+					<h2>Tabla de Puntajes</h2>
+					<div class="table-wrapper">
+						<table>
+							<thead>
+								<tr>
+									<th>CV</th>
+									<th>Puntaje</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for r in resultados %}
+								<tr {% if r.filename == mejor.filename %}class="highlight"{% endif %}>
+									<td>{{ r.filename }}</td>
+									<td>{{ r.score }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+					<h3>Mejor Candidato</h3>
+					<p>El mejor CV es <strong>{{ mejor.filename }}</strong> con puntaje <strong>{{ mejor.score }}</strong>.</p>
+
+					<ul class="actions">
+						<li><a href="{{ url_for('index') }}" class="button">Volver</a></li>
+					</ul>
+				</section>
+
+			</section>
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<p class="copyright">&copy; Tu Empresa. Diseño: <a href="https://html5up.net">HTML5 UP</a>.</p>
+		</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/jquery.scrollex.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/jquery.scrolly.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
 
 </body>
 </html>

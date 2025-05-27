@@ -1,102 +1,73 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license
+-->
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Comparador de CVs</title>
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-    }
-    /* Logo centrado */
-    header {
-      background-color: #ffffff;
-      padding: 20px 0;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    header img {
-      height: 60px;
-    }
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: calc(100vh - 100px);
-      padding: 20px;
-    }
-    .card {
-      background-color: #ffffff;
-      padding: 30px;
-      max-width: 600px;
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-    .card h1 {
-      margin-top: 0;
-      font-weight: 600;
-      font-size: 1.75rem;
-      text-align: center;
-    }
-    label {
-      font-weight: 500;
-    }
-    textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccd0d5;
-      border-radius: 4px;
-      resize: vertical;
-      font-size: 1rem;
-    }
-    input[type="file"] {
-      font-size: 0.95rem;
-    }
-    .btn {
-      background-color: #0069d9;
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 15px;
-      transition: background-color 0.2s;
-      display: block;
-      width: 100%;
-    }
-    .btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
+	<title>Evaluar CVs - Stellar</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+	<noscript><link rel="stylesheet" href="{{ url_for('static', filename='assets/css/noscript.css') }}" /></noscript>
 </head>
-<body>
+<body class="is-preload">
 
-  <header>
-    <img src="{{ url_for('static', filename='APPLAI/ImagesWeb/imageLogo.png') }}" alt="Logo de la empresa">
-  </header>
+	<!-- Wrapper -->
+	<div id="wrapper">
 
-  <main>
-    <div class="card">
-      <h1>Comparador de CVs</h1>
-      <form action="/evaluar" method="post" enctype="multipart/form-data">
-        <label for="descripcion">Descripción del puesto:</label><br>
-        <textarea id="descripcion" name="descripcion" rows="6" placeholder="Ej.: Ingeniero de Datos con Python y Spark" required></textarea><br><br>
+		<!-- Header -->
+		<header id="header">
+			<h1>Evaluar CVs</h1>
+			<p>Compara tus CVs contra la descripción del puesto</p>
+		</header>
 
-        <label for="cv_files">Subir CVs (PDF o DOCX):</label><br>
-        <input id="cv_files" type="file" name="cv_files" multiple accept=".pdf,.docx" required><br><br>
+		<!-- Main -->
+		<div id="main">
+			<section id="content" class="main">
 
-        <button type="submit" class="btn">Evaluar CVs</button>
-      </form>
-    </div>
-  </main>
+				<!-- Formulario -->
+				<section>
+					<h2>Formulario de Evaluación</h2>
+					<form action="{{ url_for('evaluar') }}" method="post" enctype="multipart/form-data">
+						<div class="row gtr-uniform">
+							<div class="col-12">
+								<label for="descripcion">Descripción del puesto:</label>
+								<textarea name="descripcion" id="descripcion" placeholder="Escribe la descripción aquí" rows="4" required></textarea>
+							</div>
+							<div class="col-12">
+								<label for="cv_files">Subir CVs (múltiples):</label>
+								<input type="file" name="cv_files" id="cv_files" multiple required />
+							</div>
+							<div class="col-12">
+								<ul class="actions">
+									<li><input type="submit" value="Evaluar CVs" class="button primary" /></li>
+									<li><input type="reset" value="Limpiar" class="button" /></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</section>
+
+			</section>
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<p class="copyright">&copy; Tu Empresa. Diseño: <a href="https://html5up.net">HTML5 UP</a>.</p>
+		</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/jquery.scrollex.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/jquery.scrolly.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
 
 </body>
 </html>
