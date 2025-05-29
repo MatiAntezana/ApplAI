@@ -43,30 +43,11 @@ def getDatasetEmbeddings(model, dataset, typeEbbeddings):
     else:
         print("No especificado el tipo de Embbedings")
     
-def extract_config_from_file(file_path: str) -> Dict[str, Any]:
-    """
-    Extrae todas las asignaciones simples (model, param_grid, cv, etc.)
-    de un archivo Python, evaluando sus literales.
-    """
+def load_config_with_exec(file_path: str) -> Dict[str, Any]:
+    config = {}
     with open(file_path, 'r', encoding='utf-8') as f:
-        source = f.read()
-    tree = ast.parse(source, filename=file_path)
-    config: Dict[str, Any] = {}
-
-    for node in tree.body:
-        if isinstance(node, ast.Assign):
-            # Solo un target y que sea un nombre
-            if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
-                name = node.targets[0].id
-                # ast.literal_eval falla si no es literal (p.ej. función)
-                try:
-                    value = ast.literal_eval(node.value)
-                except Exception:
-                    continue
-                config[name] = value
-
+        exec(f.read(), {}, config)
     return config
-
 
 def save_final_model(gs, config_py_path, base_name="finalmodel", out_root="."):
     out_root_path = Path(out_root)
@@ -93,3 +74,21 @@ def save_final_model(gs, config_py_path, base_name="finalmodel", out_root="."):
     params_dest = folder_path / "best_params.json"
     with open(params_dest, "w") as f:
         json.dump(gs.best_params_, f, indent=4)
+
+def get_or_create_embeddings(model, df, type_embedding, prefix, folder="embeddings"):
+    os.makedirs(folder, exist_ok=True)
+    x_path = Path(folder) / f"{prefix}_X_{type_embedding}.pkl"
+    y_path = Path(folder) / f"{prefix}_Y.pkl"
+
+    if x_path.exists() and y_path.exists():
+        print(f"📂 Cargando embeddings desde: {x_path}")
+        X = joblib.load(x_path)
+        Y = joblib.load(y_path)
+    else:
+        print(f"⚙️ Generando embeddings para {prefix}...")
+        X, Y = getDatasetEmbeddings(model, df, type_embedding)
+        joblib.dump(X, x_path)
+        joblib.dump(Y, y_path)
+        print(f"✅ Embeddings guardados en: {x_path}")
+
+    return X, Y
