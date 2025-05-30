@@ -13,17 +13,48 @@ from typing import Any, Dict
 import torch
 
 class STClassifier(nn.Module):
-    def __init__(self, model_downloaded, model_name, device='cpu'):
+    def __init__(
+        self,
+        model_downloaded: bool,
+        model_name: str,
+        device: str = 'cpu',
+        hidden_layer_sizes: tuple = (256, 64),
+        dropout_rate: float = 0.3,
+        activation: str = 'gelu'
+    ):
         super().__init__()
         self.device = device
+        # Carga el modelo de embeddings
         if model_downloaded:
             self.bert = SentenceTransformer(f'./{model_name}')
         else:
             self.bert = SentenceTransformer(model_name)
-        self.linear = nn.Linear(self.bert.get_sentence_embedding_dimension()*2, 1)
+
+        # Dimension de entrada = embeddings_CV + embeddings_job (concatenados)
+        in_dim = self.bert.get_sentence_embedding_dimension() * 2
+
+        # Construye la MLP
+        layers = []
+        prev_dim = in_dim
+        for h in hidden_layer_sizes:
+            layers.append(nn.Linear(prev_dim, h))
+            if activation.lower() == 'relu':
+                layers.append(nn.ReLU())
+            elif activation.lower() == 'gelu':
+                layers.append(nn.GELU())
+            else:
+                raise ValueError(f"Unsupported activation: {activation}")
+            layers.append(nn.Dropout(dropout_rate))
+            prev_dim = h
+        layers.append(nn.Linear(prev_dim, 1))
+
+        self.mlp = nn.Sequential(*layers)
+        self.to(self.device)
 
     def forward(self, x):
-        return self.linear(x).squeeze(1)
+        # x: tensor (batch_size, 2 * embed_dim)
+        return self.mlp(x).squeeze(1)
+
 
 def getEmbbedings(model, dataset):
     cv_embeddings = model.encode(dataset['CV'].tolist(), convert_to_tensor=True)
