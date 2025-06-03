@@ -6,7 +6,10 @@
         "Clinical Research",
         "Electrocardiogram (EKG)",
         "HIPAA Compliance",
-        "Administering Injections"
+        "Administering Injections",
+        "EHR Documentation",
+        "Patient Triage",
+        "Vital Signs Measurement"
     ],
     "educational_institution_name": [
         "Borcelle State University"
@@ -28,22 +31,26 @@
         "Healthcare"
     ],
     "related_skils_in_job": [
-        "EHR documentation",
-        "Patient care coordination",
-        "Clinical assistance",
-        "Medical instrument setup"
+        "Exam Room Preparation",
+        "Instrument Setup",
+        "Patient History Documentation",
+        "Assisting Examinations and Procedures",
+        "Patient Triage",
+        "Vital Signs Measurement",
+        "EHR Management",
+        "Patient Care Assistance"
     ],
     "positions": [
         "Lead Medical Assistant",
         "Medical Assistant"
     ],
     "responsibilities": [
-        "Prepare the exam room & set up instruments and equipment according to the protocol.",
-        "Documented patient medical histories, complaints, and all patient-related communications.",
-        "Assisted with examinations, procedures, and treatments.",
-        "Worked in rapid care clinics to triage patients, take vital signs, and assist with patient care.",
-        "Managed EHR documentation for all visits, resulting in 18% fewer errors than average.",
-        "Helping patients with daily needs, resulting in 98% positive patient feedback."
+        "Prepare the exam room & set up instruments/equipment according to protocol.",
+        "Document patient medical histories and communications.",
+        "Assist with examinations, procedures, and treatments.",
+        "Work in rapid care clinics to triage patients and take vital signs.",
+        "Manage EHR documentation to reduce errors.",
+        "Provide patient care resulting in 98% positive feedback."
     ],
     "extra_curricular_activity_types": [],
     "extra_curricular_organization_names": [],
@@ -54,8 +61,8 @@
         "Mandarin"
     ],
     "proficiency_levels": [
-        "",
-        "",
+        "Native",
+        "Proficient",
         "Training"
     ],
     "certification_providers": [],
