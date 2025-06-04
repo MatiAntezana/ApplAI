@@ -7,8 +7,8 @@ import io
 API_KEY = "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"
 MODEL = "deepseek/deepseek-r1:free"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
-AI_TXT_PATH = "example/med_cv.txt"
-JD_TXT_PATH = "example/jd_med.txt"
+AI_TXT_PATH = "example/bad_fit/cv_nurse.txt"
+JD_TXT_PATH = "example/bad_fit/jd_cs.txt"
 OUTPUT_CSV = "cv_jd_output.csv"
 
 # Read input files

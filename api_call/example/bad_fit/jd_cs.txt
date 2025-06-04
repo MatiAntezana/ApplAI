@@ -1,0 +1,41 @@
+HelixNet Cloudworks
+Job: Backend Software Engineer – Cloud Infrastructure
+Location: San Francisco, CA (Hybrid)
+Employment Type: Full-Time
+Seniority Level: Mid-Level
+About the Role
+We are looking for an experienced Backend Software Engineer to join our cloud
+infrastructure team. You will be responsible for designing, building, and maintaining scalable
+services that support millions of users globally. This role is ideal for a candidate with a strong
+foundation in computer science, distributed systems, and backend technologies who is
+eager to work in a high-availability production environment.
+Responsibilities
+Design, develop, and deploy high-performance backend systems using Java, Go, or
+Python.
+Build APIs and services for managing cloud storage, compute, and networking.
+Optimize existing services for scalability, performance, and cost-efficiency.
+Collaborate with DevOps, product managers, and security engineers to ensure robust
+infrastructure.
+Write clean, maintainable, and well-tested code following best practices.
+Participate in code reviews and mentor junior engineers.
+Qualifications
+Bachelor’s or Master’s degree in Computer Science, Software Engineering, or related
+field.
+3+ years of experience in backend development at scale.
+Strong proficiency in one or more backend languages (Java, Go, Python).
+Experience with containerization (Docker, Kubernetes) and cloud platforms (AWS, GCP,
+Azure).
+Solid understanding of databases (SQL and NoSQL), RESTful APIs, and system design.
+Familiarity with CI/CD pipelines and infrastructure-as-code (e.g., Terraform).
+Key Skills
+Backend Development
+Distributed Systems
+Cloud Infrastructure (AWS/GCP/Azure)
+Docker & Kubernetes
+SQL/NoSQL Databases
+API Design
+CI/CD Automation
+Why Join Us?
+Be part of a team that builds the backbone of our tech ecosystem. We value innovation,
+ownership, and continuous learning. Enjoy flexible work schedules, generous stock options,
+and cutting-edge challenges that make a global impact
