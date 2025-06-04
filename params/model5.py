@@ -10,7 +10,7 @@ param_grid = {
     'module__hidden_layer_sizes': [(128,), (256,), (128, 64)],
     'module__dropout_rate': [0.1, 0.3, 0.5],
     'module__activation': ['relu', 'gelu'],
-    'optimizer': [torch_optim.Adam, torch_optim.SGD],
+    'optimizer': [torch.optim.Adam, torch.optim.SGD],
     'optimizer__weight_decay': [0.0, 1e-5, 1e-4],
 }
 
