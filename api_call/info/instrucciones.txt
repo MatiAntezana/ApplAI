@@ -1,0 +1,12 @@
+Intrucciónes para correr el entorno (funciona en Windows, no en los otros OS)
+
+Orden de ejecución de comandos en la terminal 
+
+For Windows
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass   
+.\.venv\Scripts\Activate.ps1
+python api_for_fe.py      
+
+For Linux
+source .venv/bin/activate
+python calls.py
