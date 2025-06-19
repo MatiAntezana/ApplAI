@@ -6,3 +6,5 @@ beautifulsoup4
 requests
 python-pptx
 striprtf
+lxml
+selenium

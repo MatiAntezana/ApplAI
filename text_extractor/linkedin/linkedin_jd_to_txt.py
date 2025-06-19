@@ -9,9 +9,6 @@ from urllib.parse import urlparse
 import os
 
 def validar_nombre_archivo(filename: str) -> str:
-    """
-    Valida y limpia el nombre del archivo para evitar caracteres no válidos.
-    """
     # Reemplaza caracteres no válidos con guiones bajos
     cleaned = re.sub(r'[<>:"/\\|?*]', '_', filename)
     # Elimina espacios al inicio y final
