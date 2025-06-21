@@ -619,7 +619,7 @@ class LinkedInJobScraperByURL:
 # ============= EJEMPLO DE USO =============
 if __name__ == "__main__":
     # Configurar tu API key
-    API_KEY = "EqzQFENPfsgA08-4_aMjfQ"
+    API_KEY = "TM4VWAaCsKVJJarO4YsT0Q"
     
     # URL del trabajo de LinkedIn (ejemplo)
     JOB_URL = "https://www.linkedin.com/jobs/view/4201840839"

@@ -2,9 +2,8 @@ pdfplumber
 PyMuPDF
 python-docx
 docx2txt
-beautifulsoup4
-requests
 python-pptx
 striprtf
-lxml
-selenium
+pillow
+pytesseract
+openpyxl
