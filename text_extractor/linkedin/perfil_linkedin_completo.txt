@@ -1,0 +1,154 @@
+=== Información Básica ===
+Nombre completo: Tiziano Leví Martín Bernal
+Titular: AI Engineering Student @ UdeSA | ML, Systems & Software Dev | Research & Teaching | C, C++, Python
+URL del perfil: tiziano-levi-martin-bernal
+Imagen de perfil: No disponible
+Ciudad: Buenos Aires
+Estado: Buenos Aires Province
+País: Argentina
+Resumen: Soy estudiante de Ingeniería en Inteligencia Artificial con experiencia en bases de datos, visión artificial y machine learning. Estoy apasionado por la aplicación de IA en biomedicina y el desarrollo de soluciones sustentables. Tengo un fuerte interés en la investigación y divulgación tecnológica, lo que me ha llevado a participar activamente en proyectos académicos y en la enseñanza de conceptos complejos a otros estudiantes. Mi experiencia como asistente de investigación y ayudante de cátedra me ha permitido desarrollar habilidades analíticas y de comunicación, así como un profundo conocimiento en diversas tecnologías y lenguajes de programación.
+Pronombres: No disponible
+Conexiones: 821
+
+=== Experiencia Laboral ===
+Cargo: Asistente de investigación
+Empresa: Universidad de San Andrés
+URL Empresa: https://www.linkedin.com/school/universidad-de-san-andres/
+Desde: 1/2/2025
+Hasta: No disponible
+Descripción: Actualmente formo parte de un proyecto de investigación que explora el impacto de la contaminación atmosférica en la asistencia escolar en Chile, con un enfoque en cómo las desigualdades socioeconómicas agravan este problema. A través del análisis de datos a nivel comunal, buscamos comprender cómo la calidad del aire influye en la educación y qué sectores de la población se ven más afectados.
+
+En este rol, mis principales tareas incluyen:
+✅ Procesamiento y análisis de grandes volúmenes de datos sobre asistencia escolar, contaminación y características de las escuelas.
+✅ Uso de Python y DuckDB para la manipulación eficiente de datos y la ejecución de consultas analíticas a gran escala.
+✅ Exploración de patrones y tendencias que revelen la relación entre desigualdad social y afectación por la contaminación.
+✅ Contribución al desarrollo de herramientas analíticas para la investigación y presentación de hallazgos.
+
+Este proyecto combina mi interés por la ciencia de datos, la inteligencia artificial y su aplicación en problemáticas del mundo real. Además, refuerza mi compromiso con el uso de la tecnología para generar impacto social y mejorar la toma de decisiones en políticas educativas y ambientales.
+
+Si te interesa conversar sobre este tema o compartir ideas, ¡escribime! 📩
+Ubicación: San Fernando, Provincia de Buenos Aires, Argentina
+--------------------------------------------------
+Cargo: Ayudante de cátedra en la materia Arquitectura de Computadoras y Sistemas Operativos (ACSO)
+Empresa: Universidad de San Andrés
+URL Empresa: https://www.linkedin.com/school/universidad-de-san-andres/
+Desde: 1/7/2024
+Hasta: No disponible
+Descripción: 📌 Mi experiencia como ayudante de cátedra
+
+Este rol me permite no solo profundizar en temas clave como el funcionamiento interno de los sistemas y la gestión de recursos computacionales, sino también transmitir ese conocimiento y acompañar a otros estudiantes en su proceso de aprendizaje.
+
+Mis principales responsabilidades incluyen:
+✅ Asistir y guiar a los estudiantes en la resolución de trabajos prácticos, ayudándolos a superar desafíos técnicos y conceptuales.
+✅ Proponer soluciones y enfoques alternativos a los problemas planteados en la materia.
+✅ Responder consultas teóricas, clarificando conceptos sobre arquitectura de hardware, administración de memoria, concurrencia y otros temas fundamentales.
+✅ Diseñar y dictar algunas clases a lo largo de la cursada, desarrollando habilidades de comunicación y enseñanza.
+
+Ser parte de la formación de futuros ingenieros en inteligencia artificial y sistemas me motiva a seguir aprendiendo y perfeccionándome. Además, esta experiencia reafirma mi interés por la docencia y la divulgación tecnológica.
+
+Si te interesa conversar sobre arquitectura de computadoras, sistemas operativos o compartir experiencias en enseñanza, ¡escribime! 📩
+Ubicación: San Fernando, Provincia de Buenos Aires, Argentina
+--------------------------------------------------
+Cargo: Ayudante de cátedra en la materia Inferencia y Estimación
+Empresa: Universidad de San Andrés
+URL Empresa: https://www.linkedin.com/school/universidad-de-san-andres/
+Desde: 1/2/2024
+Hasta: 31/7/2024
+Descripción: Como ayudante de cátedra en la materia Inferencia y Estimación de la carrera de Ingeniería en Inteligencia Artificial en la Universidad de San Andrés desempeño un papel principal en el proceso educativo, al colaborar estrechamente con el profesor de clases tutoriales para enriquecer la experiencia de aprendizaje de los estudiantes. Mis responsabilidades abarcan una amplia gama de actividades, todas diseñadas para facilitar la comprensión y aplicación de los contenidos académicos impartidos en la materia.
+Contribuyo con observaciones, datos relevantes y perspectivas adicionales sobre los temas tratados, de esa manera fomento un ambiente de aprendizaje dinámico y participativo. También por momentos me encargo de impartir la clase y exponer sobre temas de la materia. Asimismo, junto con los demás ayudantes de cátedra me encargo de redactar guías de ejercicios y apuntes teóricos que complementan el material proporcionado por el profesor titular. Como parte de mi contribución al enriquecimiento del contenido académico, propongo la presentación de casos prácticos que ilustren la aplicación de los conceptos teóricos abordados en la materia. Estos casos proporcionan ejemplos concretos y situaciones reales que ayudan a los estudiantes a conectar la teoría con la práctica.
+Ubicación: San Fernando, Provincia de Buenos Aires, Argentina
+--------------------------------------------------
+
+=== Educación ===
+Institución: Universidad de 'San Andrés'​
+URL Institución: https://www.linkedin.com/school/universidad-de-san-andres/
+Grado: Grado en Ingeniería en Inteligencia Artificial
+Campo de estudio: Ingeniería en Inteligencia Artificial
+Desde: 1/2/2022
+Hasta: 31/12/2026
+Descripción: None
+--------------------------------------------------
+Institución: Colegio Secundario República de El Salvador 
+URL Institución: None
+Grado: Educación Secundaria Obligatoria (ESO)
+Campo de estudio: Economía y Administración
+Desde: 1/1/2016
+Hasta: 31/1/2021
+Descripción: None
+--------------------------------------------------
+Institución: Progress English Institute
+URL Institución: None
+Grado: B2 level - Upper Intermediate
+Campo de estudio: Enseñanza de inglés como lengua extranjera
+Desde: 1/1/2019
+Hasta: 31/1/2021
+Descripción: None
+--------------------------------------------------
+Institución: Escuela Primaria N° 216 Juan Williamson
+URL Institución: None
+Grado: None
+Campo de estudio: None
+Desde: 1/1/2010
+Hasta: 31/1/2015
+Descripción: None
+--------------------------------------------------
+
+=== Habilidades ===
+No hay habilidades disponibles.
+
+=== Certificaciones ===
+No hay certificaciones disponibles.
+
+=== Idiomas ===
+Inglés
+
+=== Proyectos ===
+No hay proyectos disponibles.
+
+=== Publicaciones ===
+No hay publicaciones disponibles.
+
+=== Patentes ===
+No hay patentes disponibles.
+
+=== Cursos ===
+Nombre: Upper Intermidiate - Level 2
+Número: Escritura: 9 - Oral: 9.50
+--------------------------------------------------
+
+=== Organizaciones ===
+No hay organizaciones disponibles.
+
+=== Premios y Reconocimientos ===
+Título: Beca de Alcance Nacional Abanderados Argentinos
+Emisor: Universidad de San Andrés
+Fecha: 1/11/2021
+Descripción: Me siento honrado y agradecido por haber sido seleccionado como beneficiario de la prestigiosa "Beca de Alcance Nacional Abanderados Argentinos". Esta beca, parte del programa de becas de la Universidad de San Andrés, representa mucho más que una ayuda financiera; es una oportunidad transformadora que ha cambiado mi vida de formas inimaginables.
+Esta beca, generosamente apoyada por múltiples donantes particulares y empresas comprometidas con la educación en Argentina, cubre el arancel de la universidad, el alojamiento durante toda mi carrera y un estipendio mensual para cubrir mis gastos generales.
+Para obtener esta beca, me sometí a un riguroso proceso de selección que incluyó tres exámenes: matemática, escritura y análisis de casos. Estos exámenes pusieron a prueba mis habilidades y conocimientos, pero también reflejaron el compromiso de la universidad y los donantes con la excelencia académica y el mérito.
+Gracias a esta beca, he tenido la oportunidad de ampliar mi red de contactos sustancialmente, conectándome con personas talentosas y apasionadas de diversos ámbitos. Además, he podido estudiar una carrera única en la región hasta el momento: Ingeniería en Inteligencia Artificial.
+La inteligencia artificial es un área de estudio fascinante y prometedora, pero que aún no está muy desarrollada en Argentina. Las oportunidades de acceder a educación sobre este tema son escasas, lo que hace que esta beca sea aún más valiosa para mí. Estudiar lo que me apasiona en un entorno académico estimulante y con recursos de vanguardia es un privilegio que no tomo a la ligera.
+Esta beca representa me brinda la oportunidad de graduarme y adquirir las habilidades necesarias para hacer una diferencia en el mundo, mientras transformo mi realidad económica y la de mi familia. Con el conocimiento y la experiencia adquiridos, espero poder contribuir al desarrollo de la inteligencia artificial en Argentina y ayudar a muchos otros a alcanzar sus metas y sueños.
+--------------------------------------------------
+Título: Mejores 3 Promedios
+Emisor: Colegio Secundario República de El Salvador
+Fecha: 1/6/2021
+Descripción: Promedio de calificaciones durante todos los años
+Promedio final: 9.8625
+--------------------------------------------------
+Título: Diploma de Honor
+Emisor: Rotary Club de General Pico (L.P)
+Fecha: 1/10/2015
+Descripción: Mejor Compañero
+--------------------------------------------------
+Título: Abanderado
+Emisor: Escuela Primaria N° 216 Juan Williamson
+Fecha: 1/3/2015
+Descripción: None
+--------------------------------------------------
+
+=== Actividades Recientes ===
+No hay actividades disponibles.
+
+=== Grupos ===
+No hay grupos disponibles.

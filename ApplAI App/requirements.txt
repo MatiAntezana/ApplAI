@@ -1,0 +1,13 @@
+pdfplumber
+PyMuPDF
+python-docx
+docx2txt
+python-pptx
+striprtf
+pillow
+pytesseract
+openpyxl
+streamlit
+requests
+python-dotenv
+PyPDF2
