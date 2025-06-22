@@ -1,649 +1,447 @@
 import requests
-import json
-import time
-import csv
-from datetime import datetime
 import re
-from typing import Dict, List, Optional
-from urllib.parse import urlparse
-import os
+from datetime import datetime
 
-def validar_nombre_archivo(filename: str) -> str:
-    # Reemplaza caracteres no válidos con guiones bajos
-    cleaned = re.sub(r'[<>:"/\\|?*]', '_', filename)
-    # Elimina espacios al inicio y final
-    cleaned = cleaned.strip()
-    return cleaned
-
-class LinkedInJobScraperByURL:
-    def __init__(self, api_key: str):
-        self.api_key = api_key
-        self.base_url = "https://nubela.co/proxycurl/api"
-        self.headers = {'Authorization': f'Bearer {api_key}'}
-        self.request_delay = 1  # Delay entre requests en segundos
+def format_date(date_obj: dict | str | None) -> str:
+    """
+    Format a date object (dict with day, month, year) into a string.
     
-    def validar_url_linkedin_job(self, url: str) -> bool:
-        """
-        Valida si la URL es de un trabajo de LinkedIn
-        """
-        parsed_url = urlparse(url)
-        return (
-            parsed_url.netloc in ['linkedin.com', 'www.linkedin.com'] and
-            '/jobs/view/' in parsed_url.path
-        )
+    Parameters
+    ----------
+    date_obj : dict | str | None
+        A dictionary with keys 'day', 'month', 'year' or a string representing the date.
+
+    Returns
+    -------
+    str
+        Formatted date string in the format 'DD/MM/YYYY' or 'Not available' if the input is None or invalid.
+    """
+    if date_obj and isinstance(date_obj, dict) and all(key in date_obj for key in ["day", "month", "year"]):
+        return f"{date_obj['day']:02}/{date_obj['month']:02}/{date_obj['year']}"
+    elif isinstance(date_obj, str):
+        return date_obj
+    return "Not available"
+
+
+def format_salary(salary_data: dict) -> str:
+    """
+    Format salary information into a readable string.
     
-    def obtener_detalle_trabajo_completo(self, job_url: str) -> Dict:
-        """
-        Obtiene TODOS los detalles posibles de un trabajo específico por URL
-        """
-        if not self.validar_url_linkedin_job(job_url):
-            raise ValueError("La URL no es válida. Debe ser una URL de trabajo de LinkedIn (ej: https://linkedin.com/jobs/view/12345)")
-        
-        url = f"{self.base_url}/linkedin/job"
-        
-        params = {'url': job_url}
-        
-        try:
-            print(f"🔍 Obteniendo detalles del trabajo: {job_url}")
-            response = requests.get(url, headers=self.headers, params=params)
-            response.raise_for_status()
-            time.sleep(self.request_delay)
-            return response.json()
-        except requests.exceptions.RequestException as e:
-            print(f"❌ Error obteniendo detalles del trabajo: {e}")
-            if hasattr(e, 'response') and e.response is not None:
-                print(f"Código de respuesta: {e.response.status_code}")
-                print(f"Contenido de respuesta: {e.response.text}")
-            return {}
+    Parameters
+    ----------
+    salary_data : dict
+        A dictionary containing salary information with keys 'min', 'max', 'currency', and 'period'.
+
+    Returns
+    -------
+    str
+        Formatted salary string or "Not available" if no salary data is provided.
+    """
+    if not salary_data:
+        return "Not available"
     
-    def obtener_info_empresa(self, company_url: str) -> Dict:
-        """
-        Obtiene información detallada de la empresa
-        """
-        if not company_url:
-            return {}
-            
-        url = f"{self.base_url}/linkedin/company"
-        params = {'url': company_url}
-        
-        try:
-            print(f"🏢 Obteniendo información de la empresa...")
-            response = requests.get(url, headers=self.headers, params=params)
-            response.raise_for_status()
-            time.sleep(self.request_delay)
-            return response.json()
-        except requests.exceptions.RequestException as e:
-            print(f"⚠️ Error obteniendo info de empresa: {e}")
-            return {}
+    min_salary = salary_data.get('min', 0)
+    max_salary = salary_data.get('max', 0)
+    currency = salary_data.get('currency', '')
+    period = salary_data.get('period', '')
     
-    def obtener_perfil_reclutador(self, recruiter_url: str) -> Dict:
-        """
-        Obtiene información del reclutador/hiring manager
-        """
-        if not recruiter_url:
-            return {}
-            
-        url = f"{self.base_url}/linkedin/person"
-        params = {'url': recruiter_url}
-        
-        try:
-            print(f"👤 Obteniendo información del reclutador...")
-            response = requests.get(url, headers=self.headers, params=params)
-            response.raise_for_status()
-            time.sleep(self.request_delay)
-            return response.json()
-        except requests.exceptions.RequestException as e:
-            print(f"⚠️ Error obteniendo perfil reclutador: {e}")
-            return {}
+    if min_salary and max_salary:
+        return f"{currency} {min_salary:,} - {max_salary:,} per {period}"
+    elif min_salary:
+        return f"{currency} {min_salary:,}+ per {period}"
+    elif max_salary:
+        return f"Up to {currency} {max_salary:,} per {period}"
+    else:
+        return "Not available"
+
+
+def extract_skills_from_description(description: str | None) -> list[str]:
+    """
+    Extract technical skills from job description using regex patterns."
     
-    def extraer_skills_de_descripcion(self, descripcion: str) -> List[str]:
-        """
-        Extrae skills técnicas de la descripción usando regex
-        """
-        if not descripcion:
-            return []
-            
-        skills_patterns = [
-            # Lenguajes de programación
-            r'\b(Python|Java|JavaScript|TypeScript|C\+\+|C#|PHP|Ruby|Go|Rust|Swift|Kotlin|Scala|R|MATLAB|Perl|Haskell|Clojure|Dart|Elixir|F#|Groovy|Julia|Lua|Objective-C|Pascal|Prolog|Shell|VBA|Visual Basic)\b',
-            
-            # Frameworks y librerías
-            r'\b(React|Angular|Vue\.js|Node\.js|Django|Flask|Spring|Laravel|Rails|Express|FastAPI|Symfony|CodeIgniter|Zend|CakePHP|Yii|Meteor|Ember|Backbone|jQuery|Bootstrap|Tailwind|Material-UI|Ant Design|Semantic UI|Foundation)\b',
-            
-            # Bases de datos
-            r'\b(MySQL|PostgreSQL|MongoDB|Redis|SQLite|Oracle|SQL Server|MariaDB|Cassandra|CouchDB|Neo4j|InfluxDB|DynamoDB|Firestore|BigQuery|Snowflake|Redshift|Elasticsearch|Solr)\b',
-            
-            # Cloud y DevOps
-            r'\b(AWS|Azure|GCP|Google Cloud|Docker|Kubernetes|Jenkins|GitLab CI|GitHub Actions|Terraform|Ansible|Chef|Puppet|Vagrant|Nginx|Apache|IIS|Load Balancer|CDN|VPC|EC2|S3|Lambda|CloudFormation)\b',
-            
-            # Herramientas de desarrollo
-            r'\b(Git|GitHub|GitLab|Bitbucket|SVN|Visual Studio Code|IntelliJ|Eclipse|Xcode|Android Studio|Postman|Insomnia|Swagger|Jira|Confluence|Trello|Asana|Slack|Teams|Zoom|Figma|Sketch|Adobe XD|Photoshop|Illustrator)\b',
-            
-            # Metodologías y conceptos
-            r'\b(Agile|Scrum|Kanban|DevOps|CI/CD|TDD|BDD|DDD|SOLID|REST|GraphQL|API|Microservices|Serverless|Machine Learning|Deep Learning|AI|Artificial Intelligence|Data Science|Big Data|Analytics|Statistics|ETL|Data Pipeline|Data Warehouse|Business Intelligence|Cybersecurity|Blockchain|IoT|AR|VR|Mobile Development|Web Development|Full Stack|Frontend|Backend|QA|Testing|Automation|Performance Testing|Load Testing|Security Testing|Unit Testing|Integration Testing|E2E Testing)\b',
-            
-            # Sistemas operativos
-            r'\b(Linux|Ubuntu|CentOS|RedHat|Debian|Windows|macOS|Unix|FreeBSD)\b',
-            
-            # Análisis y visualización
-            r'\b(Tableau|Power BI|Excel|Google Sheets|Looker|QlikView|D3\.js|Chart\.js|Matplotlib|Seaborn|Plotly|ggplot2|Pandas|NumPy|SciPy|TensorFlow|PyTorch|Keras|Scikit-learn|OpenCV|NLTK|SpaCy)\b'
-        ]
-        
-        skills = set()
-        for pattern in skills_patterns:
-            matches = re.findall(pattern, descripcion, re.IGNORECASE)
-            skills.update(matches)
-        
-        return sorted(list(skills))
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract skills.
     
-    def extraer_requisitos_experiencia(self, descripcion: str) -> str:
-        """
-        Extrae información sobre años de experiencia requeridos
-        """
-        if not descripcion:
-            return ""
-            
-        experiencia_patterns = [
-            r'(\d+)\+?\s*(?:years?|años?)\s*(?:of\s*)?(?:experience|experiencia)',
-            r'(?:minimum|mínimo|at least|al menos)\s*(\d+)\s*(?:years?|años?)',
-            r'(\d+)-(\d+)\s*(?:years?|años?)\s*(?:experience|experiencia)',
-            r'(?:senior|jr|junior|mid|middle|lead|principal)\s*(?:level|nivel)?'
-        ]
-        
-        experiencias = []
-        for pattern in experiencia_patterns:
-            matches = re.findall(pattern, descripcion, re.IGNORECASE)
-            experiencias.extend([str(match) if isinstance(match, str) else ' '.join(match) for match in matches])
-        
-        return '; '.join(set(experiencias)) if experiencias else ""
+    Returns
+    -------
+    list[str]
+        A sorted list of unique skills extracted from the description. If no skills are found, returns an empty list.
+    """ 
+    if not description:
+        return []
     
-    def extraer_educacion_requerida(self, descripcion: str) -> str:
-        """
-        Extrae información sobre educación requerida
-        """
-        if not descripcion:
-            return ""
-            
-        educacion_patterns = [
-            r'\b(Bachelor|Licenciatura|Ingeniería|Master|Maestría|PhD|Doctorado|Diploma|Certificación|Título)\b.*?\b(degree|título|career|carrera)',
-            r'\b(Computer Science|Sistemas|Informática|Engineering|Software|Mathematics|Matemáticas|Statistics|Estadística)\b',
-            r'\b(University|Universidad|College|Instituto|Técnico)\b'
-        ]
+    skills_patterns = [
+        # Programming languages
+        r'\b(Python|Java|JavaScript|TypeScript|C\+\+|C#|PHP|Ruby|Go|Rust|Swift|Kotlin|Scala|R|MATLAB|Perl|Haskell|SQL|HTML|CSS|React|Angular|Vue|Node\.js|Django|Flask|Spring|Laravel|Rails|Express|FastAPI)\b',
         
-        educacion = []
-        for pattern in educacion_patterns:
-            matches = re.findall(pattern, descripcion, re.IGNORECASE)
-            educacion.extend([' '.join(match) if isinstance(match, tuple) else match for match in matches])
+        # Databases
+        r'\b(MySQL|PostgreSQL|MongoDB|Redis|SQLite|Oracle|SQL Server|MariaDB|Cassandra|CouchDB|Neo4j|InfluxDB|DynamoDB|Firestore|BigQuery|Snowflake|Redshift|Elasticsearch)\b',
         
-        return '; '.join(set(educacion)) if educacion else ""
+        # Cloud and DevOps
+        r'\b(AWS|Azure|GCP|Google Cloud|Docker|Kubernetes|Jenkins|GitLab CI|GitHub Actions|Terraform|Ansible|Chef|Puppet|Nginx|Apache|EC2|S3|Lambda)\b',
+        
+        # Development tools
+        r'\b(Git|GitHub|GitLab|Bitbucket|Visual Studio Code|IntelliJ|Eclipse|Postman|Swagger|Jira|Confluence|Trello|Slack|Teams|Figma|Sketch)\b',
+        
+        # Methodologies
+        r'\b(Agile|Scrum|Kanban|DevOps|CI/CD|TDD|BDD|REST|GraphQL|API|Microservices|Machine Learning|AI|Data Science|Analytics|Testing|Automation)\b'
+    ]
     
-    def extraer_beneficios(self, descripcion: str) -> List[str]:
-        """
-        Extrae beneficios mencionados en la descripción
-        """
-        if not descripcion:
-            return []
-            
-        beneficios_patterns = [
-            r'\b(health insurance|seguro médico|dental|vision|life insurance|401k|retirement|jubilación|vacation|vacaciones|PTO|sick leave|parental leave|flexible schedule|remote work|trabajo remoto|home office|stock options|equity|bonus|bono|training|capacitación|education|educación|gym|fitness|lunch|almuerzo|snacks|coffee|café|parking|estacionamiento|transportation|transporte|relocation|reubicación)\b'
-        ]
-        
-        beneficios = set()
-        for pattern in beneficios_patterns:
-            matches = re.findall(pattern, descripcion, re.IGNORECASE)
-            beneficios.update(matches)
-        
-        return sorted(list(beneficios))
+    skills = set()
+    for pattern in skills_patterns:
+        matches = re.findall(pattern, description, re.IGNORECASE)
+        skills.update(matches)
     
-    def procesar_trabajo_completo(self, job_data: Dict) -> Dict:
-        """
-        Procesa y estructura toda la información posible de un trabajo
-        """
-        descripcion = job_data.get('job_description', '')
-        
-        # Información básica del trabajo
-        trabajo_completo = {
-            # === INFORMACIÓN BÁSICA ===
-            'job_id': job_data.get('job_id', ''),
-            'job_title': job_data.get('job_title', ''),
-            'job_url': job_data.get('job_url', ''),
-            'apply_url': job_data.get('apply_url', ''),
-            
-            # === DESCRIPCIÓN Y CONTENIDO ===
-            'job_description': descripcion,
-            'job_description_html': job_data.get('job_description_html', ''),
-            'job_criteria': job_data.get('job_criteria', {}),
-            
-            # === INFORMACIÓN TEMPORAL ===
-            'listed_at': job_data.get('listed_at', ''),
-            'expiry_date': job_data.get('expiry_date', ''),
-            'posted_date': job_data.get('posted_date', ''),
-            'original_listed_time': job_data.get('original_listed_time', ''),
-            'scraped_at': datetime.now().isoformat(),
-            
-            # === UBICACIÓN DETALLADA ===
-            'location': job_data.get('location', {}),
-            'location_name': job_data.get('location', {}).get('name', ''),
-            'location_country': job_data.get('location', {}).get('country', ''),
-            'location_city': job_data.get('location', {}).get('city', ''),
-            'location_state': job_data.get('location', {}).get('state', ''),
-            'location_postal_code': job_data.get('location', {}).get('postal_code', ''),
-            'remote_allowed': job_data.get('remote_allowed', False),
-            
-            # === DETALLES DEL EMPLEO ===
-            'employment_type': job_data.get('employment_type', ''),
-            'job_function': job_data.get('job_function', []),
-            'industries': job_data.get('industries', []),
-            'seniority_level': job_data.get('seniority_level', ''),
-            'total_applicants': job_data.get('total_applicants', 0),
-            'job_state': job_data.get('job_state', ''),
-            'job_posting_language': job_data.get('job_posting_language', ''),
-            
-            # === SALARIO Y BENEFICIOS ===
-            'salary': job_data.get('salary', {}),
-            'salary_min': job_data.get('salary', {}).get('min', 0) if job_data.get('salary') else 0,
-            'salary_max': job_data.get('salary', {}).get('max', 0) if job_data.get('salary') else 0,
-            'salary_currency': job_data.get('salary', {}).get('currency', '') if job_data.get('salary') else '',
-            'salary_period': job_data.get('salary', {}).get('period', '') if job_data.get('salary') else '',
-            'benefits': job_data.get('benefits', []),
-            'extracted_benefits': self.extraer_beneficios(descripcion),
-            
-            # === INFORMACIÓN DE LA EMPRESA ===
-            'company': job_data.get('company', {}),
-            'company_name': job_data.get('company', {}).get('name', ''),
-            'company_url': job_data.get('company', {}).get('url', ''),
-            'company_logo': job_data.get('company', {}).get('logo', ''),
-            'company_industry': job_data.get('company', {}).get('industry', ''),
-            'company_size': job_data.get('company', {}).get('company_size', ''),
-            'company_headquarters': job_data.get('company', {}).get('headquarters', ''),
-            'company_founded': job_data.get('company', {}).get('founded', ''),
-            'company_specialties': job_data.get('company', {}).get('specialties', []),
-            'company_follower_count': job_data.get('company', {}).get('follower_count', 0),
-            
-            # === RECLUTADOR/HIRING MANAGER ===
-            'hiring_team': job_data.get('hiring_team', []),
-            'poster': job_data.get('poster', {}),
-            'poster_name': job_data.get('poster', {}).get('name', ''),
-            'poster_title': job_data.get('poster', {}).get('title', ''),
-            'poster_url': job_data.get('poster', {}).get('url', ''),
-            
-            # === SKILLS Y REQUISITOS EXTRAÍDOS ===
-            'extracted_skills': self.extraer_skills_de_descripcion(descripcion),
-            'required_experience': self.extraer_requisitos_experiencia(descripcion),
-            'education_requirements': self.extraer_educacion_requerida(descripcion),
-            
-            # === MÉTRICAS Y ANÁLISIS ===
-            'job_description_length': len(descripcion),
-            'word_count': len(descripcion.split()) if descripcion else 0,
-            'application_deadline': job_data.get('application_deadline', ''),
-            'easy_apply': job_data.get('easy_apply', False),
-            'application_url': job_data.get('application_url', ''),
-        }
-        
-        return trabajo_completo
+    return sorted(list(skills))
+
+
+def extract_experience_requirements(description: str | None) -> str:
+    """
+    Extract experience requirements from job description.
     
-    def scraper_por_url(self, 
-                       job_url: str,
-                       incluir_info_empresa: bool = True,
-                       incluir_info_reclutador: bool = False) -> Dict:
-        """
-        Scraper completo que obtiene toda la información de un trabajo por su URL
-        """
-        print(f"🔍 Iniciando scraping de: {job_url}")
-        
-        # Obtener detalles completos del trabajo
-        job_details = self.obtener_detalle_trabajo_completo(job_url)
-        
-        if not job_details:
-            print("❌ No se pudieron obtener los detalles del trabajo")
-            return {}
-        
-        # Procesar información completa
-        print("⚙️ Procesando información del trabajo...")
-        trabajo_completo = self.procesar_trabajo_completo(job_details)
-        
-        # Obtener información adicional de la empresa si se solicita
-        if incluir_info_empresa and trabajo_completo['company_url']:
-            empresa_info = self.obtener_info_empresa(trabajo_completo['company_url'])
-            if empresa_info:
-                trabajo_completo.update({
-                    'company_description': empresa_info.get('description', ''),
-                    'company_website': empresa_info.get('website', ''),
-                    'company_phone': empresa_info.get('phone', ''),
-                    'company_employees': empresa_info.get('company_size_on_linkedin', 0),
-                    'company_employees_range': empresa_info.get('company_size', ''),
-                    'company_type': empresa_info.get('company_type', ''),
-                    'company_updates': empresa_info.get('updates', []),
-                    'company_acquisitions': empresa_info.get('acquisitions', []),
-                    'company_funding': empresa_info.get('funding_data', {}),
-                    'company_similar_companies': empresa_info.get('similar_companies', []),
-                    'company_locations': empresa_info.get('locations', []),
-                    'company_technologies': empresa_info.get('technologies', [])
-                })
-        
-        # Obtener información del reclutador si se solicita
-        if incluir_info_reclutador and trabajo_completo['poster_url']:
-            reclutador_info = self.obtener_perfil_reclutador(trabajo_completo['poster_url'])
-            if reclutador_info:
-                trabajo_completo.update({
-                    'recruiter_headline': reclutador_info.get('headline', ''),
-                    'recruiter_summary': reclutador_info.get('summary', ''),
-                    'recruiter_location': reclutador_info.get('location', ''),
-                    'recruiter_experience': reclutador_info.get('experiences', []),
-                    'recruiter_education': reclutador_info.get('education', []),
-                    'recruiter_skills': reclutador_info.get('skills', []),
-                    'recruiter_languages': reclutador_info.get('languages', []),
-                    'recruiter_connections': reclutador_info.get('connections', 0),
-                    'recruiter_follower_count': reclutador_info.get('follower_count', 0)
-                })
-        
-        print("✅ Scraping completado exitosamente!")
-        return trabajo_completo
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract experience requirements.
+
+    Returns
+    -------
+    str
+        A string summarizing the experience requirements. If no requirements are found, returns "Not available".
+    """
+    if not description:
+        return "Not available"
     
-    def mostrar_resumen(self, trabajo: Dict):
-        """
-        Muestra un resumen del trabajo scrapeado
-        """
-        if not trabajo:
-            print("❌ No hay información para mostrar")
-            return
-        
-        print("\n" + "="*60)
-        print("📋 RESUMEN DEL TRABAJO SCRAPEADO")
-        print("="*60)
-        
-        print(f"🎯 Título: {trabajo.get('job_title', 'N/A')}")
-        print(f"🏢 Empresa: {trabajo.get('company_name', 'N/A')}")
-        print(f"📍 Ubicación: {trabajo.get('location_name', 'N/A')}")
-        print(f"💼 Tipo: {trabajo.get('employment_type', 'N/A')}")
-        print(f"📊 Nivel: {trabajo.get('seniority_level', 'N/A')}")
-        print(f"👥 Aplicantes: {trabajo.get('total_applicants', 'N/A')}")
-        
-        if trabajo.get('salary_min') and trabajo.get('salary_max'):
-            print(f"💰 Salario: ${trabajo['salary_min']:,} - ${trabajo['salary_max']:,} {trabajo.get('salary_currency', '')} ({trabajo.get('salary_period', '')})")
-        
-        print(f"📅 Publicado: {trabajo.get('listed_at', 'N/A')}")
-        print(f"🔗 URL: {trabajo.get('job_url', 'N/A')}")
-        
-        # Skills extraídas
-        skills = trabajo.get('extracted_skills', [])
-        if skills:
-            print(f"\n🛠️ Skills identificadas ({len(skills)}):")
-            print(", ".join(skills[:15]))  # Mostrar primeras 15
-            if len(skills) > 15:
-                print(f"... y {len(skills) - 15} más")
-        
-        # Beneficios extraídos
-        beneficios = trabajo.get('extracted_benefits', [])
-        if beneficios:
-            print(f"\n🎁 Beneficios identificados ({len(beneficios)}):")
-            print(", ".join(beneficios))
-        
-        # Experiencia requerida
-        if trabajo.get('required_experience'):
-            print(f"\n📈 Experiencia: {trabajo['required_experience']}")
-        
-        # Educación requerida
-        if trabajo.get('education_requirements'):
-            print(f"🎓 Educación: {trabajo['education_requirements']}")
-        
-        print(f"\n📊 Longitud descripción: {trabajo.get('job_description_length', 0)} caracteres")
-        print(f"📝 Palabras: {trabajo.get('word_count', 0)}")
-        
-        print("="*60)
-
-
-    def guardar_txt(self, trabajo: Dict, filename: str = None):
-        """
-        Guarda la información del trabajo en un archivo de texto con formato organizado.
-        """
-        if not trabajo:
-            print("❌ No hay trabajo para guardar")
-            return
-
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        job_title_clean = re.sub(r'[^\w\s-]', '', trabajo.get('job_title', 'job')).strip()
-        job_title_clean = re.sub(r'[-\s]+', '_', job_title_clean)[:30]
-
-        if not filename:
-            filename = f"linkedin_job_{job_title_clean}_{timestamp}.txt"
-        else:
-            # Asegura que el archivo termine en .txt
-            if not filename.endswith('.txt'):
-                filename += '.txt'
-        
-        # Valida el nombre del archivo
-        filename = validar_nombre_archivo(filename)
-
-        try:
-            # Verifica permisos de escritura
-            directory = os.path.dirname(filename) or '.'
-            if not os.access(directory, os.W_OK):
-                raise PermissionError(f"No se tienen permisos de escritura en el directorio: {directory}")
-
-            with open(filename, 'w', encoding='utf-8') as file:
-                # === INFORMACIÓN BÁSICA ===
-                file.write("=== Información Básica ===\n")
-                file.write(f"Título del trabajo: {trabajo.get('job_title', 'No disponible')}\n")
-                file.write(f"ID del trabajo: {trabajo.get('job_id', 'No disponible')}\n")
-                file.write(f"URL del trabajo: {trabajo.get('job_url', 'No disponible')}\n")
-                file.write(f"URL de solicitud: {trabajo.get('apply_url', 'No disponible')}\n")
-                file.write(f"Tipo de empleo: {trabajo.get('employment_type', 'No disponible')}\n")
-                file.write(f"Nivel de experiencia: {trabajo.get('seniority_level', 'No disponible')}\n")
-                file.write(f"Total de aplicantes: {trabajo.get('total_applicants', 'No disponible')}\n")
-                file.write(f"Publicado: {trabajo.get('listed_at', 'No disponible')}\n")
-                file.write(f"Fecha de expiración: {trabajo.get('expiry_date', 'No disponible')}\n")
-                file.write(f"Permite trabajo remoto: {trabajo.get('remote_allowed', 'No disponible')}\n")
-                file.write(f"Idioma de la publicación: {trabajo.get('job_posting_language', 'No disponible')}\n")
-                file.write("\n")
-
-                # === UBICACIÓN ===
-                file.write("=== Ubicación ===\n")
-                file.write(f"Ubicación: {trabajo.get('location_name', 'No disponible')}\n")
-                file.write(f"Ciudad: {trabajo.get('location_city', 'No disponible')}\n")
-                file.write(f"Estado: {trabajo.get('location_state', 'No disponible')}\n")
-                file.write(f"País: {trabajo.get('location_country', 'No disponible')}\n")
-                file.write(f"Código postal: {trabajo.get('location_postal_code', 'No disponible')}\n")
-                file.write("\n")
-
-                # === INFORMACIÓN DE LA EMPRESA ===
-                file.write("=== Información de la Empresa ===\n")
-                file.write(f"Nombre: {trabajo.get('company_name', 'No disponible')}\n")
-                file.write(f"URL: {trabajo.get('company_url', 'No disponible')}\n")
-                file.write(f"Logo: {trabajo.get('company_logo', 'No disponible')}\n")
-                file.write(f"Industria: {trabajo.get('company_industry', 'No disponible')}\n")
-                file.write(f"Tamaño: {trabajo.get('company_size', 'No disponible')}\n")
-                file.write(f"Sede: {trabajo.get('company_headquarters', 'No disponible')}\n")
-                file.write(f"Fundada: {trabajo.get('company_founded', 'No disponible')}\n")
-                file.write(f"Descripción: {trabajo.get('company_description', 'No disponible')}\n")
-                file.write(f"Website: {trabajo.get('company_website', 'No disponible')}\n")
-                file.write(f"Teléfono: {trabajo.get('company_phone', 'No disponible')}\n")
-                file.write(f"Empleados en LinkedIn: {trabajo.get('company_employees', 'No disponible')}\n")
-                file.write(f"Rango de empleados: {trabajo.get('company_employees_range', 'No disponible')}\n")
-                file.write(f"Tipo de empresa: {trabajo.get('company_type', 'No disponible')}\n")
-                file.write(f"Especialidades: {', '.join(trabajo.get('company_specialties', [])) or 'No disponible'}\n")
-                file.write(f"Seguidores: {trabajo.get('company_follower_count', 'No disponible')}\n")
-                file.write("\n")
-
-                # === SALARIO ===
-                file.write("=== Salario ===\n")
-                file.write(f"Mínimo: {trabajo.get('salary_min', 'No disponible')} {trabajo.get('salary_currency', '')}\n")
-                file.write(f"Máximo: {trabajo.get('salary_max', 'No disponible')} {trabajo.get('salary_currency', '')}\n")
-                file.write(f"Período: {trabajo.get('salary_period', 'No disponible')}\n")
-                file.write("\n")
-
-                # === DESCRIPCIÓN ===
-                file.write("=== Descripción del Trabajo ===\n")
-                file.write(f"{trabajo.get('job_description', 'No disponible')}\n")
-                file.write(f"Longitud de descripción: {trabajo.get('job_description_length', 'No disponible')} caracteres\n")
-                file.write(f"Conteo de palabras: {trabajo.get('word_count', 'No disponible')}\n")
-                file.write("\n")
-
-                # === SKILLS ===
-                file.write("=== Habilidades Requeridas ===\n")
-                skills = trabajo.get('extracted_skills', [])
-                file.write(f"{', '.join(skills) if skills else 'No disponible'}\n")
-                file.write(f"Total de habilidades: {len(skills)}\n")
-                file.write("\n")
-
-                # === EXPERIENCIA REQUERIDA ===
-                file.write("=== Experiencia Requerida ===\n")
-                file.write(f"{trabajo.get('required_experience', 'No disponible')}\n")
-                file.write("\n")
-
-                # === EDUCACIÓN REQUERIDA ===
-                file.write("=== Educación Requerida ===\n")
-                file.write(f"{trabajo.get('education_requirements', 'No disponible')}\n")
-                file.write("\n")
-
-                # === BENEFICIOS ===
-                file.write("=== Beneficios ===\n")
-                beneficios = trabajo.get('extracted_benefits', [])
-                file.write(f"{', '.join(beneficios) if beneficios else 'No disponible'}\n")
-                file.write(f"Total de beneficios: {len(beneficios)}\n")
-                file.write("\n")
-
-                # === RECLUTADOR ===
-                file.write("=== Información del Reclutador ===\n")
-                file.write(f"Nombre: {trabajo.get('poster_name', 'No disponible')}\n")
-                file.write(f"Título: {trabajo.get('poster_title', 'No disponible')}\n")
-                file.write(f"URL: {trabajo.get('poster_url', 'No disponible')}\n")
-                file.write(f"Resumen: {trabajo.get('recruiter_summary', 'No disponible')}\n")
-                file.write(f"Ubicación: {trabajo.get('recruiter_location', 'No disponible')}\n")
-                file.write(f"Conexiones: {trabajo.get('recruiter_connections', 'No disponible')}\n")
-                file.write(f"Seguidores: {trabajo.get('recruiter_follower_count', 'No disponible')}\n")
-                file.write("\n")
-
-                # === EXPERIENCIA DEL RECLUTADOR ===
-                file.write("=== Experiencia del Reclutador ===\n")
-                experiencias = trabajo.get('recruiter_experience', [])
-                if experiencias:
-                    for exp in experiencias:
-                        file.write(f"Cargo: {exp.get('title', 'No disponible')}\n")
-                        file.write(f"Empresa: {exp.get('company', 'No disponible')}\n")
-                        file.write(f"URL Empresa: {exp.get('company_linkedin_profile_url', 'No disponible')}\n")
-                        file.write(f"Desde: {exp.get('starts_at', 'No disponible')}\n")
-                        file.write(f"Hasta: {exp.get('ends_at', 'No disponible')}\n")
-                        file.write(f"Descripción: {exp.get('description', 'No disponible')}\n")
-                        file.write(f"Ubicación: {exp.get('location', 'No disponible')}\n")
-                        file.write("-" * 50 + "\n")
-                else:
-                    file.write("No hay experiencia disponible.\n")
-                file.write("\n")
-
-                # === EDUCACIÓN DEL RECLUTADOR ===
-                file.write("=== Educación del Reclutador ===\n")
-                educacion = trabajo.get('recruiter_education', [])
-                if educacion:
-                    for edu in educacion:
-                        file.write(f"Institución: {edu.get('school', 'No disponible')}\n")
-                        file.write(f"Grado: {edu.get('degree_name', 'No disponible')}\n")
-                        file.write(f"Campo de estudio: {edu.get('field_of_study', 'No disponible')}\n")
-                        file.write(f"Desde: {edu.get('starts_at', 'No disponible')}\n")
-                        file.write(f"Hasta: {edu.get('ends_at', 'No disponible')}\n")
-                        file.write(f"Descripción: {edu.get('description', 'No disponible')}\n")
-                        file.write("-" * 50 + "\n")
-                else:
-                    file.write("No hay educación disponible.\n")
-                file.write("\n")
-
-                # === HABILIDADES DEL RECLUTADOR ===
-                file.write("=== Habilidades del Reclutador ===\n")
-                habilidades = trabajo.get('recruiter_skills', [])
-                file.write(f"{', '.join(habilidades) if habilidades else 'No disponible'}\n")
-                file.write("\n")
-
-                # === IDIOMAS DEL RECLUTADOR ===
-                file.write("=== Idiomas del Reclutador ===\n")
-                idiomas = trabajo.get('recruiter_languages', [])
-                file.write(f"{', '.join(idiomas) if idiomas else 'No disponible'}\n")
-                file.write("\n")
-
-            print(f"💾 Trabajo guardado en TXT: {filename}")
-        except PermissionError as e:
-            print(f"❌ Error de permisos: {e}")
-        except Exception as e:
-            print(f"❌ Error al guardar el archivo TXT: {str(e)}")
-            import traceback
-            print("Detalles del error:")
-            traceback.print_exc()
-
-    def guardar_trabajo(self, trabajo: Dict, formato: str = 'json', filename: str = None):
-        """
-        Guarda el trabajo en el formato especificado (json, csv o txt).
-        """
-        if not trabajo:
-            print("❌ No hay trabajo para guardar")
-            return
-
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        job_title_clean = re.sub(r'[^\w\s-]', '', trabajo.get('job_title', 'job')).strip()
-        job_title_clean = re.sub(r'[-\s]+', '_', job_title_clean)[:30]
-
-        if not filename:
-            filename = f"linkedin_job_{job_title_clean}_{timestamp}"
-
-        formato = formato.lower()
-        try:
-            if formato == 'json':
-                filename = validar_nombre_archivo(filename + '.json')
-                with open(filename, 'w', encoding='utf-8') as f:
-                    json.dump(trabajo, f, indent=2, ensure_ascii=False, default=str)
-                print(f"💾 Trabajo guardado en JSON: {filename}")
-
-            elif formato == 'csv':
-                filename = validar_nombre_archivo(filename + '.csv')
-                trabajo_flat = {}
-                for key, value in trabajo.items():
-                    if isinstance(value, (list, dict)):
-                        trabajo_flat[key] = json.dumps(value, ensure_ascii=False)
-                    else:
-                        trabajo_flat[key] = value
-                with open(filename, 'w', newline='', encoding='utf-8') as f:
-                    writer = csv.DictWriter(f, fieldnames=trabajo_flat.keys())
-                    writer.writeheader()
-                    writer.writerow(trabajo_flat)
-                print(f"💾 Trabajo guardado en CSV: {filename}")
-
-            elif formato == 'txt':
-                self.guardar_txt(trabajo, filename)
-
+    experience_patterns = [
+        r'(\d+)\+?\s*(?:years?|años?)\s*(?:of\s*)?(?:experience|experiencia)',
+        r'(?:minimum|mínimo|at least|al menos)\s*(\d+)\s*(?:years?|años?)',
+        r'(\d+)-(\d+)\s*(?:years?|años?)\s*(?:experience|experiencia)',
+        r'(?:entry|junior|mid|senior|lead|principal|director)\s*(?:level|position)?'
+    ]
+    
+    requirements = []
+    for pattern in experience_patterns:
+        matches = re.findall(pattern, description, re.IGNORECASE)
+        for match in matches:
+            if isinstance(match, tuple):
+                requirements.append(' '.join(str(m) for m in match))
             else:
-                print("❌ Formato no soportado. Use 'json', 'csv' o 'txt'")
-        except Exception as e:
-            print(f"❌ Error al guardar el trabajo: {str(e)}")
-            import traceback
-            print("Detalles del error:")
-            traceback.print_exc()
+                requirements.append(str(match))
+    
+    return '; '.join(set(requirements)) if requirements else "Not available"
 
-# ============= EJEMPLO DE USO =============
-if __name__ == "__main__":
-    # Configurar tu API key
-    API_KEY = "TM4VWAaCsKVJJarO4YsT0Q"
+
+def extract_education_requirements(description: str | None) -> str:
+    """
+    Extract education requirements from job description.
     
-    # URL del trabajo de LinkedIn (ejemplo)
-    JOB_URL = "https://www.linkedin.com/jobs/view/4201840839"
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract education requirements.
+
+    Returns
+    -------
+    str
+        A string summarizing the education requirements. If no requirements are found, returns "Not available".
+    """
+    if not description:
+        return "Not available"
     
-# Crear el scraper
-    scraper = LinkedInJobScraperByURL(API_KEY)
+    education_patterns = [
+        r'\b(Bachelor|Master|PhD|Doctorate|Degree|Diploma|Certificate)\b.*?(?:in\s+)?([A-Za-z\s]+)',
+        r'\b(Computer Science|Engineering|Mathematics|Statistics|Business|Marketing|Finance|Economics)\b',
+        r'\b(University|College|Institute|School)\b\s+(?:degree|education|background)'
+    ]
     
-    try:
-        # Hacer scraping del trabajo
-        trabajo = scraper.scraper_por_url(
-            job_url=JOB_URL,
-            incluir_info_empresa=True,
-            incluir_info_reclutador=True
-        )
+    education = []
+    for pattern in education_patterns:
+        matches = re.findall(pattern, description, re.IGNORECASE)
+        for match in matches:
+            if isinstance(match, tuple):
+                education.append(' '.join(str(m).strip() for m in match if m.strip()))
+            else:
+                education.append(str(match).strip())
+    
+    return '; '.join(set(education)) if education else "Not available"
+
+
+def extract_benefits(description: str | None) -> list[str]:
+    """
+    Extract benefits mentioned in job description.
+    
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract benefits.
+
+    Returns
+    -------
+    list[str]
+        A sorted list of unique benefits mentioned in the description. If no benefits are found, returns an empty list.
+    """
+    if not description:
+        return []
+    
+    benefits_patterns = [
+        r'\b(health insurance|dental|vision|401k|retirement|vacation|PTO|sick leave|parental leave|flexible schedule|remote work|work from home|stock options|equity|bonus|training|education|gym|fitness|free lunch|snacks|parking|transportation|relocation assistance)\b'
+    ]
+    
+    benefits = set()
+    for pattern in benefits_patterns:
+        matches = re.findall(pattern, description, re.IGNORECASE)
+        benefits.update(matches)
+    
+    return sorted(list(benefits))
+
+
+def extract_remote_work_info(description: str | None, remote_allowed: bool = False) -> str:
+    """
+    Extract remote work information.
+    
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract remote work information.
+
+    remote_allowed : bool
+        A boolean indicating if remote work is explicitly allowed.
+
+    Returns
+    -------
+    str
+        A string summarizing the remote work policy. If remote work is allowed, returns "Remote work allowed".
+        If no remote work information is found, returns "Not specified".
+    """
+    if remote_allowed:
+        return "Remote work allowed"
+    
+    if not description:
+        return "Not specified"
+    
+    remote_patterns = [
+        r'\b(remote|work from home|telecommute|distributed|hybrid)\b',
+        r'\b(on-site|office|in-person)\s+(?:only|required)',
+        r'\b(flexible|hybrid)\s+(?:work|schedule)'
+    ]
+    
+    for pattern in remote_patterns:
+        if re.search(pattern, description, re.IGNORECASE):
+            match = re.search(pattern, description, re.IGNORECASE)
+            return match.group(0) if match else "Mentioned in description"
+    
+    return "Not specified"
+
+
+# API Configuration
+api_key = "CXsYh7_s4ncwk87NkmX_Qg"  
+job_url = "https://www.linkedin.com/jobs/view/4201840839"  
+endpoint = "https://enrichlayer.com/api/v2/job"
+headers = {"Authorization": f"Bearer {api_key}"}
+params = {"url": job_url}
+
+# API Request
+response = requests.get(endpoint, headers=headers, params=params)
+
+# Process the response
+if response.status_code == 200:
+    data = response.json()
+    job_description = data.get('job_description', '')
+
+    with open("linkedin_job_content.txt", "w", encoding="utf-8") as file:
+
+        # Basic Job Info
+        file.write("=== Basic Job Information ===\n")
+        file.write(f"Job title: {data.get('job_title', 'Not available')}\n")
+        file.write(f"Job ID: {data.get('job_id', 'Not available')}\n")
+        file.write(f"Job URL: {data.get('job_url', 'Not available')}\n")
+        file.write(f"Apply URL: {data.get('apply_url', 'Not available')}\n")
+        file.write(f"Employment type: {data.get('employment_type', 'Not available')}\n")
+        file.write(f"Seniority level: {data.get('seniority_level', 'Not available')}\n")
+        file.write(f"Job function: {', '.join(data.get('job_function', [])) or 'Not available'}\n")
+        file.write(f"Industries: {', '.join(data.get('industries', [])) or 'Not available'}\n")
+        file.write(f"Job state: {data.get('job_state', 'Not available')}\n")
+        file.write(f"Total applicants: {data.get('total_applicants', 'Not available')}\n")
+        file.write(f"Easy apply: {'Yes' if data.get('easy_apply') else 'No'}\n")
+        file.write(f"Job posting language: {data.get('job_posting_language', 'Not available')}\n\n")
+
+        # Timing Information
+        file.write("=== Timing Information ===\n")
+        file.write(f"Listed at: {data.get('listed_at', 'Not available')}\n")
+        file.write(f"Posted date: {data.get('posted_date', 'Not available')}\n")
+        file.write(f"Original listed time: {data.get('original_listed_time', 'Not available')}\n")
+        file.write(f"Expiry date: {data.get('expiry_date', 'Not available')}\n")
+        file.write(f"Application deadline: {data.get('application_deadline', 'Not available')}\n")
+        file.write(f"Scraped at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+
+        # Location Information
+        file.write("=== Location Information ===\n")
+        location = data.get('location', {})
+        file.write(f"Location name: {location.get('name', 'Not available')}\n")
+        file.write(f"City: {location.get('city', 'Not available')}\n")
+        file.write(f"State: {location.get('state', 'Not available')}\n")
+        file.write(f"Country: {location.get('country', 'Not available')}\n")
+        file.write(f"Postal code: {location.get('postal_code', 'Not available')}\n")
+        file.write(f"Remote work: {extract_remote_work_info(job_description, data.get('remote_allowed', False))}\n\n")
+
+        # Company Information
+        file.write("=== Company Information ===\n")
+        company = data.get('company', {})
+        file.write(f"Company name: {company.get('name', 'Not available')}\n")
+        file.write(f"Company URL: {company.get('url', 'Not available')}\n")
+        file.write(f"Company logo: {company.get('logo', 'Not available')}\n")
+        file.write(f"Industry: {company.get('industry', 'Not available')}\n")
+        file.write(f"Company size: {company.get('company_size', 'Not available')}\n")
+        file.write(f"Headquarters: {company.get('headquarters', 'Not available')}\n")
+        file.write(f"Founded: {company.get('founded', 'Not available')}\n")
+        file.write(f"Follower count: {company.get('follower_count', 'Not available')}\n")
+        file.write(f"Specialties: {', '.join(company.get('specialties', [])) or 'Not available'}\n\n")
+
+        # Salary Information
+        file.write("=== Salary Information ===\n")
+        salary = data.get('salary', {})
+        file.write(f"Salary range: {format_salary(salary)}\n")
+        file.write(f"Minimum salary: {salary.get('min', 'Not available') if salary else 'Not available'}\n")
+        file.write(f"Maximum salary: {salary.get('max', 'Not available') if salary else 'Not available'}\n")
+        file.write(f"Currency: {salary.get('currency', 'Not available') if salary else 'Not available'}\n")
+        file.write(f"Period: {salary.get('period', 'Not available') if salary else 'Not available'}\n\n")
+
+        # Job Description
+        file.write("=== Job Description ===\n")
+        file.write(f"{job_description or 'Not available'}\n")
+        file.write(f"Description length: {len(job_description)} characters\n")
+        file.write(f"Word count: {len(job_description.split()) if job_description else 0} words\n\n")
+
+        # Job Criteria
+        file.write("=== Job Criteria ===\n")
+        job_criteria = data.get('job_criteria', {})
+        if job_criteria:
+            for key, value in job_criteria.items():
+                file.write(f"{key.replace('_', ' ').title()}: {value}\n")
+        else:
+            file.write("Not available\n")
+        file.write("\n")
+
+        # Extracted Skills
+        file.write("=== Required Skills (Extracted) ===\n")
+        skills = extract_skills_from_description(job_description)
+        if skills:
+            for skill in skills:
+                file.write(f"• {skill}\n")
+            file.write(f"Total skills identified: {len(skills)}\n")
+        else:
+            file.write("No specific technical skills identified\n")
+        file.write("\n")
+
+        # Experience Requirements
+        file.write("=== Experience Requirements ===\n")
+        experience_req = extract_experience_requirements(job_description)
+        file.write(f"{experience_req}\n\n")
+
+        # Education Requirements
+        file.write("=== Education Requirements ===\n")
+        education_req = extract_education_requirements(job_description)
+        file.write(f"{education_req}\n\n")
+
+        # Benefits
+        file.write("=== Benefits (Extracted) ===\n")
+        benefits = extract_benefits(job_description)
+        if benefits:
+            for benefit in benefits:
+                file.write(f"• {benefit}\n")
+            file.write(f"Total benefits mentioned: {len(benefits)}\n")
+        else:
+            file.write("No specific benefits mentioned\n")
+        file.write("\n")
+
+        # Hiring Team / Poster Information
+        file.write("=== Hiring Team Information ===\n")
+        poster = data.get('poster', {})
+        file.write(f"Poster name: {poster.get('name', 'Not available')}\n")
+        file.write(f"Poster title: {poster.get('title', 'Not available')}\n")
+        file.write(f"Poster URL: {poster.get('url', 'Not available')}\n")
         
-        # Mostrar resumen
-        scraper.mostrar_resumen(trabajo)
+        hiring_team = data.get('hiring_team', [])
+        if hiring_team:
+            file.write("Hiring team members:\n")
+            for member in hiring_team:
+                file.write(f"• {member.get('name', 'Not available')} - {member.get('title', 'Not available')}\n")
+        else:
+            file.write("Hiring team: Not available\n")
+        file.write("\n")
+
+        # Application Information
+        file.write("=== Application Information ===\n")
+        file.write(f"Application URL: {data.get('application_url', 'Not available')}\n")
+        file.write(f"Application type: {'Easy Apply' if data.get('easy_apply') else 'External Application'}\n")
+        file.write(f"Application instructions: {data.get('application_instructions', 'Not available')}\n\n")
+
+        # Additional Metadata
+        file.write("=== Additional Metadata ===\n")
+        file.write(f"Job posting HTML available: {'Yes' if data.get('job_description_html') else 'No'}\n")
+        file.write(f"Company updates: {len(data.get('company_updates', [])) if data.get('company_updates') else 0}\n")
+        file.write(f"Similar jobs: {len(data.get('similar_jobs', [])) if data.get('similar_jobs') else 0}\n")
+        file.write(f"Job tags: {', '.join(data.get('job_tags', [])) or 'Not available'}\n")
+        file.write(f"Job level: {data.get('job_level', 'Not available')}\n")
+        file.write(f"Department: {data.get('department', 'Not available')}\n")
+        file.write(f"Work arrangement: {data.get('work_arrangement', 'Not available')}\n")
+        file.write(f"Visa sponsorship: {data.get('visa_sponsorship', 'Not available')}\n\n")
+
+        # Quality Score and Analysis
+        file.write("=== Job Posting Quality Analysis ===\n")
+        quality_score = 0
+        quality_factors = []
         
-        # Guardar solo en TXT para probar
-        scraper.guardar_trabajo(trabajo, 'txt')
+        if job_description and len(job_description) > 500:
+            quality_score += 20
+            quality_factors.append("Detailed job description")
         
-    except ValueError as e:
-        print(f"❌ Error de validación: {e}")
-    except Exception as e:
-        print(f"❌ Error inesperado: {e}")
-        import traceback
-        traceback.print_exc()
+        if salary:
+            quality_score += 25
+            quality_factors.append("Salary information provided")
+        
+        if len(skills) > 5:
+            quality_score += 20
+            quality_factors.append("Multiple technical skills mentioned")
+        
+        if benefits:
+            quality_score += 15
+            quality_factors.append("Benefits mentioned")
+        
+        if company.get('company_size'):
+            quality_score += 10
+            quality_factors.append("Company size information")
+        
+        if data.get('easy_apply'):
+            quality_score += 10
+            quality_factors.append("Easy application process")
+        
+        file.write(f"Quality score: {quality_score}/100\n")
+        file.write("Quality factors:\n")
+        for factor in quality_factors:
+            file.write(f"• {factor}\n")
+        if not quality_factors:
+            file.write("• Basic job posting information only\n")
+        file.write("\n")
+
+        # Search Keywords
+        file.write("=== Suggested Search Keywords ===\n")
+        keywords = set()
+        if data.get('job_title'):
+            keywords.update(data['job_title'].split())
+        keywords.update(skills)
+        if data.get('seniority_level'):
+            keywords.add(data['seniority_level'])
+        if company.get('industry'):
+            keywords.update(company['industry'].split())
+        
+        # Clean and filter keywords
+        filtered_keywords = [kw for kw in keywords if len(kw) > 2 and kw.isalpha()]
+        file.write(f"{', '.join(sorted(filtered_keywords)[:20])}\n\n")
+
+    print("Job information saved to linkedin_job_content.txt")
+
+else:
+    print(f"Error: {response.status_code} - {response.text}")

@@ -1,0 +1,132 @@
+=== Basic Job Information ===
+Job title: Not available
+Job ID: Not available
+Job URL: Not available
+Apply URL: https://app.usebraintrust.com/jobs/11450?utm_channel=jobboard&gh_src=06bf3def4us&utm_source=linkedin
+Employment type: Full-time
+Seniority level: Entry level
+Job function: Not available
+Industries: Not available
+Job state: Not available
+Total applicants: 200
+Easy apply: No
+Job posting language: Not available
+
+=== Timing Information ===
+Listed at: Not available
+Posted date: Not available
+Original listed time: Not available
+Expiry date: Not available
+Application deadline: Not available
+Scraped at: 2025-06-21 23:39:33
+
+=== Location Information ===
+Location name: Not available
+City: None
+State: Not available
+Country: Argentina
+Postal code: None
+Remote work: Not specified
+
+=== Company Information ===
+Company name: Braintrust
+Company URL: https://www.linkedin.com/company/usebraintrust
+Company logo: https://media.licdn.com/dms/image/v2/D560BAQElwT1kpc6sWw/company-logo_100_100/company-logo_100_100/0/1714395474106/usebraintrust_logo?e=2147483647&v=beta&t=APHLsDAnQ6u0-GV3Egv-SesyXtHIiN2TtFBSFW--Quo
+Industry: Not available
+Company size: Not available
+Headquarters: Not available
+Founded: Not available
+Follower count: Not available
+Specialties: Not available
+
+=== Salary Information ===
+Salary range: Not available
+Minimum salary: Not available
+Maximum salary: Not available
+Currency: Not available
+Period: Not available
+
+=== Job Description ===
+**Requirements**
+  * Swift, Python, Java, Go, Verilog, Typescript, Javascript, C++, or C# coding experience required
+
+
+This is a great opportunity to supplement your income while looking for longer or more full-time work, all while contributing to the development of new AI models using your domain expertise!
+**Our client has hired over 1,000 Braintrust talent and intends to hire hundreds more!**
+**Many Braintrust coders earn over $12,000 per month!**
+You’ll have the flexibility to work as much or as little as you choose - 20hrs/week is suggested, but not a limit. Start working in as little as 48 hours. Your final hourly rate will be chosen by Outlier AI and determined by your location.
+**What to expect:** If qualified, you’ll be invited to complete a brief questionnaire that takes 3-5 minutes. If you successfully pass the questionnaire, you’ll be approved and able to begin work ASAP.
+**Required qualifications:**
+Proficiency working one of the following languages: Swift, Python, Java, Go, Verilog, Typescript, Javascript, C++, or C#
+Complete fluency in the English language is required. You should be able to describe code and abstract information in a clear way.
+**Preferred qualifications:**
+Bachelor's and/or Master's degree in Computer Science or equivalent. Students are welcome.
+**Note** : Outlier AI is partnering with Remotasks for this opportunity
+**What You’ll Be Working On**
+Our client has partnered with organizations to train AI large language models, helping cutting-edge generative AI models write better code.
+  * Example projects might include:
+  * Evaluating the quality of AI-generated code, including human-readable summaries of your rationale
+  * Solve coding problems, writing functional and efficient code
+  * Optimize code to run at maximum efficiency
+  * Writing robust test cases to confirm code works efficiently and effectively
+  * Writing human-readable summaries of coding problems
+  * Writing explanations of how code can solve problems and evaluate various solution approaches
+
+
+**No previous experience with AI necessary!** You will receive detailed instructions on what is expected of you after you complete the application and verification process.
+
+Description length: 2199 characters
+Word count: 329 words
+
+=== Job Criteria ===
+Not available
+
+=== Required Skills (Extracted) ===
+• AI
+• Go
+• Java
+• Javascript
+• Python
+• Swift
+• Typescript
+Total skills identified: 7
+
+=== Experience Requirements ===
+Not available
+
+=== Education Requirements ===
+Computer Science; Bachelor s and; Master s degree in Computer Science or equivalent
+
+=== Benefits (Extracted) ===
+No specific benefits mentioned
+
+=== Hiring Team Information ===
+Poster name: Not available
+Poster title: Not available
+Poster URL: Not available
+Hiring team: Not available
+
+=== Application Information ===
+Application URL: Not available
+Application type: External Application
+Application instructions: Not available
+
+=== Additional Metadata ===
+Job posting HTML available: No
+Company updates: 0
+Similar jobs: 0
+Job tags: Not available
+Job level: Not available
+Department: Not available
+Work arrangement: Not available
+Visa sponsorship: Not available
+
+=== Job Posting Quality Analysis ===
+Quality score: 40/100
+Quality factors:
+• Detailed job description
+• Multiple technical skills mentioned
+
+=== Suggested Search Keywords ===
+Java, Javascript, Python, Swift, Typescript
+
