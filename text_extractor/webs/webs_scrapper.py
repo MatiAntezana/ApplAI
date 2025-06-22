@@ -4,8 +4,20 @@ import time
 import re
 from datetime import datetime
 
-def format_text(text):
-    """Clean and format text content."""
+def format_text(text: str) -> str:
+    """
+    Clean and format text content.
+    
+    Parameters
+    ----------
+    text : str
+        The text to format.
+
+    Returns
+    -------
+    str
+        Cleaned and formatted text, or "Not available" if empty.
+    """
     if not text:
         return "Not available"
     
@@ -16,8 +28,20 @@ def format_text(text):
     
     return cleaned_text if cleaned_text else "Not available"
 
-def extract_contact_info(soup):
-    """Extract potential contact information from the page."""
+def extract_contact_info(soup: BeautifulSoup) -> dict:
+    """
+    Extract potential contact information from the page.
+    
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        The BeautifulSoup object containing the parsed HTML content.
+
+    Returns
+    -------
+    dict
+        A dictionary containing lists of emails, phone numbers, and social media links.
+    """
     contact_info = {
         'emails': [],
         'phones': [],
@@ -48,8 +72,9 @@ def extract_contact_info(soup):
     
     return contact_info
 
-def extract_structured_content(soup):
-    """Extract structured content similar to LinkedIn profile sections."""
+def extract_structured_content(soup: BeautifulSoup) -> dict:
+    """
+    Extract structured content similar to LinkedIn profile sections."""
     content = {
         'basic_info': {},
         'headings': [],

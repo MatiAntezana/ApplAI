@@ -22,4 +22,8 @@ st.title("Cuales son los modos de ApplAI ?")
 
 st.title("Quienes son los creadores de ApplAI ?")
 
+# Footer
+st.markdown("---")
+st.markdown("© 2025 ApplAI. All rights reserved.")
+
 

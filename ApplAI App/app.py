@@ -23,7 +23,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 st.markdown(""" <br>*Calculate your **compatibility score** between a CV and a job posting using AI.
                     Provide a LinkedIn profile URL or upload a CV file, and a job posting URL or file.*""", unsafe_allow_html=True)
 
@@ -32,24 +31,26 @@ st.markdown("", unsafe_allow_html=True)
 # --- Inputs ---
 
 st.subheader("CV Input")
-cv_url_linkedin = st.text_input("LinkedIn Profile URL")
-cv_url = st.text_input("CV URL from a Website")
-cv_file = st.file_uploader("Upload CV (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], disabled=bool(cv_url_linkedin.strip()))
+# Estado actual de inputs
+ai_url_linkedin = st.text_input("LinkedIn Profile URL")
+ai_url_web = st.text_input("CV URL from a Website")
+ai_file = st.file_uploader("Upload CV (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], accept_multiple_files=False)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
 st.subheader("Job Posting Input")
 job_url_linkedin = st.text_input("Job Posting URL from LinkedIn")
-job_url = st.text_input("Job Posting URL from a Website")
-job_file = st.file_uploader("Upload Job Posting (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], disabled=bool(job_url_linkedin.strip()))
+job_url_web = st.text_input("Job Posting URL from a Website")
+job_file = st.file_uploader("Upload Job Posting (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], accept_multiple_files=False)
 
 # --- Botón ---
 
-cv_ready = (cv_url_linkedin.strip() != "") or (cv_file is not None)
-job_ready = (job_url_linkedin.strip() != "") or (job_file is not None)
+cv_ready = (ai_url_linkedin.strip() != "") or (ai_url_web.strip() != "") or (ai_file is not None)
+job_ready = (job_url_linkedin.strip() != "") or (job_url_web.strip() != "") or (job_file is not None)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
+# Estilo del botón
 st.markdown("""
     <style>
     div.stButton > button {
@@ -74,20 +75,22 @@ if st.button("Calculate Score", type="primary"):
             try:
                 os.makedirs("temp_files", exist_ok=True)
 
-                # Procesar CV
-                cv_text = ""
-                if cv_url_linkedin.strip() != "":
-                    cv_text = process_ai(cv_url_linkedin, "temp_files/cv.txt")
-                elif cv_file:
-                    cv_path = os.path.join("temp_files", cv_file.name)
+                # Process AI
+                if ai_url_linkedin.strip() != "":
+                    cv_text = process_ai(ai_url_linkedin, "temp_files/cv.txt")
+                elif ai_url_web.strip() != "":
+                    cv_text = process_ai(ai_url_web, "temp_files/cv.txt")
+                elif ai_file:
+                    cv_path = os.path.join("temp_files", ai_file.name)
                     with open(cv_path, "wb") as f:
-                        f.write(cv_file.read())
+                        f.write(ai_file.read())
                     cv_text = process_ai(cv_path, "temp_files/cv.txt")
 
-                # Procesar oferta de trabajo
-                job_text = ""
+                # Procesar JD
                 if job_url_linkedin.strip() != "":
                     job_text = process_job(job_url_linkedin, "temp_files/job.txt")
+                elif job_url_web.strip() != "":
+                    job_text = process_job(job_url_web, "temp_files/job.txt")
                 elif job_file:
                     job_path = os.path.join("temp_files", job_file.name)
                     with open(job_path, "wb") as f:
@@ -107,4 +110,5 @@ if st.button("Calculate Score", type="primary"):
 # Footer
 st.markdown("---")
 st.markdown("© 2025 ApplAI. All rights reserved.")
+
 

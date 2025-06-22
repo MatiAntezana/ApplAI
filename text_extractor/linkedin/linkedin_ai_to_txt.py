@@ -21,8 +21,8 @@ def format_date(date_obj: dict) -> str:
 
 
 # API Configuration
-api_key = "CXsYh7_s4ncwk87NkmX_Qg"  # Reemplaza con tu clave de API de Proxycurl
-profile_url = "https://www.linkedin.com/in/tiziano-levi-martin-bernal/"  # Reemplaza con la URL del perfil de LinkedIn
+api_key = "CXsYh7_s4ncwk87NkmX_Qg"  
+profile_url = "https://www.linkedin.com/in/tiziano-levi-martin-bernal/" 
 endpoint = "https://enrichlayer.com/api/v2/profile"
 headers = {"Authorization": f"Bearer {api_key}"}
 params = {"url": profile_url}
