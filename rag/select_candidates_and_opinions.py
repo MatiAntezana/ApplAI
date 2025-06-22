@@ -20,7 +20,7 @@ def get_cvs_and_recomendations(job_description, faiss_path="cv_vector_db/cv_inde
         top_k (int): Número de CVs a retornar.
     
     Returns:
-        creates a csv file with the top_k candidates and opinions about if they are suitable for the job or not.
+        CREATES a csv file with the top_k candidates and opinions about if they are suitable for the job or not.
         The csv file will contain the following columns:
         - cv_id
         - candidate_name
@@ -166,5 +166,6 @@ if __name__ == "__main__":
     "particularly with Epic Systems. The role involves providing technical assistance to clinical staff, supporting " \
     "and maintaining EMR systems, resolving hardware and software issues, and training end-users. Strong communication " \
     "skills, knowledge of networks and databases, and prior experience in hospitals or government institutions are highly valued."
-    get_cvs_and_recomendations(job_description)
+    top_k_candidates = 3
+    get_cvs_and_recomendations(job_description, top_k=top_k_candidates)
     
