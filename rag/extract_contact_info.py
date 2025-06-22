@@ -22,10 +22,10 @@ def main(cv_file_path: str):
     ENDPOINT = "https://tizia-maebl6ih-eastus2.cognitiveservices.azure.com/"
     DEPLOYMENT = "gpt-4o-mini-tiziano"
     azure_client = AsyncAzureOpenAI(
-    api_version="2024-12-01-preview",
-    azure_endpoint=ENDPOINT,
-    api_key=API_KEY
-)
+        api_version="2024-12-01-preview",
+        azure_endpoint=ENDPOINT,
+        api_key=API_KEY
+    )
     cv_text = read_txt(cv_file_path)
 
     result = asyncio.run(extract_cv_info(cv_text, azure_client, DEPLOYMENT))
@@ -40,4 +40,6 @@ def main(cv_file_path: str):
    
      
 if __name__ == "__main__":
-    main("prueba.txt")
+    main("rag/pruebas/prueba10.txt")
+    main("rag/pruebas/prueba11.txt")
+    main("rag/pruebas/prueba12.txt")

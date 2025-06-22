@@ -165,12 +165,12 @@ def append_to_faiss(cv_id, info_cv_text, model, faiss_path, meta_path):
 
 def guardar_resultado(result):
     # 1. Guardar en CSV y obtener ID
-    cv_id = append_to_csv(result, "cvs.csv")
+    cv_id = append_to_csv(result, "rag/cvs.csv")
 
     # 2. Cargar modelo de embeddings
     model = SentenceTransformer("all-MiniLM-L6-v2")
 
     # 3. Agregar a FAISS
-    append_to_faiss(cv_id, result.cv_information, model, "cv_vector_db/cv_index.faiss", "cv_vector_db/cv_metadata.pkl")
+    append_to_faiss(cv_id, result.cv_information, model, "rag/cv_vector_db/cv_index.faiss", "rag/cv_vector_db/cv_metadata.pkl")
 
     print(f"✅ Guardado correctamente: ID {cv_id}")
