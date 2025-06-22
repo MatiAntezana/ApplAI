@@ -2,14 +2,9 @@ import os
 import argparse
 from pathlib import Path
 import mimetypes
-import logging
 import re
 import json
 import csv
-
-# Logging configuration
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # PDF extraction - Using both libraries as fallback
 import pdfplumber
@@ -17,7 +12,6 @@ try:
     import fitz  # PyMuPDF
 except ImportError:
     fitz = None
-    logger.warning("PyMuPDF not installed. PDF extraction may be less robust")
 
 # DOCX - Using both methods
 import docx
@@ -25,22 +19,18 @@ try:
     import docx2txt
 except ImportError:
     docx2txt = None
-    logger.warning("docx2txt not installed. Using only python-docx for DOCX")
-
+    
 # PowerPoint files
 try:
     from pptx import Presentation
 except ImportError:
     Presentation = None
-    logger.warning("python-pptx not installed. PPTX files not supported")
 
 # RTF files
 try:
     from striprtf.striprtf import rtf_to_text
 except ImportError:
     rtf_to_text = None
-    logger.warning("striprtf not installed. RTF files not supported")
-
 
 # OCR capabilities (optional)
 try:
@@ -49,7 +39,6 @@ try:
     OCR_AVAILABLE = True
 except ImportError:
     OCR_AVAILABLE = False
-    logger.warning("OCR not available. Image files not supported")
 
 # Email processing
 try:
@@ -57,14 +46,15 @@ try:
     from email import policy
     from email.parser import BytesParser
 except ImportError:
-    logger.warning("Email module not found. EML files not supported")
+    email = None
+    policy = None
+    BytesParser = None
 
 # Excel processing
 try:
     import pandas as pd
 except ImportError:
     pd = None
-    logger.warning("pandas not installed. XLS/XLSX files not supported")
 
 
 def clean_text(text: str) -> str:
@@ -118,8 +108,8 @@ def extract_pdf_text(path: str) -> str:
                 if page_text:
                     text += page_text + "\n"
         return clean_text(text)
-    except Exception as e:
-        logger.warning(f"pdfplumber failed: {str(e)}")
+    except Exception:
+        pass
     
     # Method 2: PyMuPDF (fallback)
     if fitz:
@@ -129,8 +119,8 @@ def extract_pdf_text(path: str) -> str:
             for page in doc:
                 text.append(page.get_text("text", sort=True))
             return clean_text("\n".join(text))
-        except Exception as e:
-            logger.warning(f"PyMuPDF failed: {str(e)}")
+        except Exception:
+            pass
     
     raise RuntimeError("All PDF extraction methods failed")
 
@@ -162,8 +152,8 @@ def extract_docx_text(path: str) -> str:
                 for cell in row.cells:
                     text += cell.text + "\t"
                 text += "\n"
-    except Exception as e:
-        logger.warning(f"python-docx partially failed: {str(e)}")
+    except Exception:
+        pass
     
     # Method 2: docx2txt (better for raw extraction)
     if docx2txt:
@@ -172,8 +162,8 @@ def extract_docx_text(path: str) -> str:
             # Combine both results avoiding duplicates
             if alt_text and alt_text not in text:
                 text += "\n" + alt_text
-        except Exception as e:
-            logger.warning(f"docx2txt failed: {str(e)}")
+        except Exception:
+            pass
     
     return clean_text(text) if text else ""
 
@@ -255,7 +245,7 @@ def extract_rtf_text(path: str) -> str:
             return clean_text(text)
     except Exception as e:
         raise RuntimeError(f"Failed to extract RTF text: {str(e)}")
-    
+
 
 def extract_image_text(path: str) -> str:
     """
@@ -280,7 +270,7 @@ def extract_image_text(path: str) -> str:
         return clean_text(text)
     except Exception as e:
         raise RuntimeError(f"OCR failed: {str(e)}")
-    
+
 
 def extract_eml_text(path: str) -> str:
     """
@@ -313,7 +303,7 @@ def extract_eml_text(path: str) -> str:
         return clean_text(text)
     except Exception as e:
         raise RuntimeError(f"Error processing email: {str(e)}")
-    
+
 
 def extract_csv_text(path: str) -> str:
     """
@@ -467,28 +457,112 @@ def file_to_text(path: str) -> str:
     raise ValueError(f"Unsupported file type: {path}")
 
 
-# if __name__ == '__main__':
+def file_to_text(path: str) -> str:
+    """
+    Detect file type by MIME or extension and extract text using appropriate method.
 
-#     parser = argparse.ArgumentParser(description='Text extraction from various document formats')
-#     parser.add_argument('input', help='Path of the document')
-#     parser.add_argument('-o', '--output', help='Output text file (optional)')
-#     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose mode')
+    Supports: PDF, DOCX, TXT, PPTX, RTF, images, emails, CSV, JSON, Excel
 
-#     args = parser.parse_args()
+    Parameters
+    ----------
+    path : str
+        Path to the file.
 
-#     if args.verbose:
-#         logger.setLevel(logging.DEBUG)
+    Returns
+    -------
+    str
+        Extracted text content.
+    """
+    mime_type, _ = mimetypes.guess_type(path)
 
-#     try:
-#         txt = file_to_text(args.input)
-        
-#         if args.output:
-#             with open(args.output, 'w', encoding='utf-8') as fout:
-#                 fout.write(txt)
-#             print(f"Text written to {args.output}")
-#         else:
-#             print(txt)
-#     except Exception as e:
-#         logger.error(f"Error processing file: {str(e)}")
-#         exit(1)
+    # Use MIME type to decide extraction method
+    if mime_type:
+        if mime_type == 'application/pdf':
+            return extract_pdf_text(path)
+        elif mime_type in ['application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                           'application/msword']:
+            return extract_docx_text(path)
+        elif mime_type == 'text/plain':
+            with open(path, 'r', encoding='utf-8', errors='replace') as f:
+                return clean_text(f.read())
+        elif mime_type == 'application/vnd.ms-powerpoint':
+            return extract_pptx_text(path)
+        elif mime_type == 'application/rtf':
+            return extract_rtf_text(path)
+        elif mime_type.startswith('image/'):
+            return extract_image_text(path)
+        elif mime_type == 'message/rfc822':
+            return extract_eml_text(path)
+        elif mime_type == 'text/csv':
+            return extract_csv_text(path)
+        elif mime_type == 'application/json':
+            return extract_json_text(path)
+        elif mime_type in ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                           'application/vnd.ms-excel']:
+            return extract_excel_text(path)
+
+    # Fallback on file extension
+    ext = Path(path).suffix.lower()
+    if ext == '.pdf':
+        return extract_pdf_text(path)
+    elif ext in ['.docx', '.doc']:
+        return extract_docx_text(path)
+    elif ext == '.txt':
+        with open(path, 'r', encoding='utf-8', errors='replace') as f:
+            return clean_text(f.read())
+    elif ext == '.pptx':
+        return extract_pptx_text(path)
+    elif ext == '.ppt':
+        raise RuntimeError("Old .ppt format not supported natively")
+    elif ext == '.rtf':
+        return extract_rtf_text(path)
+    elif ext in ['.jpg', '.jpeg', '.png', '.tiff', '.bmp']:
+        return extract_image_text(path)
+    elif ext == '.eml':
+        return extract_eml_text(path)
+    elif ext == '.csv':
+        return extract_csv_text(path)
+    elif ext == '.json':
+        return extract_json_text(path)
+    elif ext in ['.xls', '.xlsx']:
+        return extract_excel_text(path)
+
+    raise ValueError(f"Unsupported file type: {path}")
+
+
+def scrape_files(source: str, output_path: str) -> None:
+    """
+    Extract text from a file and write it to an output path.
+
+    Parameters
+    ----------
+    source : str
+        Path to the source file.
+    output_path : str
+        Path to the output text file.
+
+    Returns
+    -------
+    None
+    """
+    # Check source
+    if not os.path.exists(source):
+        raise FileNotFoundError(f"Source file '{source}' does not exist")
+
+    if not os.path.isfile(source):
+        raise ValueError(f"Source path '{source}' is not a file")
+
+    # Check output directory
+    output_dir = os.path.dirname(output_path) or '.'
+
+    if not os.path.exists(output_dir):
+        raise FileNotFoundError(f"Output directory '{output_dir}' does not exist")
+
+    if not os.access(output_dir, os.W_OK):
+        raise PermissionError(f"No write permission to output directory '{output_dir}'")
+
+    # Process file
+    with open(output_path, 'w', encoding='utf-8') as out_file: 
+        text = file_to_text(source)
+        out_file.write(text)
 

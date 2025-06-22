@@ -236,7 +236,7 @@ def extract_remote_work_info(description: str | None, remote_allowed: bool = Fal
     return "Not specified"
 
 
-def scrape_linkedin_job(source: str, output_path: str, api_key: Optional[str] = None) -> bool:
+def scrape_linkedin_job(source: str, output_path: str, api_key: Optional[str] = None) -> None:
     """
     Scrape LinkedIn job data and save it to a text file.
     
@@ -251,10 +251,16 @@ def scrape_linkedin_job(source: str, output_path: str, api_key: Optional[str] = 
     
     Returns
     -------
-    bool
-        True if scraping was successful, False otherwise
+    None
     """
-    # Default API key (consider moving to environment variable for security)
+    # Validate input parameters
+    if not isinstance(source, str) or not source.strip():
+        raise ValueError("Invalid source URL provided.")
+    
+    if not isinstance(output_path, str) or not output_path.strip():
+        raise ValueError("Invalid output path provided.")
+    
+    # Default API key 
     if api_key is None:
         api_key = "CXsYh7_s4ncwk87NkmX_Qg"
     
@@ -263,232 +269,175 @@ def scrape_linkedin_job(source: str, output_path: str, api_key: Optional[str] = 
     headers = {"Authorization": f"Bearer {api_key}"}
     params = {"url": source}
 
+    # API Request
     try:
-        # API Request
-        response = requests.get(endpoint, headers=headers, params=params)
-
-        # Process the response
-        if response.status_code == 200:
-            data = response.json()
-            job_description = data.get('job_description', '')
-
-            with open(output_path, "w", encoding="utf-8") as file:
-
-                # Basic Job Info
-                file.write("=== Basic Job Information ===\n")
-                file.write(f"Job title: {data.get('job_title', 'Not available')}\n")
-                file.write(f"Job ID: {data.get('job_id', 'Not available')}\n")
-                file.write(f"Job URL: {data.get('job_url', 'Not available')}\n")
-                file.write(f"Apply URL: {data.get('apply_url', 'Not available')}\n")
-                file.write(f"Employment type: {data.get('employment_type', 'Not available')}\n")
-                file.write(f"Seniority level: {data.get('seniority_level', 'Not available')}\n")
-                file.write(f"Job function: {', '.join(data.get('job_function', [])) or 'Not available'}\n")
-                file.write(f"Industries: {', '.join(data.get('industries', [])) or 'Not available'}\n")
-                file.write(f"Job state: {data.get('job_state', 'Not available')}\n")
-                file.write(f"Total applicants: {data.get('total_applicants', 'Not available')}\n")
-                file.write(f"Easy apply: {'Yes' if data.get('easy_apply') else 'No'}\n")
-                file.write(f"Job posting language: {data.get('job_posting_language', 'Not available')}\n\n")
-
-                # Timing Information
-                file.write("=== Timing Information ===\n")
-                file.write(f"Listed at: {data.get('listed_at', 'Not available')}\n")
-                file.write(f"Posted date: {data.get('posted_date', 'Not available')}\n")
-                file.write(f"Original listed time: {data.get('original_listed_time', 'Not available')}\n")
-                file.write(f"Expiry date: {data.get('expiry_date', 'Not available')}\n")
-                file.write(f"Application deadline: {data.get('application_deadline', 'Not available')}\n")
-                file.write(f"Scraped at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-
-                # Location Information
-                file.write("=== Location Information ===\n")
-                location = data.get('location', {})
-                file.write(f"Location name: {location.get('name', 'Not available')}\n")
-                file.write(f"City: {location.get('city', 'Not available')}\n")
-                file.write(f"State: {location.get('state', 'Not available')}\n")
-                file.write(f"Country: {location.get('country', 'Not available')}\n")
-                file.write(f"Postal code: {location.get('postal_code', 'Not available')}\n")
-                file.write(f"Remote work: {extract_remote_work_info(job_description, data.get('remote_allowed', False))}\n\n")
-
-                # Company Information
-                file.write("=== Company Information ===\n")
-                company = data.get('company', {})
-                file.write(f"Company name: {company.get('name', 'Not available')}\n")
-                file.write(f"Company URL: {company.get('url', 'Not available')}\n")
-                file.write(f"Company logo: {company.get('logo', 'Not available')}\n")
-                file.write(f"Industry: {company.get('industry', 'Not available')}\n")
-                file.write(f"Company size: {company.get('company_size', 'Not available')}\n")
-                file.write(f"Headquarters: {company.get('headquarters', 'Not available')}\n")
-                file.write(f"Founded: {company.get('founded', 'Not available')}\n")
-                file.write(f"Follower count: {company.get('follower_count', 'Not available')}\n")
-                file.write(f"Specialties: {', '.join(company.get('specialties', [])) or 'Not available'}\n\n")
-
-                # Salary Information
-                file.write("=== Salary Information ===\n")
-                salary = data.get('salary', {})
-                file.write(f"Salary range: {format_salary(salary)}\n")
-                file.write(f"Minimum salary: {salary.get('min', 'Not available') if salary else 'Not available'}\n")
-                file.write(f"Maximum salary: {salary.get('max', 'Not available') if salary else 'Not available'}\n")
-                file.write(f"Currency: {salary.get('currency', 'Not available') if salary else 'Not available'}\n")
-                file.write(f"Period: {salary.get('period', 'Not available') if salary else 'Not available'}\n\n")
-
-                # Job Description
-                file.write("=== Job Description ===\n")
-                file.write(f"{job_description or 'Not available'}\n")
-                file.write(f"Description length: {len(job_description)} characters\n")
-                file.write(f"Word count: {len(job_description.split()) if job_description else 0} words\n\n")
-
-                # Job Criteria
-                file.write("=== Job Criteria ===\n")
-                job_criteria = data.get('job_criteria', {})
-                if job_criteria:
-                    for key, value in job_criteria.items():
-                        file.write(f"{key.replace('_', ' ').title()}: {value}\n")
-                else:
-                    file.write("Not available\n")
-                file.write("\n")
-
-                # Extracted Skills
-                file.write("=== Required Skills (Extracted) ===\n")
-                skills = extract_skills_from_description(job_description)
-                if skills:
-                    for skill in skills:
-                        file.write(f"• {skill}\n")
-                    file.write(f"Total skills identified: {len(skills)}\n")
-                else:
-                    file.write("No specific technical skills identified\n")
-                file.write("\n")
-
-                # Experience Requirements
-                file.write("=== Experience Requirements ===\n")
-                experience_req = extract_experience_requirements(job_description)
-                file.write(f"{experience_req}\n\n")
-
-                # Education Requirements
-                file.write("=== Education Requirements ===\n")
-                education_req = extract_education_requirements(job_description)
-                file.write(f"{education_req}\n\n")
-
-                # Benefits
-                file.write("=== Benefits (Extracted) ===\n")
-                benefits = extract_benefits(job_description)
-                if benefits:
-                    for benefit in benefits:
-                        file.write(f"• {benefit}\n")
-                    file.write(f"Total benefits mentioned: {len(benefits)}\n")
-                else:
-                    file.write("No specific benefits mentioned\n")
-                file.write("\n")
-
-                # Hiring Team / Poster Information
-                file.write("=== Hiring Team Information ===\n")
-                poster = data.get('poster', {})
-                file.write(f"Poster name: {poster.get('name', 'Not available')}\n")
-                file.write(f"Poster title: {poster.get('title', 'Not available')}\n")
-                file.write(f"Poster URL: {poster.get('url', 'Not available')}\n")
-                
-                hiring_team = data.get('hiring_team', [])
-                if hiring_team:
-                    file.write("Hiring team members:\n")
-                    for member in hiring_team:
-                        file.write(f"• {member.get('name', 'Not available')} - {member.get('title', 'Not available')}\n")
-                else:
-                    file.write("Hiring team: Not available\n")
-                file.write("\n")
-
-                # Application Information
-                file.write("=== Application Information ===\n")
-                file.write(f"Application URL: {data.get('application_url', 'Not available')}\n")
-                file.write(f"Application type: {'Easy Apply' if data.get('easy_apply') else 'External Application'}\n")
-                file.write(f"Application instructions: {data.get('application_instructions', 'Not available')}\n\n")
-
-                # Additional Metadata
-                file.write("=== Additional Metadata ===\n")
-                file.write(f"Job posting HTML available: {'Yes' if data.get('job_description_html') else 'No'}\n")
-                file.write(f"Company updates: {len(data.get('company_updates', [])) if data.get('company_updates') else 0}\n")
-                file.write(f"Similar jobs: {len(data.get('similar_jobs', [])) if data.get('similar_jobs') else 0}\n")
-                file.write(f"Job tags: {', '.join(data.get('job_tags', [])) or 'Not available'}\n")
-                file.write(f"Job level: {data.get('job_level', 'Not available')}\n")
-                file.write(f"Department: {data.get('department', 'Not available')}\n")
-                file.write(f"Work arrangement: {data.get('work_arrangement', 'Not available')}\n")
-                file.write(f"Visa sponsorship: {data.get('visa_sponsorship', 'Not available')}\n\n")
-
-                # Quality Score and Analysis
-                file.write("=== Job Posting Quality Analysis ===\n")
-                quality_score = 0
-                quality_factors = []
-                
-                if job_description and len(job_description) > 500:
-                    quality_score += 20
-                    quality_factors.append("Detailed job description")
-                
-                if salary:
-                    quality_score += 25
-                    quality_factors.append("Salary information provided")
-                
-                if len(skills) > 5:
-                    quality_score += 20
-                    quality_factors.append("Multiple technical skills mentioned")
-                
-                if benefits:
-                    quality_score += 15
-                    quality_factors.append("Benefits mentioned")
-                
-                if company.get('company_size'):
-                    quality_score += 10
-                    quality_factors.append("Company size information")
-                
-                if data.get('easy_apply'):
-                    quality_score += 10
-                    quality_factors.append("Easy application process")
-                
-                file.write(f"Quality score: {quality_score}/100\n")
-                file.write("Quality factors:\n")
-                for factor in quality_factors:
-                    file.write(f"• {factor}\n")
-                if not quality_factors:
-                    file.write("• Basic job posting information only\n")
-                file.write("\n")
-
-                # Search Keywords
-                file.write("=== Suggested Search Keywords ===\n")
-                keywords = set()
-                if data.get('job_title'):
-                    keywords.update(data['job_title'].split())
-                keywords.update(skills)
-                if data.get('seniority_level'):
-                    keywords.add(data['seniority_level'])
-                if company.get('industry'):
-                    keywords.update(company['industry'].split())
-                
-                # Clean and filter keywords
-                filtered_keywords = [kw for kw in keywords if len(kw) > 2 and kw.isalpha()]
-                file.write(f"{', '.join(sorted(filtered_keywords)[:20])}\n\n")
-
-            print(f"Job information saved to {output_path}")
-            return True
-
-        else:
-            print(f"Error: {response.status_code} - {response.text}")
-            return False
-            
-    except requests.RequestException as e:
-        print(f"Request error: {e}")
-        return False
-    except IOError as e:
-        print(f"File error: {e}")
-        return False
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        return False
-
-
-# Example usage (the original standalone code can be replaced with this function call):
-if __name__ == "__main__":
-    # Example usage
-    job_url = "https://www.linkedin.com/jobs/view/4201840839"
-    output_file = "linkedin_job_content.txt"
+        response = requests.get(endpoint, headers=headers, params=params, timeout=10)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Failed to fetch LinkedIn job data for URL '{source}': {str(e)}")
     
-    success = scrape_linkedin_job(job_url, output_file)
-    if success:
-        print("Job scraping completed successfully!")
-    else:
-        print("Job scraping failed!")
+    # Process the response JSON
+    try:
+        data = response.json()
+    except ValueError as e:
+        raise RuntimeError(f"Failed to decode JSON response from API for URL '{source}': {str(e)}")
+    
+    job_description = data.get('job_description', '')
+
+    # Write extracted data to file
+    try:
+        with open(output_path, "w", encoding="utf-8") as file:
+
+            # Basic Job Info
+            file.write("=== Basic Job Information ===\n")
+            file.write(f"Job title: {data.get('job_title', 'Not available')}\n")
+            file.write(f"Job ID: {data.get('job_id', 'Not available')}\n")
+            file.write(f"Job URL: {data.get('job_url', 'Not available')}\n")
+            file.write(f"Apply URL: {data.get('apply_url', 'Not available')}\n")
+            file.write(f"Employment type: {data.get('employment_type', 'Not available')}\n")
+            file.write(f"Seniority level: {data.get('seniority_level', 'Not available')}\n")
+            file.write(f"Job function: {', '.join(data.get('job_function', [])) or 'Not available'}\n")
+            file.write(f"Industries: {', '.join(data.get('industries', [])) or 'Not available'}\n")
+            file.write(f"Job state: {data.get('job_state', 'Not available')}\n")
+            file.write(f"Total applicants: {data.get('total_applicants', 'Not available')}\n")
+            file.write(f"Easy apply: {'Yes' if data.get('easy_apply') else 'No'}\n")
+            file.write(f"Job posting language: {data.get('job_posting_language', 'Not available')}\n\n")
+
+            # Timing Information
+            file.write("=== Timing Information ===\n")
+            file.write(f"Listed at: {data.get('listed_at', 'Not available')}\n")
+            file.write(f"Posted date: {data.get('posted_date', 'Not available')}\n")
+            file.write(f"Original listed time: {data.get('original_listed_time', 'Not available')}\n")
+            file.write(f"Expiry date: {data.get('expiry_date', 'Not available')}\n")
+            file.write(f"Application deadline: {data.get('application_deadline', 'Not available')}\n")
+            file.write(f"Scraped at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+
+            # Location Information
+            location = data.get('location', {})
+            file.write("=== Location Information ===\n")
+            file.write(f"Location name: {location.get('name', 'Not available')}\n")
+            file.write(f"City: {location.get('city', 'Not available')}\n")
+            file.write(f"State: {location.get('state', 'Not available')}\n")
+            file.write(f"Country: {location.get('country', 'Not available')}\n")
+            file.write(f"Postal code: {location.get('postal_code', 'Not available')}\n")
+            file.write(f"Remote work: {extract_remote_work_info(job_description, data.get('remote_allowed', False))}\n\n")
+
+            # Company Information
+            company = data.get('company', {})
+            file.write("=== Company Information ===\n")
+            file.write(f"Company name: {company.get('name', 'Not available')}\n")
+            file.write(f"Company URL: {company.get('url', 'Not available')}\n")
+            file.write(f"Company logo: {company.get('logo', 'Not available')}\n")
+            file.write(f"Industry: {company.get('industry', 'Not available')}\n")
+            file.write(f"Company size: {company.get('company_size', 'Not available')}\n")
+            file.write(f"Headquarters: {company.get('headquarters', 'Not available')}\n")
+            file.write(f"Founded: {company.get('founded', 'Not available')}\n")
+            file.write(f"Follower count: {company.get('follower_count', 'Not available')}\n")
+            file.write(f"Specialties: {', '.join(company.get('specialties', [])) or 'Not available'}\n\n")
+
+            # Salary Information
+            salary = data.get('salary', {})
+            file.write("=== Salary Information ===\n")
+            file.write(f"Salary range: {format_salary(salary)}\n")
+            file.write(f"Minimum salary: {salary.get('min', 'Not available') if salary else 'Not available'}\n")
+            file.write(f"Maximum salary: {salary.get('max', 'Not available') if salary else 'Not available'}\n")
+            file.write(f"Currency: {salary.get('currency', 'Not available') if salary else 'Not available'}\n")
+            file.write(f"Period: {salary.get('period', 'Not available') if salary else 'Not available'}\n\n")
+
+            # Job Description
+            file.write("=== Job Description ===\n")
+            file.write(f"{job_description or 'Not available'}\n")
+            file.write(f"Description length: {len(job_description)} characters\n")
+            file.write(f"Word count: {len(job_description.split()) if job_description else 0} words\n\n")
+
+            # Job Criteria
+            job_criteria = data.get('job_criteria', {})
+            file.write("=== Job Criteria ===\n")
+            if job_criteria:
+                for key, value in job_criteria.items():
+                    file.write(f"{key.replace('_', ' ').title()}: {value}\n")
+            else:
+                file.write("Not available\n")
+            file.write("\n")
+
+            # Extracted Skills
+            skills = extract_skills_from_description(job_description)
+            file.write("=== Required Skills (Extracted) ===\n")
+            if skills:
+                for skill in skills:
+                    file.write(f"• {skill}\n")
+                file.write(f"Total skills identified: {len(skills)}\n")
+            else:
+                file.write("No specific technical skills identified\n")
+            file.write("\n")
+
+            # Experience Requirements
+            experience_req = extract_experience_requirements(job_description)
+            file.write("=== Experience Requirements ===\n")
+            file.write(f"{experience_req}\n\n")
+
+            # Education Requirements
+            education_req = extract_education_requirements(job_description)
+            file.write("=== Education Requirements ===\n")
+            file.write(f"{education_req}\n\n")
+
+            # Benefits
+            benefits = extract_benefits(job_description)
+            file.write("=== Benefits (Extracted) ===\n")
+            if benefits:
+                for benefit in benefits:
+                    file.write(f"• {benefit}\n")
+                file.write(f"Total benefits mentioned: {len(benefits)}\n")
+            else:
+                file.write("No specific benefits mentioned\n")
+            file.write("\n")
+
+            # Hiring Team / Poster Information
+            poster = data.get('poster', {})
+            hiring_team = data.get('hiring_team', [])
+            file.write("=== Hiring Team Information ===\n")
+            file.write(f"Poster name: {poster.get('name', 'Not available')}\n")
+            file.write(f"Poster title: {poster.get('title', 'Not available')}\n")
+            file.write(f"Poster URL: {poster.get('url', 'Not available')}\n")
+            if hiring_team:
+                file.write("Hiring team members:\n")
+                for member in hiring_team:
+                    file.write(f"• {member.get('name', 'Not available')} - {member.get('title', 'Not available')}\n")
+            else:
+                file.write("Hiring team: Not available\n")
+            file.write("\n")
+
+            # Application Information
+            file.write("=== Application Information ===\n")
+            file.write(f"Application URL: {data.get('application_url', 'Not available')}\n")
+            file.write(f"Application type: {'Easy Apply' if data.get('easy_apply') else 'External Application'}\n")
+            file.write(f"Application instructions: {data.get('application_instructions', 'Not available')}\n\n")
+
+            # Additional Metadata
+            file.write("=== Additional Metadata ===\n")
+            file.write(f"Job posting HTML available: {'Yes' if data.get('job_description_html') else 'No'}\n")
+            file.write(f"Company updates: {len(data.get('company_updates', [])) if data.get('company_updates') else 0}\n")
+            file.write(f"Similar jobs: {len(data.get('similar_jobs', [])) if data.get('similar_jobs') else 0}\n")
+            file.write(f"Job tags: {', '.join(data.get('job_tags', [])) or 'Not available'}\n")
+            file.write(f"Job level: {data.get('job_level', 'Not available')}\n")
+            file.write(f"Department: {data.get('department', 'Not available')}\n")
+            file.write(f"Work arrangement: {data.get('work_arrangement', 'Not available')}\n")
+            file.write(f"Visa sponsorship: {data.get('visa_sponsorship', 'Not available')}\n\n")
+
+            # Suggested Search Keywords
+            keywords = set()
+            if data.get('job_title'):
+                keywords.update(data['job_title'].split())
+            keywords.update(skills)
+            if data.get('seniority_level'):
+                keywords.add(data['seniority_level'])
+            if company.get('industry'):
+                keywords.update(company['industry'].split())
+            
+            filtered_keywords = [kw for kw in keywords if len(kw) > 2 and kw.isalpha()]
+            file.write("=== Suggested Search Keywords ===\n")
+            file.write(f"{', '.join(sorted(filtered_keywords)[:20])}\n\n")
+
+    except (OSError, IOError) as e:
+        raise RuntimeError(f"Failed to write output file '{output_path}': {str(e)}")
+    

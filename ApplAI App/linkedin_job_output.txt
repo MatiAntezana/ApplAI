@@ -1,0 +1,99 @@
+=== Basic Job Information ===
+Job title: Not available
+Job ID: Not available
+Job URL: Not available
+Apply URL: None
+Employment type: Full-time
+Seniority level: Entry level
+Job function: Not available
+Industries: Not available
+Job state: Not available
+Total applicants: 200
+Easy apply: No
+Job posting language: Not available
+
+=== Timing Information ===
+Listed at: Not available
+Posted date: Not available
+Original listed time: Not available
+Expiry date: Not available
+Application deadline: Not available
+Scraped at: 2025-06-22 18:57:56
+
+=== Location Information ===
+Location name: Not available
+City: None
+State: Not available
+Country: AR
+Postal code: None
+Remote work: Not specified
+
+=== Company Information ===
+Company name: Braintrust
+Company URL: https://www.linkedin.com/company/usebraintrust
+Company logo: None
+Industry: Not available
+Company size: Not available
+Headquarters: Not available
+Founded: Not available
+Follower count: Not available
+Specialties: Not available
+
+=== Salary Information ===
+Salary range: Not available
+Minimum salary: Not available
+Maximum salary: Not available
+Currency: Not available
+Period: Not available
+
+=== Job Description ===
+<p><strong>Requirements</strong></p><ul><li>Swift, Python, Java, Go, Verilog, Typescript, Javascript, C++, or C# coding experience required</li></ul><p>This is a great opportunity to supplement your income while looking for longer or more full-time work, all while contributing to the development of new AI models using your domain expertise!</p><p><strong>Our client has hired over 1,000 Braintrust talent and intends to hire hundreds more!</strong></p><p><strong>Many Braintrust coders earn over $12,000 per month!</strong></p><p>You’ll have the flexibility to work as much or as little as you choose - 20hrs/week is suggested, but not a limit. Start working in as little as 48 hours. Your final hourly rate will be chosen by Outlier AI and determined by your location.</p><p><strong>What to expect:</strong> If qualified, you’ll be invited to complete a brief questionnaire that takes 3-5 minutes. If you successfully pass the questionnaire, you’ll be approved and able to begin work ASAP.</p><p><strong>Required qualifications:</strong></p><p>Proficiency working one of the following languages: Swift, Python, Java, Go, Verilog, Typescript, Javascript, C++, or C#</p><p>Complete fluency in the English language is required. You should be able to describe code and abstract information in a clear way.</p><p><strong>Preferred qualifications:</strong></p><p>Bachelor's and/or Master's degree in Computer Science or equivalent. Students are welcome.</p><p><strong>Note</strong>: Outlier AI is partnering with Remotasks for this opportunity</p><p><strong>What You’ll Be Working On</strong></p><p>Our client has partnered with organizations to train AI large language models, helping cutting-edge generative AI models write better code.</p><ul><li>Example projects might include:</li><li>Evaluating the quality of AI-generated code, including human-readable summaries of your rationale</li><li>Solve coding problems, writing functional and efficient code</li><li>Optimize code to run at maximum efficiency</li><li>Writing robust test cases to confirm code works efficiently and effectively</li><li>Writing human-readable summaries of coding problems</li><li>Writing explanations of how code can solve problems and evaluate various solution approaches</li></ul><p><strong>No previous experience with AI necessary! </strong>You will receive detailed instructions on what is expected of you after you complete the application and verification process.</p>
+Description length: 2451 characters
+Word count: 298 words
+
+=== Job Criteria ===
+Not available
+
+=== Required Skills (Extracted) ===
+• AI
+• Go
+• Java
+• Javascript
+• Python
+• Swift
+• Typescript
+Total skills identified: 7
+
+=== Experience Requirements ===
+Not available
+
+=== Education Requirements ===
+Computer Science; Bachelor s and; Master s degree in Computer Science or equivalent
+
+=== Benefits (Extracted) ===
+No specific benefits mentioned
+
+=== Hiring Team Information ===
+Poster name: Not available
+Poster title: Not available
+Poster URL: Not available
+Hiring team: Not available
+
+=== Application Information ===
+Application URL: Not available
+Application type: External Application
+Application instructions: Not available
+
+=== Additional Metadata ===
+Job posting HTML available: No
+Company updates: 0
+Similar jobs: 0
+Job tags: Not available
+Job level: Not available
+Department: Not available
+Work arrangement: Not available
+Visa sponsorship: Not available
+
+=== Suggested Search Keywords ===
+Java, Javascript, Python, Swift, Typescript
+

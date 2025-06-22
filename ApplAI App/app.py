@@ -5,6 +5,10 @@ import base64
 from utils import process_ai, process_job
 from coso_modified import calculate_score
 from dotenv import load_dotenv
+from text_extractor_for_files import scrape_files
+from text_extractor_for_general_webs import scrape_web
+from text_extractor_for_linkedin_profiles import scrape_linkedin_profile
+from text_extractor_for_linkedin_jobs import scrape_linkedin_job
 
 # Cargar variables de entorno
 load_dotenv()
@@ -75,37 +79,44 @@ if st.button("Calculate Score", type="primary"):
             try:
                 os.makedirs("temp_files", exist_ok=True)
 
-                # Process AI
+                # Process Applicant Information
                 if ai_url_linkedin.strip() != "":
-                    cv_text = process_ai(ai_url_linkedin, "temp_files/cv.txt")
+                    scrape_linkedin_profile(ai_url_linkedin, "temp_files/cv.txt")
+                
                 elif ai_url_web.strip() != "":
-                    cv_text = process_ai(ai_url_web, "temp_files/cv.txt")
-                elif ai_file:
-                    cv_path = os.path.join("temp_files", ai_file.name)
-                    with open(cv_path, "wb") as f:
-                        f.write(ai_file.read())
-                    cv_text = process_ai(cv_path, "temp_files/cv.txt")
+                    scrape_web(ai_url_web, "temp_files/ai.txt")
+                
+                elif ai_file: # Esto está
+                    ai_path = os.path.join("temp_files", ai_file.name)
+                    scrape_files(ai_path, "temp_files/ai.txt")
+                   
 
-                # Procesar JD
+                # Process Job Description
                 if job_url_linkedin.strip() != "":
-                    job_text = process_job(job_url_linkedin, "temp_files/job.txt")
+                    scrape_linkedin_job(job_url_linkedin, "temp_files/job.txt")
+                
                 elif job_url_web.strip() != "":
-                    job_text = process_job(job_url_web, "temp_files/job.txt")
+                    scrape_web(job_url_web, "temp_files/job.txt")
+                
                 elif job_file:
                     job_path = os.path.join("temp_files", job_file.name)
-                    with open(job_path, "wb") as f:
-                        f.write(job_file.read())
-                    job_text = process_job(job_path, "temp_files/job.txt")
+                    scrape_files(job_path, "temp_files/job.txt")
 
-                # Calcular score
-                if cv_text and job_text:
-                    score = calculate_score(cv_text, job_text)
-                    st.success(f"Compatibility Score: {(score * 100):.2f}%")
-                else:
-                    st.error("Failed to process CV or job posting.")
+                # Calculate Compatibility Score
+                score = calculate_score()
+                st.success(f"Compatibility Score: {(score * 100):.2f}%")
+
+                # Delete all temporary files
+                for file in os.listdir("temp_files"):
+                    file_path = os.path.join("temp_files", file)
+                    try:
+                        if os.path.isfile(file_path):
+                            os.unlink(file_path)
+                    except Exception as e:
+                        st.error(f"Error deleting file {file}: {str(e)}")
 
             except Exception as e:
-                st.error(f"Error: {str(e)}")
+                st.error(str(e))
 
 # Footer
 st.markdown("---")

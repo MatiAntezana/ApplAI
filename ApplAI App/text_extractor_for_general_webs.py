@@ -161,7 +161,7 @@ def extract_structured_content(soup: BeautifulSoup) -> dict:
     return content
 
 
-def scrape_web(source: str, output_path: str) -> bool:
+def scrape_web(source: str, output_path: str) -> None:
     """
     Scrape web content from a URL and save it to a text file.
     
@@ -174,36 +174,49 @@ def scrape_web(source: str, output_path: str) -> bool:
     
     Returns
     -------
-    bool
-        True if scraping was successful, False otherwise
+    None
     """
+    # Validate input parameters
+    if not isinstance(source, str) or not source.strip():
+        raise ValueError("Invalid source URL provided.")
+    
+    if not isinstance(output_path, str) or not output_path.strip():
+        raise ValueError("Invalid output path provided.")
+    
+    # Make request with proper headers
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+
+    # Fetch page
     try:
-        # Make request with proper headers
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-        
         response = requests.get(source, headers=headers, timeout=10)
         response.raise_for_status()
-        
-        # Parse HTML content
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Remove script and style elements
-        for script in soup(["script", "style"]):
-            script.decompose()
-        
-        # Extract structured content
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Failed to fetch URL '{source}': {str(e)}")
+
+    # Parse HTML
+    if not response.text:
+        raise RuntimeError(f"Empty response received from '{source}'")
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Remove script and style elements
+    for script in soup(["script", "style"]):
+        script.decompose()
+
+    # Extract structured content
+    try:
         data = extract_structured_content(soup)
-        data['url'] = source
-        data['full_text'] = format_text(soup.get_text())
-        
-        # Save to file with structured formatting
+    except Exception as e:
+        raise RuntimeError(f"Failed to extract structured content from '{source}': {str(e)}")
+
+    data['url'] = source
+    data['full_text'] = format_text(soup.get_text())
+
+    # Write output
+    try:
         with open(output_path, "w", encoding="utf-8") as file:
-            file.write("=" * 80 + "\n")
-            file.write(f"WEBSITE ANALYSIS REPORT\n")
-            file.write("=" * 80 + "\n\n")
-            
             # Basic Info
             file.write("=== Basic Information ===\n")
             file.write(f"URL: {data.get('url', 'Not available')}\n")
@@ -211,23 +224,23 @@ def scrape_web(source: str, output_path: str) -> bool:
             file.write(f"Description: {data['basic_info'].get('description', 'Not available')}\n")
             file.write(f"Keywords: {data['basic_info'].get('keywords', 'Not available')}\n")
             file.write(f"Scraped at: {data['meta_info'].get('scraped_at', 'Not available')}\n\n")
-            
+
             # Contact Information
             file.write("=== Contact Information ===\n")
             contact = data.get('contact_info', {})
-            
+
             emails = contact.get('emails', [])
             if emails:
                 file.write(f"Emails found: {', '.join(emails)}\n")
             else:
                 file.write("Emails found: Not available\n")
-            
+
             phones = contact.get('phones', [])
             if phones:
                 file.write(f"Phone numbers found: {', '.join(phones)}\n")
             else:
                 file.write("Phone numbers found: Not available\n")
-            
+
             social_links = contact.get('social_links', [])
             if social_links:
                 file.write("Social media links:\n")
@@ -236,7 +249,7 @@ def scrape_web(source: str, output_path: str) -> bool:
             else:
                 file.write("Social media links: Not available\n")
             file.write("\n")
-            
+
             # Page Structure (Headings)
             file.write("=== Page Structure (Headings) ===\n")
             headings = data.get('headings', [])
@@ -249,7 +262,7 @@ def scrape_web(source: str, output_path: str) -> bool:
             else:
                 file.write("No headings found.\n")
             file.write("\n")
-            
+
             # Main Content (Paragraphs)
             file.write("=== Main Content ===\n")
             paragraphs = data.get('paragraphs', [])
@@ -260,7 +273,7 @@ def scrape_web(source: str, output_path: str) -> bool:
             else:
                 file.write("No main content paragraphs found.\n")
             file.write("\n")
-            
+
             # Links
             file.write("=== Links Found ===\n")
             links = data.get('links', [])
@@ -274,7 +287,7 @@ def scrape_web(source: str, output_path: str) -> bool:
             else:
                 file.write("No links found.\n")
             file.write("\n")
-            
+
             # Images
             file.write("=== Images Found ===\n")
             images = data.get('images', [])
@@ -287,7 +300,7 @@ def scrape_web(source: str, output_path: str) -> bool:
             else:
                 file.write("No images found.\n")
             file.write("\n")
-            
+
             # Lists
             file.write("=== Lists Found ===\n")
             lists = data.get('lists', [])
@@ -300,7 +313,7 @@ def scrape_web(source: str, output_path: str) -> bool:
             else:
                 file.write("No lists found.\n")
             file.write("\n")
-            
+
             # Statistics
             file.write("=== Content Statistics ===\n")
             meta = data.get('meta_info', {})
@@ -309,34 +322,10 @@ def scrape_web(source: str, output_path: str) -> bool:
             file.write(f"Total links: {meta.get('total_links', 0)}\n")
             file.write(f"Total images: {meta.get('total_images', 0)}\n")
             file.write(f"Total word count: {len(data.get('full_text', '').split())}\n\n")
-            
+
             # Full Text Content
             file.write("=== Full Text Content ===\n")
             file.write(f"{data.get('full_text', 'Not available')}\n")
-            file.write("\n" + "=" * 80 + "\n\n")
-        
-        print(f"Website content saved to {output_path}")
-        return True
-        
-    except requests.RequestException as e:
-        print(f"Request error: {e}")
-        return False
-    except IOError as e:
-        print(f"File error: {e}")
-        return False
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        return False
 
-
-# Example usage
-if __name__ == "__main__":
-    # Simple usage example
-    url = "https://www.alexbodner.com/"
-    output_file = "scraped_website.txt"
-    
-    success = scrape_web(url, output_file)
-    if success:
-        print("Scraping completed successfully!")
-    else:
-        print("Scraping failed.")
+    except (OSError, IOError) as e:
+        raise RuntimeError(f"Failed to write to output file '{output_path}': {str(e)}")
