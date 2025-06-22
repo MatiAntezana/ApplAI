@@ -1,0 +1,202 @@
+=== Basic Info ===
+Full name: Tiziano Leví Martín Bernal
+Occupation: Asistente de investigación at Universidad de San Andrés
+Headline: AI Engineering Student @ UdeSA | ML, Systems & Software Dev | Research & Teaching | C, C++, Python
+Summary: Soy estudiante de Ingeniería en Inteligencia Artificial con experiencia en bases de datos, visión artificial y machine learning. Estoy apasionado por la aplicación de IA en biomedicina y el desarrollo de soluciones sustentables. Tengo un fuerte interés en la investigación y divulgación tecnológica, lo que me ha llevado a participar activamente en proyectos académicos y en la enseñanza de conceptos complejos a otros estudiantes. Mi experiencia como asistente de investigación y ayudante de cátedra me ha permitido desarrollar habilidades analíticas y de comunicación, así como un profundo conocimiento en diversas tecnologías y lenguajes de programación.
+Public identifier: tiziano-levi-martin-bernal
+Profile picture: https://media.licdn.com/dms/image/v2/D4D03AQHGfIOD1gAfGw/profile-displayphoto-shrink_800_800/B4DZVEIoOXHYAg-/0/1740604867971?e=1756339200&v=beta&t=HchmHpfnW1ynQRAr8u2_4w5pF5ytSTpczNWFzbpNK_Q
+Background cover image: https://media.licdn.com/dms/image/v2/D4D16AQG8P2XJkx4eMg/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1706058270697?e=1756339200&v=beta&t=ULxy3XEczzXyJTWQs6KDJfNmOCj9nZ9YuGzQk57bqRk
+City: Buenos Aires
+State: Buenos Aires Province
+Country: Argentina
+Pronouns: Not available
+Followers: 828
+Connections: 500
+
+=== Work Experience ===
+Title: Asistente de investigación
+Company: Universidad de San Andrés
+Company URL: https://www.linkedin.com/school/universidad-de-san-andres/
+Start date: 01/02/2025
+End date: Not available
+Location: San Fernando, Provincia de Buenos Aires, Argentina
+Description: Actualmente formo parte de un proyecto de investigación que explora el impacto de la contaminación atmosférica en la asistencia escolar en Chile, con un enfoque en cómo las desigualdades socioeconómicas agravan este problema. A través del análisis de datos a nivel comunal, buscamos comprender cómo la calidad del aire influye en la educación y qué sectores de la población se ven más afectados.
+
+En este rol, mis principales tareas incluyen:
+✅ Procesamiento y análisis de grandes volúmenes de datos sobre asistencia escolar, contaminación y características de las escuelas.
+✅ Uso de Python y DuckDB para la manipulación eficiente de datos y la ejecución de consultas analíticas a gran escala.
+✅ Exploración de patrones y tendencias que revelen la relación entre desigualdad social y afectación por la contaminación.
+✅ Contribución al desarrollo de herramientas analíticas para la investigación y presentación de hallazgos.
+
+Este proyecto combina mi interés por la ciencia de datos, la inteligencia artificial y su aplicación en problemáticas del mundo real. Además, refuerza mi compromiso con el uso de la tecnología para generar impacto social y mejorar la toma de decisiones en políticas educativas y ambientales.
+
+Si te interesa conversar sobre este tema o compartir ideas, ¡escribime! 📩
+--------------------------------------------------
+Title: Ayudante de cátedra en la materia Arquitectura de Computadoras y Sistemas Operativos (ACSO)
+Company: Universidad de San Andrés
+Company URL: https://www.linkedin.com/school/universidad-de-san-andres/
+Start date: 01/07/2024
+End date: Not available
+Location: San Fernando, Provincia de Buenos Aires, Argentina
+Description: 📌 Mi experiencia como ayudante de cátedra
+
+Este rol me permite no solo profundizar en temas clave como el funcionamiento interno de los sistemas y la gestión de recursos computacionales, sino también transmitir ese conocimiento y acompañar a otros estudiantes en su proceso de aprendizaje.
+
+Mis principales responsabilidades incluyen:
+✅ Asistir y guiar a los estudiantes en la resolución de trabajos prácticos, ayudándolos a superar desafíos técnicos y conceptuales.
+✅ Proponer soluciones y enfoques alternativos a los problemas planteados en la materia.
+✅ Responder consultas teóricas, clarificando conceptos sobre arquitectura de hardware, administración de memoria, concurrencia y otros temas fundamentales.
+✅ Diseñar y dictar algunas clases a lo largo de la cursada, desarrollando habilidades de comunicación y enseñanza.
+
+Ser parte de la formación de futuros ingenieros en inteligencia artificial y sistemas me motiva a seguir aprendiendo y perfeccionándome. Además, esta experiencia reafirma mi interés por la docencia y la divulgación tecnológica.
+
+Si te interesa conversar sobre arquitectura de computadoras, sistemas operativos o compartir experiencias en enseñanza, ¡escribime! 📩
+--------------------------------------------------
+Title: Ayudante de cátedra en la materia Inferencia y Estimación
+Company: Universidad de San Andrés
+Company URL: https://www.linkedin.com/school/universidad-de-san-andres/
+Start date: 01/02/2024
+End date: 31/07/2024
+Location: San Fernando, Provincia de Buenos Aires, Argentina
+Description: Como ayudante de cátedra en la materia Inferencia y Estimación de la carrera de Ingeniería en Inteligencia Artificial en la Universidad de San Andrés desempeño un papel principal en el proceso educativo, al colaborar estrechamente con el profesor de clases tutoriales para enriquecer la experiencia de aprendizaje de los estudiantes. Mis responsabilidades abarcan una amplia gama de actividades, todas diseñadas para facilitar la comprensión y aplicación de los contenidos académicos impartidos en la materia.
+Contribuyo con observaciones, datos relevantes y perspectivas adicionales sobre los temas tratados, de esa manera fomento un ambiente de aprendizaje dinámico y participativo. También por momentos me encargo de impartir la clase y exponer sobre temas de la materia. Asimismo, junto con los demás ayudantes de cátedra me encargo de redactar guías de ejercicios y apuntes teóricos que complementan el material proporcionado por el profesor titular. Como parte de mi contribución al enriquecimiento del contenido académico, propongo la presentación de casos prácticos que ilustren la aplicación de los conceptos teóricos abordados en la materia. Estos casos proporcionan ejemplos concretos y situaciones reales que ayudan a los estudiantes a conectar la teoría con la práctica.
+--------------------------------------------------
+
+=== Education ===
+School: Universidad de 'San Andrés'​
+Degree: Grado en Ingeniería en Inteligencia Artificial
+Field of study: Ingeniería en Inteligencia Artificial
+Start date: 01/02/2022
+End date: 31/12/2026
+Description: None
+--------------------------------------------------
+School: Colegio Secundario República de El Salvador 
+Degree: Educación Secundaria Obligatoria (ESO)
+Field of study: Economía y Administración
+Start date: 01/01/2016
+End date: 31/01/2021
+Description: None
+--------------------------------------------------
+School: Progress English Institute
+Degree: B2 level - Upper Intermediate
+Field of study: Enseñanza de inglés como lengua extranjera
+Start date: 01/01/2019
+End date: 31/01/2021
+Description: None
+--------------------------------------------------
+School: Escuela Primaria N° 216 Juan Williamson
+Degree: None
+Field of study: None
+Start date: 01/01/2010
+End date: 31/01/2015
+Description: None
+--------------------------------------------------
+
+=== Skills ===
+No skills available.
+
+=== Certifications ===
+No certifications available.
+
+=== Languages ===
+Inglés
+
+=== Languages and Proficiencies ===
+Inglés: PROFESSIONAL_WORKING
+
+=== Projects ===
+No projects available.
+
+=== Publications ===
+No publications available.
+
+=== Patents ===
+No patents available.
+
+=== Courses ===
+Name: Upper Intermidiate - Level 2
+Number: Escritura: 9 - Oral: 9.50
+--------------------------------------------------
+
+=== Organizations ===
+No organizations available.
+
+=== Awards ===
+Title: Beca de Alcance Nacional Abanderados Argentinos
+Issuer: Universidad de San Andrés
+Issued on: 01/11/2021
+Description: Me siento honrado y agradecido por haber sido seleccionado como beneficiario de la prestigiosa "Beca de Alcance Nacional Abanderados Argentinos". Esta beca, parte del programa de becas de la Universidad de San Andrés, representa mucho más que una ayuda financiera; es una oportunidad transformadora que ha cambiado mi vida de formas inimaginables.
+Esta beca, generosamente apoyada por múltiples donantes particulares y empresas comprometidas con la educación en Argentina, cubre el arancel de la universidad, el alojamiento durante toda mi carrera y un estipendio mensual para cubrir mis gastos generales.
+Para obtener esta beca, me sometí a un riguroso proceso de selección que incluyó tres exámenes: matemática, escritura y análisis de casos. Estos exámenes pusieron a prueba mis habilidades y conocimientos, pero también reflejaron el compromiso de la universidad y los donantes con la excelencia académica y el mérito.
+Gracias a esta beca, he tenido la oportunidad de ampliar mi red de contactos sustancialmente, conectándome con personas talentosas y apasionadas de diversos ámbitos. Además, he podido estudiar una carrera única en la región hasta el momento: Ingeniería en Inteligencia Artificial.
+La inteligencia artificial es un área de estudio fascinante y prometedora, pero que aún no está muy desarrollada en Argentina. Las oportunidades de acceder a educación sobre este tema son escasas, lo que hace que esta beca sea aún más valiosa para mí. Estudiar lo que me apasiona en un entorno académico estimulante y con recursos de vanguardia es un privilegio que no tomo a la ligera.
+Esta beca representa me brinda la oportunidad de graduarme y adquirir las habilidades necesarias para hacer una diferencia en el mundo, mientras transformo mi realidad económica y la de mi familia. Con el conocimiento y la experiencia adquiridos, espero poder contribuir al desarrollo de la inteligencia artificial en Argentina y ayudar a muchos otros a alcanzar sus metas y sueños.
+--------------------------------------------------
+Title: Mejores 3 Promedios
+Issuer: Colegio Secundario República de El Salvador
+Issued on: 01/06/2021
+Description: Promedio de calificaciones durante todos los años
+Promedio final: 9.8625
+--------------------------------------------------
+Title: Diploma de Honor
+Issuer: Rotary Club de General Pico (L.P)
+Issued on: 01/10/2015
+Description: Mejor Compañero
+--------------------------------------------------
+Title: Abanderado
+Issuer: Escuela Primaria N° 216 Juan Williamson
+Issued on: 01/03/2015
+Description: None
+--------------------------------------------------
+
+=== Volunteer Work ===
+Title: Ayudante
+Organization: Centro de Apoyo Escolar
+Cause: CHILDREN
+Start date: 01/09/2017
+End date: Not available
+Description: Participé de una jornada de lectura y arte en la Escuela N° 66 Estado de Israel junto con otras organizaciones en la cual se donaron libros, alimento, juguetes, entre otras muchas cosas
+--------------------------------------------------
+Title: Auxiliar
+Organization: Escuela Especial Nº 1 María Montessori 
+
+
+Cause: EDUCATION
+Start date: 01/11/2017
+End date: Not available
+Description: Participé junto a un grupo de compañeros de colegio en la organización de una jornada de educación física en una escuela orientada a niños con capacidades diferentes
+--------------------------------------------------
+
+=== Recommendations ===
+No recommendations available.
+
+=== Articles ===
+No articles available.
+
+=== Inferred Salary ===
+None
+
+=== Gender ===
+None
+
+=== Birth Date ===
+None
+
+=== Industry ===
+None
+
+=== Interests ===
+No interests available.
+
+=== Personal Emails ===
+No personal emails available.
+
+=== Personal Phone Numbers ===
+No personal phone numbers available.
+
+=== Groups ===
+No groups available.
+
+=== Activities ===
+No activities available.
+

@@ -7,3 +7,4 @@ striprtf
 pillow
 pytesseract
 openpyxl
+streamlit
