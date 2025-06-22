@@ -2,16 +2,41 @@ import requests
 import re
 from datetime import datetime
 
-def format_date(date_obj):
-    """Format a date object (dict with day, month, year) into a string."""
+def format_date(date_obj: dict | str | None) -> str:
+    """
+    Format a date object (dict with day, month, year) into a string.
+    
+    Parameters
+    ----------
+    date_obj : dict | str | None
+        A dictionary with keys 'day', 'month', 'year' or a string representing the date.
+
+    Returns
+    -------
+    str
+        Formatted date string in the format 'DD/MM/YYYY' or 'Not available' if the input is None or invalid.
+    """
     if date_obj and isinstance(date_obj, dict) and all(key in date_obj for key in ["day", "month", "year"]):
         return f"{date_obj['day']:02}/{date_obj['month']:02}/{date_obj['year']}"
     elif isinstance(date_obj, str):
         return date_obj
     return "Not available"
 
-def format_salary(salary_data):
-    """Format salary information into a readable string."""
+
+def format_salary(salary_data: dict) -> str:
+    """
+    Format salary information into a readable string.
+    
+    Parameters
+    ----------
+    salary_data : dict
+        A dictionary containing salary information with keys 'min', 'max', 'currency', and 'period'.
+
+    Returns
+    -------
+    str
+        Formatted salary string or "Not available" if no salary data is provided.
+    """
     if not salary_data:
         return "Not available"
     
@@ -29,8 +54,21 @@ def format_salary(salary_data):
     else:
         return "Not available"
 
-def extract_skills_from_description(description):
-    """Extract technical skills from job description using regex patterns."""
+
+def extract_skills_from_description(description: str | None) -> list[str]:
+    """
+    Extract technical skills from job description using regex patterns."
+    
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract skills.
+    
+    Returns
+    -------
+    list[str]
+        A sorted list of unique skills extracted from the description. If no skills are found, returns an empty list.
+    """ 
     if not description:
         return []
     
@@ -58,8 +96,21 @@ def extract_skills_from_description(description):
     
     return sorted(list(skills))
 
-def extract_experience_requirements(description):
-    """Extract experience requirements from job description."""
+
+def extract_experience_requirements(description: str | None) -> str:
+    """
+    Extract experience requirements from job description.
+    
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract experience requirements.
+
+    Returns
+    -------
+    str
+        A string summarizing the experience requirements. If no requirements are found, returns "Not available".
+    """
     if not description:
         return "Not available"
     
@@ -81,8 +132,21 @@ def extract_experience_requirements(description):
     
     return '; '.join(set(requirements)) if requirements else "Not available"
 
-def extract_education_requirements(description):
-    """Extract education requirements from job description."""
+
+def extract_education_requirements(description: str | None) -> str:
+    """
+    Extract education requirements from job description.
+    
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract education requirements.
+
+    Returns
+    -------
+    str
+        A string summarizing the education requirements. If no requirements are found, returns "Not available".
+    """
     if not description:
         return "Not available"
     
@@ -103,8 +167,21 @@ def extract_education_requirements(description):
     
     return '; '.join(set(education)) if education else "Not available"
 
-def extract_benefits(description):
-    """Extract benefits mentioned in job description."""
+
+def extract_benefits(description: str | None) -> list[str]:
+    """
+    Extract benefits mentioned in job description.
+    
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract benefits.
+
+    Returns
+    -------
+    list[str]
+        A sorted list of unique benefits mentioned in the description. If no benefits are found, returns an empty list.
+    """
     if not description:
         return []
     
@@ -119,8 +196,25 @@ def extract_benefits(description):
     
     return sorted(list(benefits))
 
-def extract_remote_work_info(description, remote_allowed):
-    """Extract remote work information."""
+
+def extract_remote_work_info(description: str | None, remote_allowed: bool = False) -> str:
+    """
+    Extract remote work information.
+    
+    Parameters
+    ----------
+    description : str | None
+        The job description text from which to extract remote work information.
+
+    remote_allowed : bool
+        A boolean indicating if remote work is explicitly allowed.
+
+    Returns
+    -------
+    str
+        A string summarizing the remote work policy. If remote work is allowed, returns "Remote work allowed".
+        If no remote work information is found, returns "Not specified".
+    """
     if remote_allowed:
         return "Remote work allowed"
     
@@ -140,10 +234,11 @@ def extract_remote_work_info(description, remote_allowed):
     
     return "Not specified"
 
+
 # API Configuration
-api_key = "CXsYh7_s4ncwk87NkmX_Qg"  # Replace with your Proxycurl API key
-job_url = "https://www.linkedin.com/jobs/view/4201840839"  # Replace with LinkedIn job URL
-endpoint = "https://nubela.co/proxycurl/api/linkedin/job"
+api_key = "CXsYh7_s4ncwk87NkmX_Qg"  
+job_url = "https://www.linkedin.com/jobs/view/4201840839"  
+endpoint = "https://enrichlayer.com/api/v2/job"
 headers = {"Authorization": f"Bearer {api_key}"}
 params = {"url": job_url}
 

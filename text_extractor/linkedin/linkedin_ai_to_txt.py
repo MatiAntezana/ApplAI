@@ -1,10 +1,24 @@
 import requests
 
-def format_date(date_obj):
-    """Format a date object (dict with day, month, year) into a string."""
+def format_date(date_obj: dict) -> str:
+    """
+    Format a date object (dict with day, month, year) into a string.
+    
+    Parameters
+    ----------
+    date_obj : dict
+        A dictionary containing 'day', 'month', and 'year' keys.
+
+    Returns
+    -------
+    str
+        A formatted date string in the format "DD/MM/YYYY" or "Not available" if the date object is None or does not 
+        contain the required keys.
+    """
     if date_obj and all(key in date_obj for key in ["day", "month", "year"]):
         return f"{date_obj['day']:02}/{date_obj['month']:02}/{date_obj['year']}"
     return "Not available"
+
 
 # API Configuration
 api_key = "CXsYh7_s4ncwk87NkmX_Qg"  # Reemplaza con tu clave de API de Proxycurl
