@@ -1,15 +1,6 @@
 import asyncio
 from openai import AsyncAzureOpenAI
-from pydantic import BaseModel, Field
-import json
-import re
-import fitz
 import os
-import csv
-import faiss
-import pickle
-import numpy as np
-from sentence_transformers import SentenceTransformer
 from utils import extract_cv_info, guardar_resultado
 
 # === CONFIGURACIÓN ===
@@ -20,10 +11,6 @@ META_PATH = os.path.join(VECTOR_DIR, "cv_metadata.pkl")
 
 # Crear carpetas si no existen
 os.makedirs(VECTOR_DIR, exist_ok=True)
-
-
-
-
 
 def read_txt(file_path: str) -> str:
     """Lee un archivo de texto y devuelve su contenido como una cadena."""
@@ -43,8 +30,14 @@ def main(cv_file_path: str):
 
     result = asyncio.run(extract_cv_info(cv_text, azure_client, DEPLOYMENT))
 
+    print("Resultado de la extracción:", result)
+
     guardar_resultado(result)
+   
+   # armar el vector database para todos los CV
+   # hacer una prueba con giaco para ver si funciona lo de meter un CV nuevo
+   # validar
    
      
 if __name__ == "__main__":
-    main("a")
+    main("prueba.txt")

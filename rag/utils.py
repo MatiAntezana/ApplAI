@@ -1,22 +1,20 @@
-import asyncio
 from openai import AsyncAzureOpenAI
 from pydantic import BaseModel, Field
 import json
-import re
-import fitz
 import os
 import csv
 import faiss
 import pickle
-import numpy as np
 from sentence_transformers import SentenceTransformer
+from typing import Optional
+import json
 
 # Pydantic model para parsear luego
 class CleanedCV(BaseModel):
-    name: str = Field(default=None, description="Candidate's name")
-    email: str = Field(description="Email address")
-    phone_number: str = Field(description="Phone number")
-    cv_information: str = Field(description="Cleaned and structured CV information without personal identifiers") 
+    name: Optional[str] = Field(default="Not provided", description="Candidate's name")
+    email: Optional[str] = Field(default="Not provided", description="Email address")
+    phone_number: Optional[str] = Field(default="Not provided", description="Phone number")
+    cv_information: str = Field(default="Not provided", description="Cleaned and structured CV information without personal identifiers")
 
 # Función que llama al LLM y parsea el resultado
 async def extract_cv_info(texto_crudo: str, azure_client: AsyncAzureOpenAI, DEPLOYMENT: str):
@@ -31,7 +29,7 @@ You will receive a resume in raw text format. Your task is to extract:
 3. The phone number.
 4. A cleaned and structured version of the resume that removes any personal contact information (name, email, phone, address, LinkedIn, etc.).
 
-For the third part:
+For the fourth part:
 - Do NOT summarize or omit key content.
 - Instead, preserve as much of the original job-related information as possible.
 - Reorganize and rephrase disconnected items into full sentences with proper structure and connectors (e.g., “The candidate worked at...”, “They were responsible for...”, “Their skills include...”).
@@ -71,29 +69,43 @@ Return your answer strictly in JSON format as follows:
 CV TEXT:
 {texto_crudo}
 """
-    response = await azure_client.chat.completions.create(
-        model=DEPLOYMENT,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ],
-        temperature=0.0,
-        max_tokens=1000
-    )
-
-    content = response.choices[0].message.content.strip()
-
-    # Intentar parsear JSON con pydantic
     try:
+        response = await azure_client.chat.completions.create(
+            model=DEPLOYMENT,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.0,
+            max_tokens=1000
+        )
+
+        content = response.choices[0].message.content.strip()
+
+        # Eliminar formato tipo markdown de código ```json ... ```
+        if content.startswith("```json"):
+            content = content.removeprefix("```json").removesuffix("```").strip()
+        elif content.startswith("```"):
+            content = content.removeprefix("```").removesuffix("```").strip()
+
+        # Intentar cargar JSON
         data = json.loads(content)
-        parsed = CleanedCV(**data)
-        return parsed
+
+        # Rellenar claves faltantes manualmente
+        data = {
+                "name": data.get("name", "Not provided"),
+                "email": data.get("email", "Not provided"),
+                "phone_number": data.get("phone_number", "Not provided"),
+                "cv_information": data.get("cv_information", "Not provided")
+            }
+        return CleanedCV(**data)
+
     except Exception as e:
-        print("❌ Error al parsear JSON:", e)
-        print("🧾 Respuesta bruta del modelo:")
+        print("⚠️ Error al procesar la respuesta del modelo:", e)
+        print("🔎 Respuesta recibida:")
         print(content)
-        return None
-    
+        return CleanedCV()
+
 # === FUNCIÓN: Agregar a CSV ===
 def append_to_csv(result, csv_path):
     file_exists = os.path.exists(csv_path)
@@ -115,16 +127,16 @@ def append_to_csv(result, csv_path):
             writer.writeheader()
         writer.writerow({
             "id": new_id,
-            "name": result.get("name", "N/A"),
-            "email": result.get("email", "N/A"),
-            "phone_number": result.get("phone_number", "N/A"),
-            "cv_information": result["cv_information"]
+            "name": result.name or "N/A",
+            "email": result.email or "N/A",
+            "phone_number": result.phone_number or "N/A",
+            "cv_information":result.cv_information or "N/A",
         })
 
     return new_id  # Devolvemos el ID para asociarlo al embedding
 
 # === FUNCIÓN: Agregar embedding a FAISS ===
-def append_to_faiss(cv_id, info_cv_text, model, faiss_path=FAISS_PATH, meta_path=META_PATH):
+def append_to_faiss(cv_id, info_cv_text, model, faiss_path, meta_path):
     embedding = model.encode([info_cv_text], normalize_embeddings=True)
 
     # Cargar o crear FAISS index
@@ -153,12 +165,12 @@ def append_to_faiss(cv_id, info_cv_text, model, faiss_path=FAISS_PATH, meta_path
 
 def guardar_resultado(result):
     # 1. Guardar en CSV y obtener ID
-    cv_id = append_to_csv(result)
+    cv_id = append_to_csv(result, "cvs.csv")
 
     # 2. Cargar modelo de embeddings
     model = SentenceTransformer("all-MiniLM-L6-v2")
 
     # 3. Agregar a FAISS
-    append_to_faiss(cv_id, result["cv_information"], model)
+    append_to_faiss(cv_id, result.cv_information, model, "cv_vector_db/cv_index.faiss", "cv_vector_db/cv_metadata.pkl")
 
     print(f"✅ Guardado correctamente: ID {cv_id}")
