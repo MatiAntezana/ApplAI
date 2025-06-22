@@ -6,11 +6,12 @@ from prueba_faiss import get_best_cvs
 
 def get_cvs_and_recomendations(job_description, faiss_path="cv_vector_db/cv_index.faiss", 
                                meta_path="cv_vector_db/cv_metadata.pkl", top_k=3,
-                               opinion_txt_path="cv_vector_db/reviews_of_candidates.txt"):
+                               opinion_csv_path="cv_vector_db/reviews_of_candidates.csv",
+                               candidates_db_path="cvs.csv"):
     """
     Busca los CVs más similares a una descripción de trabajo dada utilizando FAISS y un modelo de embeddings. Luego, genera recomendaciones 
     mediante un modelo de lenguaje para determinar si los candidatos son adecuados para el trabajo y por qué razones. Estas recomendaciones 
-    se guardan en un archivo .txt
+    se guardan en un archivo .csv
     
     Args:
         job_description (str): Descripción del trabajo para la cual se buscan CVs.
@@ -35,14 +36,18 @@ def get_cvs_and_recomendations(job_description, faiss_path="cv_vector_db/cv_inde
     recommendations = []
     for cv_id, candidate_text in tqdm.tqdm(best_cvs, desc="Generando recomendaciones", unit="CV"):
         recommendation = asyncio.run(generate_recommendation(job_description, candidate_text))
+        name, email, phone = get_contact_info(cv_id, candidates_db_path)
         recommendations.append({
             "cv_id": cv_id,
+            "candidate_name": name,
+            "email": email,
+            "phone": phone,
             "candidate_text": candidate_text,
             "recommendation": recommendation
         })
     # Guardar las recomendaciones en un archivo CSV
-    save_recommendations_to_txt(recommendations, opinion_txt_path)
-    print(f"✅ Recomendaciones guardadas en {opinion_txt_path}")
+    save_recommendations_to_csv(recommendations, opinion_csv_path)
+    print(f"✅ Recomendaciones guardadas en {opinion_csv_path}")
 
 
 
@@ -120,23 +125,46 @@ async def generate_recommendation(job_description, candidate_text):
     return recommendation
 
 
-def save_recommendations_to_txt(recommendations, txt_path):
+def get_contact_info(candidate_id, candidates_db_path):
     """
-    Guarda las recomendaciones en un archivo txt
+    Obtiene la información de contacto de un candidato dado su ID.
+    
+    Args:
+        candidate_id (str): ID del candidato.
+        candidates_db_path (str): Ruta al archivo CSV que contiene la base de datos de candidatos.
+    
+    Returns:
+        tuple: Nombre, email y teléfono del candidato.
+    """
+    df = pd.read_csv(candidates_db_path)
+    candidate_row = df[df['id'] == candidate_id]
+    
+    if not candidate_row.empty:
+        name = candidate_row['name'].values[0]
+        email = candidate_row['email'].values[0]
+        phone = candidate_row['phone_number'].values[0]
+        return name, email, phone
+    else:
+        return "Not Found", "Not Found", "Not Found"
+
+
+def save_recommendations_to_csv(recommendations, csv_path):
+    """
+    Guarda las recomendaciones en un archivo csv
     
     Args:
         recommendations (list): Lista de diccionarios con las recomendaciones.
-        txt_path (str): Ruta donde se guardará el archivo txt.
+        csv_path (str): Ruta donde se guardará el archivo csv.
     """
-    with open(txt_path, "w", encoding="utf-8") as f:
-        for rec in recommendations:
-            f.write(f"CV ID: {rec['cv_id']}\n")
-            f.write(f"Candidate Text: {rec['candidate_text'][:250]}...\n")  # Limitar a los primeros 250 caracteres
-            f.write(f"Recommendation:\n{rec['recommendation']}\n\n")
-    print(f"Recomendaciones guardadas en {txt_path}")
+    df = pd.DataFrame(recommendations)
+    df.to_csv(csv_path, index=False, encoding='utf-8-sig')
+    print(f"Recomendaciones guardadas en {csv_path}")
 
 
 if __name__ == "__main__":
-    job_description = "We are looking for an IT Support Specialist with experience in healthcare environments, particularly with Epic Systems. The role involves providing technical assistance to clinical staff, supporting and maintaining EMR systems, resolving hardware and software issues, and training end-users. Strong communication skills, knowledge of networks and databases, and prior experience in hospitals or government institutions are highly valued."
+    job_description = "We are looking for an IT Support Specialist with experience in healthcare environments, " \
+    "particularly with Epic Systems. The role involves providing technical assistance to clinical staff, supporting " \
+    "and maintaining EMR systems, resolving hardware and software issues, and training end-users. Strong communication " \
+    "skills, knowledge of networks and databases, and prior experience in hospitals or government institutions are highly valued."
     get_cvs_and_recomendations(job_description)
     

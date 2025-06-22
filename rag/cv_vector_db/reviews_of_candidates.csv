@@ -1,5 +1,5 @@
-﻿cv_id,candidate_text,recommendation
-13,"The candidate is a dependable Computer Application Analyst with comprehensive experience in diagnosing and troubleshooting network, hardware, and desktop issues. They have a strong background in tracking and evaluating IT infrastructure incidents and possess diverse industry experience in health care and government. Their expertise includes systems applications, technical helpdesk experience, information protection analysis, and on-call troubleshooting in distributed multi-tier environments. They have advanced skills in using Epic medical software to register patients and train doctors and nurses on inputting medical information into the Epic system.
+﻿cv_id,candidate_name,email,phone,candidate_text,recommendation
+13,Not Provided,Not Provided,Not Provided,"The candidate is a dependable Computer Application Analyst with comprehensive experience in diagnosing and troubleshooting network, hardware, and desktop issues. They have a strong background in tracking and evaluating IT infrastructure incidents and possess diverse industry experience in health care and government. Their expertise includes systems applications, technical helpdesk experience, information protection analysis, and on-call troubleshooting in distributed multi-tier environments. They have advanced skills in using Epic medical software to register patients and train doctors and nurses on inputting medical information into the Epic system.
 
 As a member of the Epic Pelican Project team for LSU Medical Science Center, the candidate contributed to the successful implementation of the domain system at FMOL Health System and worked with the Epic software Go-Live team to troubleshoot issues. They acted as the lead Application Analyst for LSU Medical Science.
 
@@ -17,20 +17,20 @@ Job Title: IT Support Specialist
 Candidate Fit Level: Strong Fit
 
 Strengths:
-- **Healthcare Experience**: The candidate has extensive experience in healthcare environments, specifically with Epic Systems, which is a key requirement of the job description.
-- **Technical Support Skills**: They have a solid background in diagnosing and troubleshooting network, hardware, and software issues, aligning well with the role's responsibilities.
-- **End-User Training**: The candidate has demonstrated experience in training clinical staff and new employees on the Epic software, fulfilling the training aspect of the job description.
-- **Communication Skills**: The candidate has highlighted their excellent communication skills, particularly in customer support and conflict resolution, which are essential for providing technical assistance to clinical staff.
-- **Project Involvement**: Their involvement in the Epic Pelican Project and Go-Live team indicates hands-on experience with system implementations and troubleshooting in a healthcare setting.
+- **Healthcare Experience**: The candidate has extensive experience in healthcare environments, specifically with Epic Systems, which is a key requirement of the job description. They have worked on the Epic Pelican Project and have been involved in training clinical staff on using Epic software.
+- **Technical Support Skills**: They have a solid background in troubleshooting network, hardware, and software issues, which aligns well with the role's responsibilities of resolving technical problems.
+- **End-User Training**: The candidate has experience training end-users, including doctors and nurses, on how to use the Epic system, which is a critical aspect of the job.
+- **Communication Skills**: The candidate has demonstrated strong communication skills through their roles in customer support and training, which is highly valued in the job description.
+- **Diverse IT Background**: Their experience spans various IT roles, including application analysis and technical support, which provides a well-rounded skill set for the IT Support Specialist position.
 
 Missing or Weak Areas:
-- **Specific EMR System Maintenance**: While the candidate has experience with Epic, the job description emphasizes the need for support and maintenance of EMR systems. More details on their direct involvement in maintaining these systems would strengthen their fit.
-- **Government Institution Experience**: The candidate mentions diverse experience in healthcare and government but does not specify roles or responsibilities in government institutions, which could be relevant to the job.
-- **Network and Database Knowledge**: Although they mention experience in network support and database management, the job description specifically values knowledge of networks and databases. More concrete examples of their expertise in these areas would be beneficial.
-- **Current Role Relevance**: The candidate's current role as a Patient Access Representative may not directly align with the technical support focus of the IT Support Specialist position, and it would be helpful to clarify how this role has contributed to their technical skills.
+- **Specific EMR System Maintenance**: While the candidate has experience with Epic, the job description emphasizes the need for maintaining EMR systems. More explicit examples of system maintenance tasks would strengthen their fit.
+- **Government Institution Experience**: Although the candidate has worked in government settings, the job description specifically mentions prior experience in hospitals or government institutions. More detail on this experience could clarify their fit.
+- **Network and Database Knowledge**: While the candidate mentions experience in network support and database management, the job description places a strong emphasis on knowledge of networks and databases. More specific examples of their expertise in these areas would be beneficial.
+- **Current Role Relevance**: The candidate's current role as a Patient Access Representative may not directly align with the technical support focus of the IT Support Specialist position, which could raise questions about their recent hands-on technical experience.
 
 ---------------------------"
-11,"The candidate has extensive experience as an RN Staff Nurse from August 2008 to April 2014, where they participated in multidisciplinary plans of care, followed best practice protocols, and engaged in patient-centered and team-based care. They identified barriers to successful treatment and communicated these with the team, while also monitoring, measuring, and documenting the progress of interventions and outcomes. The candidate ensured timely and effective communication of newly implemented changes to unit-based methods of practice. Their accomplishments include being a certified instructor in Management of Aggressive Behavior (MOAB), serving as a Patient Experience Champion, chairing the Shared Governance Policy & Procedure Committee, obtaining Oncology Certification, and implementing unit bedside reports and hourly rounding. Their skills in this role included therapeutic touch and communication, teach-back communication, assessments, IV care, telemetry care, and wound care, including wound vacs and dressing changes. They demonstrated excellent organizational skills and maintained collaborative working relationships with unit team members, physicians, technicians, pharmacy, housekeeping, and other ancillary team members.
+11,Candidate Name,candidate.email@example.com,(123) 456-7890,"The candidate has extensive experience as an RN Staff Nurse from August 2008 to April 2014, where they participated in multidisciplinary plans of care, followed best practice protocols, and engaged in patient-centered and team-based care. They identified barriers to successful treatment and communicated these with the team, while also monitoring, measuring, and documenting the progress of interventions and outcomes. The candidate ensured timely and effective communication of newly implemented changes to unit-based methods of practice. Their accomplishments include being a certified instructor in Management of Aggressive Behavior (MOAB), serving as a Patient Experience Champion, chairing the Shared Governance Policy & Procedure Committee, obtaining Oncology Certification, and implementing unit bedside reports and hourly rounding. Their skills in this role included therapeutic touch and communication, teach-back communication, assessments, IV care, telemetry care, and wound care, including wound vacs and dressing changes. They demonstrated excellent organizational skills and maintained collaborative working relationships with unit team members, physicians, technicians, pharmacy, housekeeping, and other ancillary team members.
 
 Prior to this, the candidate worked as an RN Resident Care Manager from July 2007 to July 2008, where they managed care for adult and senior patient populations. They possessed knowledge of various care levels, including SNF, ECF, ICF, ALF, rehab, and hospice. Their responsibilities included attending and participating in care conferences, developing and distributing expected outcomes to the interdisciplinary team, assigning and directing care provided by licensed staff across a 24-hour schedule, reconciling monthly MARs, disposing of outdated medications, and developing and monitoring appropriate care plans. They created and communicated a unit mission statement and developed an effective teamwork model for licensed staff and caregivers. The candidate utilized effective oral and written communication and organizational skills, determined and directed appropriate care, navigated electronic medical records, and provided compassionate communication to family members in times of crisis.
 
@@ -42,20 +42,19 @@ Job Title: IT Support Specialist
 Candidate Fit Level: Not a Good Fit
 
 Strengths:
-- The candidate has extensive experience in healthcare environments, which is relevant to the role.
-- They demonstrate strong communication skills, having engaged in patient-centered care and collaborated with various healthcare professionals.
-- The candidate has experience navigating electronic medical records, which may indicate familiarity with EMR systems, although specific experience with Epic Systems is not mentioned.
-- Their organizational skills and ability to manage care plans and interdisciplinary teams could be beneficial in a support role.
+- The candidate has extensive experience in healthcare environments, which is relevant to the job description.
+- They possess strong communication skills, demonstrated through their roles as an RN and in patient care management, which is essential for training end-users and providing technical assistance.
+- Their experience with electronic medical records (EMR) indicates some familiarity with systems that may relate to the role, although it is not specified that they have worked with Epic Systems.
 
 Missing or Weak Areas:
-- The candidate lacks direct experience as an IT Support Specialist, which is critical for the role.
-- There is no mention of experience with Epic Systems, which is a key requirement in the job description.
-- The candidate does not demonstrate knowledge of networks and databases, which is essential for troubleshooting and supporting IT systems.
-- There is no evidence of experience in resolving hardware and software issues, which is a primary responsibility of the position.
-- The candidate has not indicated any formal training or certifications in IT or technical support, which would strengthen their application for this role.
+- The candidate lacks direct experience as an IT Support Specialist or in a technical support role, which is critical for this position.
+- There is no mention of experience with Epic Systems, which is specifically noted as a requirement in the job description.
+- The candidate does not demonstrate knowledge of networks and databases, which are important skills for the role.
+- There is no evidence of experience in resolving hardware and software issues, a key responsibility outlined in the job description.
+- The candidate's technical skills are described as ""basic computer skills,"" which may not be sufficient for the technical demands of the position.
 
 ---------------------------"
-6,"The candidate is an accomplished and results-oriented investment professional with strong leadership and interpersonal skills, adding energy and value to an organization's quest for excellence. They possess a comprehensive skill set that includes proficiency in Internet and Microsoft Office applications such as MS Word, MS PowerPoint, MS Excel, Pivot Tables, Spreadsheets, and Macros. Additionally, they are experienced with Business Objects, Lombardi, Eagle Accounting System, PEGA, DRAS, and Workbench. Their expertise extends to account reconciliations, variance analysis, and complex problem-solving, complemented by superior research skills and effective time management.
+6,Not Provided,Not Provided,Not Provided,"The candidate is an accomplished and results-oriented investment professional with strong leadership and interpersonal skills, adding energy and value to an organization's quest for excellence. They possess a comprehensive skill set that includes proficiency in Internet and Microsoft Office applications such as MS Word, MS PowerPoint, MS Excel, Pivot Tables, Spreadsheets, and Macros. Additionally, they are experienced with Business Objects, Lombardi, Eagle Accounting System, PEGA, DRAS, and Workbench. Their expertise extends to account reconciliations, variance analysis, and complex problem-solving, complemented by superior research skills and effective time management.
 
 The candidate has received multiple awards for performance and has been formally recognized for excellence in financial analysis, budgeting, and forecasting. They increased the efficiency of discrepancy investigations by designing a more accurate cash-forecasting system.
 
@@ -75,15 +74,15 @@ Job Title: IT Support Specialist
 Candidate Fit Level: Not a Good Fit
 
 Strengths:
-- The candidate has a background in healthcare as a Medical Technologist, which provides them with some understanding of clinical environments.
-- They possess strong communication skills and have experience collaborating with various stakeholders, which is valuable for training end-users and providing technical assistance.
-- The candidate has technical skills in MS Office applications and familiarity with databases, which may be beneficial for certain aspects of IT support.
+- The candidate has a background as a Medical Technologist, which indicates some familiarity with healthcare environments, although it is not directly related to IT support.
+- They possess strong communication skills, as demonstrated by their experience in conducting client meetings and collaborating with various stakeholders.
+- The candidate has experience in problem-solving and complex analysis, which could be beneficial in troubleshooting technical issues.
 
 Missing or Weak Areas:
-- The candidate lacks specific experience with Epic Systems, which is a critical requirement for the role.
-- There is no indication of experience in supporting or maintaining EMR systems, which is essential for the position.
-- The candidate does not demonstrate experience in resolving hardware and software issues, which is a key responsibility of the IT Support Specialist role.
-- There is no mention of experience in a hospital or government institution, which is highly valued according to the job description.
-- The candidate's primary experience is in investment and finance rather than IT support, indicating a significant gap in relevant experience for this role.
+- The candidate lacks direct experience with IT support roles, particularly in providing technical assistance to clinical staff or supporting EMR systems like Epic Systems.
+- There is no mention of experience with hardware and software troubleshooting, which is a critical aspect of the IT Support Specialist role.
+- The candidate does not demonstrate knowledge of networks and databases, which is specifically mentioned as a requirement in the job description.
+- There is no evidence of training end-users in a technical capacity, which is a key responsibility for the role.
+- The candidate's primary experience is in finance and investment, which does not align with the technical and healthcare-focused nature of the IT Support Specialist position.
 
 ---------------------------"
