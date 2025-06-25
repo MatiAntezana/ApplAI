@@ -2,12 +2,12 @@ import os
 import asyncio
 from openai import AsyncAzureOpenAI
 
-# Configuración de Azure OpenAI
+# Configure your Azure OpenAI API key and endpoint
 API_KEY = "1xWn890WbJRsO6n9PFlhqjd1QGyRj7iKB4i8Wzcb8jnde27W3npfJQQJ99BEACHYHv6XJ3w3AAAAACOGn2zx"
 ENDPOINT = "https://elmat-mahbiey3-eastus2.cognitiveservices.azure.com/"
 MODEL_DEPLOYMENT_NAME = "gpt-4o-mini"
 
-# Inicializa el cliente Azure OpenAI
+# Initialize the Azure OpenAI client
 azure_client = AsyncAzureOpenAI(
     api_key=API_KEY,
     api_version="2024-12-01-preview",
@@ -146,6 +146,19 @@ Use these guidelines every time you process raw job description text to deliver 
 
 
 async def process_applicant_information(source: str) -> str:
+    """
+    Processes the applicant information from a given source file.
+
+    Parameters
+    ----------
+    source : str
+        The path to the source file containing the applicant information.
+
+    Returns
+    -------
+    str
+        The processed applicant information as a single string.
+    """
     if not isinstance(source, str) or not source.strip():
         raise ValueError("Invalid file path provided.")
     if not os.path.isfile(source):
@@ -166,7 +179,21 @@ async def process_applicant_information(source: str) -> str:
     except Exception as e:
         raise RuntimeError(f"Azure OpenAI API error (CV processing): {e}")
 
+
 async def process_job_description(source: str) -> str:
+    """
+    Processes the job description from a given source file.
+
+    Parameters
+    ----------
+    source : str
+        The path to the source file containing the job description.
+
+    Returns
+    -------
+    str
+        The processed job description as a single string.
+    """
     if not isinstance(source, str) or not source.strip():
         raise ValueError("Invalid file path provided.")
     if not os.path.isfile(source):
@@ -187,27 +214,37 @@ async def process_job_description(source: str) -> str:
     except Exception as e:
         raise RuntimeError(f"Azure OpenAI API error (JD processing): {e}")
 
-# Funciones sync para usar desde cualquier script normal
+
+# Functions to run the processing synchronously
 def get_applicant_information(path: str) -> str:
+    """
+    Processes the applicant information from a given file path synchronously.
+
+    Parameters
+    ----------
+    path : str
+        The path to the source file containing the applicant information.
+    
+    Returns
+    -------
+    str
+        The processed applicant information as a single string.
+    """
     return asyncio.run(process_applicant_information(path))
 
+
 def get_job_description(path: str) -> str:
+    """
+    Processes the job description from a given file path synchronously.
+
+    Parameters
+    ----------
+    path : str
+        The path to the source file containing the job description.
+
+    Returns
+    -------
+    str
+        The processed job description as a single string.
+    """
     return asyncio.run(process_job_description(path))
-
-# Ejemplo de uso
-if __name__ == "__main__":
-    try:
-        cv_path = "cv.txt"
-        jd_path = "jd.txt"
-
-        applicant_info = get_applicant_information(cv_path)
-        job_description = get_job_description(jd_path)
-
-        print("\n=== Applicant Information ===\n")
-        print(applicant_info)
-
-        print("\n=== Job Description ===\n")
-        print(job_description)
-
-    except Exception as error:
-        print(f"\n❌ Error: {error}")
