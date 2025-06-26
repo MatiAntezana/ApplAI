@@ -11,16 +11,28 @@ from scripts.text_extraction.text_extractor_for_linkedin_jobs import scrape_link
 from scripts.api_call.api_call_for_format_and_fe import (get_applicant_information, get_job_description)
 from scripts.models.model import calculate_score
 
-# Cargar variables de entorno
+# Load environment variables
 load_dotenv()
 
-# Configuración de la página
-st.set_page_config(page_title="ApplAI", page_icon="💼", layout="centered")
+# Configure Streamlit app
+st.set_page_config(page_title="ApplAI - Compatibility Score Calculator", page_icon="📊", layout="centered")
 
 st.markdown(
     """
+    <h1 style='text-align: center;'>
+        Score your Applicant Information based on a Job Description
+    </h1>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# Set the title and header
+st.markdown(
+    """
     <div style='text-align: center;'>
-        <img src="data:image/png;base64,{}" width="300">
+        <img src="data:image/png;base64,{}" width="250">
     </div>
     """.format(
         base64.b64encode(open("imgs/applai_logo.png", "rb").read()).decode()
@@ -28,23 +40,24 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(""" <br>*Calculate your **compatibility score** between a CV and a job posting using AI.
-                    Provide a LinkedIn profile URL or upload a CV file, and a job posting URL or file.*""", unsafe_allow_html=True)
+st.markdown(""" <br>*Calculate your **compatibility score** between your **experience, skills and achievements** and the description of a **job** 
+            you would like to apply for using **AI**. Share your **profile** (LinkedIn, resume, or portfolio) and the **job ad**. We'll instantly analyze **how well you match the role**.*""", unsafe_allow_html=True)
+
 
 st.markdown("", unsafe_allow_html=True)
 
 
-st.subheader("CV Input")
+st.subheader("Applicant Information Input")
 ai_url_linkedin = st.text_input("LinkedIn Profile URL")
-ai_url_web = st.text_input("CV URL from a Website")
-ai_file = st.file_uploader("Upload CV (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], accept_multiple_files=False)
+ai_url_web = st.text_input("Personal Website URL")
+ai_file = st.file_uploader("Upload AI File (CV, Cover Letter, Certificate, etc)", type=["pdf", "docx", "txt", "pptx", "jpg", "png", "csv", "json"], accept_multiple_files=False)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-st.subheader("Job Posting Input")
-job_url_linkedin = st.text_input("Job Posting URL from LinkedIn")
-job_url_web = st.text_input("Job Posting URL from a Website")
-job_file = st.file_uploader("Upload Job Posting (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"], accept_multiple_files=False)
+st.subheader("Job Description Input")
+job_url_linkedin = st.text_input("Job Posting from LinkedIn URL")
+job_url_web = st.text_input("Job Posting from a Website URL")
+job_file = st.file_uploader("Upload Job Description File", type=["pdf", "docx", "txt", "pptx", "jpg", "png", "csv", "json"], accept_multiple_files=False)
 
 
 cv_ready = (ai_url_linkedin.strip() != "") or (ai_url_web.strip() != "") or (ai_file is not None)
@@ -84,7 +97,7 @@ if st.button("Calculate Score", type="primary"):
                 elif ai_url_web.strip() != "":
                     scrape_web(ai_url_web, "temp_files/ai.txt")
                 
-                elif ai_file: # Esto está
+                elif ai_file: 
                     ai_path = os.path.join("temp_files", ai_file.name)
                     scrape_files(ai_path, "temp_files/ai.txt")
                    
@@ -103,9 +116,10 @@ if st.button("Calculate Score", type="primary"):
                 ai_model_input = get_applicant_information("temp_files/ai.txt")
                 job_model_input = get_job_description("temp_files/job.txt")
 
-
                 # Calculate the compatibility score
                 score = calculate_score(ai_model_input, job_model_input).item()
+                
+                # Display the compatibility score
                 st.success(f"Compatibility Score: {(score * 100):.2f}%")
 
                 # Delete all temporary files
