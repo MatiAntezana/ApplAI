@@ -1,7 +1,7 @@
 import asyncio
 from openai import AsyncAzureOpenAI
 import os
-from utils import extract_cv_info, guardar_resultado
+from rag.utils import extract_cv_info, guardar_resultado
 
 # === CONFIGURACIÓN ===
 CSV_PATH = "cvs.csv"
@@ -32,7 +32,7 @@ def main(cv_file_path: str):
 
     print("Resultado de la extracción:", result)
 
-    guardar_resultado(result)
+    guardar_resultado(result, cv_file_path="../rag/CVs database.csv")
    
    # armar el vector database para todos los CV
    # hacer una prueba con giaco para ver si funciona lo de meter un CV nuevo

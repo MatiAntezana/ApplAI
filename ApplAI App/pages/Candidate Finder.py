@@ -6,7 +6,6 @@ from utils import process_ai, process_job
 from coso_modified import calculate_score
 from dotenv import load_dotenv
 import sys
-
 # Agrega el path del proyecto raíz (donde está la carpeta "rag")
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from rag.select_candidates_and_opinions import get_cvs_and_recomendations
@@ -83,7 +82,7 @@ if st.button("Find!", type="primary"):
 
                 if job_text:
                     # Ejecutar el motor de recomendación
-                    get_cvs_and_recomendations(job_text, top_k=top_k)
+                    get_cvs_and_recomendations(job_text, top_k=top_k, candidates_db_path="../rag/CVs database.csv",)
                     st.success("Candidate analysis completed!")
 
                     # Ofrecer descarga
@@ -97,6 +96,23 @@ if st.button("Find!", type="primary"):
 
             except Exception as e:
                 st.error(f"Error: {str(e)}")
+
+# --- Enlace para agregar nuevo candidato ---
+st.markdown("---")
+st.markdown("### Want to add a new profile to our candidate database?")
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <a href='/Add_a_New_Candidate' target='_self'>
+            <button style='background-color: #2196F3; color: white; padding: 0.75em 2em; font-size: 16px; border: none; border-radius: 10px;'>
+                ➕ Add a New Candidate
+            </button>
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Footer
 st.markdown("---")
