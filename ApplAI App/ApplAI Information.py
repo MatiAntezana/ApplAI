@@ -25,7 +25,6 @@ st.markdown(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-
 st.title("What is ApplAI ?")
 
 st.markdown("**ApplAI** is an intelligent platform designed to **transform job searching and hiring**, using artificial intelligence to ensure **the best candidates find the most suitable roles**.")
@@ -40,20 +39,23 @@ st.markdown("""Calculate your **compatibility score** between your **experience,
 
 st.subheader("***Smart Applicant Information Finder*** 🗃️ ")
 
-st.markdown("""FALTA DESCRIPCION""")
+st.markdown("This feature uses a **RAG** (Retrieval-Augmented Generation)-based system to **identify the most suitable candidates** in your **database** for a **specific job position**. Simply **upload the job description** in any format and receive a list ordered by **score** of the **best-matched profiles**. Additionally, you can always **add new applicants to your database** whether by uploading a file or entering a LinkedIn or website link.")
 
 st.subheader("***Smart Job Finder*** 🔍")
 
-st.markdown("""FALTA DESCRIPCION""")
+st.markdown("This system analyzes your **professional profile** and identifies **matching job opportunities** on **LinkedIn**. Simply **upload your profile** in any of the supported formats to receive a **personalized list of the best openings**, **ranked** by **relevance** and **compatibility** with your qualifications.")
 
 st.title("Who are the creators of ApplAI ?")
 
 st.markdown("""
+            The people in charge of creating this project were:
             - ##### ***Matias Antezana***
             - ##### ***Mateo Giacometti*** 
             - ##### ***Tiziano Leví Martin Bernal***
             - ##### ***Fausto Pettinari***
             """)
+
+st.markdown("All of them are **Artificial Intelligence Engineering Students** at the ***University of San Andrés***. The project emerged from the **final project** in the ***Natural Language Processing*** course.")
 
 st.markdown("---")
 st.markdown("© 2025 ApplAI. All rights reserved.")
