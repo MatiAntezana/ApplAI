@@ -26,16 +26,34 @@ st.markdown(
 st.markdown("<br>", unsafe_allow_html=True)
 
 
-st.title("What is ApplAI?")
+st.title("What is ApplAI ?")
 
-st.title("Cuales son los modos de ApplAI ?")
+st.markdown("**ApplAI** is an intelligent platform designed to **transform job searching and hiring**, using artificial intelligence to ensure **the best candidates find the most suitable roles**.")
 
-st.markdown("Compatibility Score Calculator 📊", unsafe_allow_html=True)
+st.markdown("At **ApplAI**, we believe **a fairer and more efficient labor market is possible**. By connecting people with opportunities they truly deserve, we don’t just advance careers. We elevate workplace productivity and culture.")
 
-st.title("Quienes son los creadores de ApplAI ?")
+st.title("What are the features of ApplAI ?")
 
-# Footer
+st.subheader("***Compatibility Score Calculator*** 📊")
+
+st.markdown("""Calculate your **compatibility score** between your **experience, skills and achievements** and the description of a **job** you would like to apply for using **AI**. Share your **profile** (LinkedIn, resume, or portfolio) and the **job ad**. We'll instantly analyze **how well you match the role**.""")
+
+st.subheader("***Smart Applicant Information Finder*** 🗃️ ")
+
+st.markdown("""FALTA DESCRIPCION""")
+
+st.subheader("***Smart Job Finder*** 🔍")
+
+st.markdown("""FALTA DESCRIPCION""")
+
+st.title("Who are the creators of ApplAI ?")
+
+st.markdown("""
+            - ##### ***Matias Antezana***
+            - ##### ***Mateo Giacometti*** 
+            - ##### ***Tiziano Leví Martin Bernal***
+            - ##### ***Fausto Pettinari***
+            """)
+
 st.markdown("---")
 st.markdown("© 2025 ApplAI. All rights reserved.")
-
-
