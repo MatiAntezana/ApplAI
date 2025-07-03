@@ -1,16 +1,12 @@
 import streamlit as st
-import asyncio
 import os
 from PIL import Image
 import base64
 from dotenv import load_dotenv
-
 from scripts.text_extraction.text_extractor_for_files import scrape_files
 from scripts.text_extraction.text_extractor_for_general_webs import scrape_web
 from scripts.text_extraction.text_extractor_for_linkedin_profiles import scrape_linkedin_profile
-from scripts.text_extraction.text_extractor_for_linkedin_jobs import scrape_linkedin_job
-from scripts.api_call.api_call_for_format_and_fe import (get_applicant_information, get_job_description)
-from scripts.models.model import calculate_score
+from scripts.models.model import save_ai_in_db
 
 # Load environment variables
 load_dotenv()
@@ -75,19 +71,27 @@ if st.button("Add", type="primary"):
             try:
                 os.makedirs("temp_files", exist_ok=True)
 
-                # # Process Applicant Information
-                # if ai_url_linkedin.strip() != "":
-                #     scrape_linkedin_profile(ai_url_linkedin, "temp_files/ai.txt")
+                # Process Applicant Information
+                if ai_url_linkedin.strip() != "":
+                    scrape_linkedin_profile(ai_url_linkedin, "temp_files/ai.txt")
                 
-                # elif ai_url_web.strip() != "":
-                #     scrape_web(ai_url_web, "temp_files/ai.txt")
+                elif ai_url_web.strip() != "":
+                    scrape_web(ai_url_web, "temp_files/ai.txt")
                 
-                # elif ai_file: 
-                #     ai_path = os.path.join("temp_files", ai_file.name)
-                #     scrape_files(ai_path, "temp_files/ai.txt")
+                elif ai_file: 
+                    ai_path = os.path.join("temp_files", ai_file.name)
+                    scrape_files(ai_path, "temp_files/ai.txt")
 
-                    # Función que procesa archivo y lo guarda en la base de datos
-                   
+                # Función que procesa archivo y lo guarda en la base de datos
+                # from scripts.models.model import save_ai_in_db
+
+                csv_path = "database/ai_personal_info.csv"
+                faiss_path = "database/ai_index.faiss"
+                meta_path = "database/ai_metadata.pkl"
+
+                # Save the AI information in the database
+                save_ai_in_db("temp_files/ai.txt", csv_path, faiss_path, meta_path)
+                
                 # Display the compatibility score
                 st.success("The information has been successfully processed!")
 
