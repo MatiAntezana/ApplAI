@@ -82,15 +82,8 @@ if st.button("Add", type="primary"):
                     ai_path = os.path.join("temp_files", ai_file.name)
                     scrape_files(ai_path, "temp_files/ai.txt")
 
-                # Función que procesa archivo y lo guarda en la base de datos
-                # from scripts.models.model import save_ai_in_db
-
-                csv_path = "database/ai_personal_info.csv"
-                faiss_path = "database/ai_index.faiss"
-                meta_path = "database/ai_metadata.pkl"
-
                 # Save the AI information in the database
-                save_ai_in_db("temp_files/ai.txt", csv_path, faiss_path, meta_path)
+                save_ai_in_db("temp_files/ai.txt", "database/ai_personal_info.csv", "database/ai_index.faiss", "database/ai_metadata.pkl")
                 
                 # Display the compatibility score
                 st.success("The information has been successfully processed!")

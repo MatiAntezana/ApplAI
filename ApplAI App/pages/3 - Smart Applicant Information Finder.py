@@ -1,7 +1,12 @@
 import streamlit as st
 import os
 import base64
+import pandas as pd
 from dotenv import load_dotenv
+from scripts.text_extraction.text_extractor_for_files import scrape_files
+from scripts.text_extraction.text_extractor_for_general_webs import scrape_web
+from scripts.text_extraction.text_extractor_for_linkedin_jobs import scrape_linkedin_job
+from scripts.models.gen_ai_finder_output import get_candidates_and_recomendations
 
 # Load environment variables
 load_dotenv()
@@ -36,6 +41,12 @@ st.markdown("""<br>*This feature uses a **RAG** (Retrieval-Augmented Generation)
 
 st.markdown("", unsafe_allow_html=True)
 
+st.subheader("Number of Candidates to Return")
+top_k_candidates = st.number_input("How many candidates would you like to retrieve?", min_value=1, max_value=15, value=3, step=1)
+
+st.markdown("", unsafe_allow_html=True)
+
+st.subheader("Job Description Input")
 job_url_linkedin = st.text_input("Job Posting from LinkedIn URL")
 job_url_web = st.text_input("Job Posting from a Website URL")
 job_file = st.file_uploader("Upload Job Description File", type=["pdf", "docx", "txt", "pptx", "jpg", "png", "csv", "json"], accept_multiple_files=False)
@@ -61,56 +72,68 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Lógica del Código a completar 
-
+# Main logic
 if st.button("Find Candidates", type="primary"):
-    if not (job_ready):
-        st.error("Please provide both a CV and a job posting (URL or file).")
+    if not job_ready:
+        st.error("Please provide a job posting (URL or file).")
     else:
         with st.spinner("Processing..."):
             try:
-                # os.makedirs("temp_files", exist_ok=True)
+                os.makedirs("temp_files", exist_ok=True)
 
-                # # Process Applicant Information
-                # if ai_url_linkedin.strip() != "":
-                #     scrape_linkedin_profile(ai_url_linkedin, "temp_files/ai.txt")
-                
-                # elif ai_url_web.strip() != "":
-                #     scrape_web(ai_url_web, "temp_files/ai.txt")
-                
-                # elif ai_file: 
-                #     ai_path = os.path.join("temp_files", ai_file.name)
-                #     scrape_files(ai_path, "temp_files/ai.txt")
-                   
-                # # Process Job Description
-                # if job_url_linkedin.strip() != "":
-                #     scrape_linkedin_job(job_url_linkedin, "temp_files/job.txt")
-                
-                # elif job_url_web.strip() != "":
-                #     scrape_web(job_url_web, "temp_files/job.txt")
-                
-                # elif job_file:
-                #     job_path = os.path.join("temp_files", job_file.name)
-                #     scrape_files(job_path, "temp_files/job.txt")
+                # Process Job Description
+                if job_url_linkedin.strip() != "":
+                    scrape_linkedin_job(job_url_linkedin, "temp_files/job.txt")
+                elif job_url_web.strip() != "":
+                    scrape_web(job_url_web, "temp_files/job.txt")
+                elif job_file:
+                    job_path = os.path.join("temp_files", job_file.name)
+                    with open(job_path, "wb") as f:
+                        f.write(job_file.getbuffer())
+                    scrape_files(job_path, "temp_files/job.txt")
 
-                # # Call API to process the applicant information and job description
-                # ai_model_input = get_applicant_information("temp_files/ai.txt")
-                # job_model_input = get_job_description("temp_files/job.txt")
+                # Find candidates
+                get_candidates_and_recomendations(
+                    "temp_files/job.txt",
+                    "database/ai_personal_info.csv",
+                    "database/ai_index.faiss",
+                    "database/ai_metadata.pkl",
+                    "temp_files/candidates.csv",
+                    top_k=top_k_candidates
+                )
 
-                # # Calculate the compatibility score
-                # score = calculate_score(ai_model_input, job_model_input).item()
-                
-                # Display the compatibility score
-                st.success(f"Compatibility Score: ")
+                # Load and display candidates
+                candidates_df = pd.read_csv("temp_files/candidates.csv")
 
-                # # Delete all temporary files
-                # for file in os.listdir("temp_files"):
-                #     file_path = os.path.join("temp_files", file)
-                #     try:
-                #         if os.path.isfile(file_path):
-                #             os.unlink(file_path)
-                #     except Exception as e:
-                #         st.error(f"Error deleting file {file}: {str(e)}")
+                st.markdown("<h3 style='text-align: center;'>🧠 Top Candidates Found</h3>", unsafe_allow_html=True)
+
+                for idx, row in candidates_df.iterrows():
+                    st.markdown(f"""
+                    <div style="border: 1px solid #DDD; padding: 15px; margin-bottom: 10px; border-radius: 10px;">
+                        <h4 style="margin-bottom: 5px;">👤 {row['candidate_name']}</h4>
+                        <p style="font-size: 14px; line-height: 1.4;">{row['candidate_text']}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                # Download button
+                csv_download = candidates_df.to_csv(index=False).encode('utf-8')
+                col1, col2, col3 = st.columns([1, 2, 1])
+                with col2:
+                    st.download_button(
+                        label="📥 Download Candidates CSV",
+                        data=csv_download,
+                        file_name='top_candidates.csv',
+                        mime='text/csv'
+                    )
+
+                # Delete all temporary files
+                for file in os.listdir("temp_files"):
+                    file_path = os.path.join("temp_files", file)
+                    try:
+                        if os.path.isfile(file_path):
+                            os.unlink(file_path)
+                    except Exception as e:
+                        st.error(f"Error deleting file {file}: {str(e)}")
 
             except Exception as e:
                 st.error(str(e))

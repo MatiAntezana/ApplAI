@@ -1,8 +1,5 @@
-import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import streamlit as st
-import asyncio
 import os
 from PIL import Image
 import base64
@@ -12,7 +9,7 @@ from scripts.text_extraction.text_extractor_for_files import scrape_files
 from scripts.text_extraction.text_extractor_for_general_webs import scrape_web
 from scripts.text_extraction.text_extractor_for_linkedin_profiles import scrape_linkedin_profile
 from scripts.text_extraction.text_extractor_for_linkedin_jobs import scrape_linkedin_job
-from scripts.api_call.api_call_for_format_and_fe import (get_applicant_information, get_job_description)
+from scripts.api_call.api_call_for_format_and_fe import get_applicant_information, get_job_description
 from scripts.models.model import calculate_score    
 
 # Load environment variables
@@ -100,6 +97,8 @@ if st.button("Calculate Score", type="primary"):
                 
                 elif ai_file: 
                     ai_path = os.path.join("temp_files", ai_file.name)
+                    with open(ai_path, "wb") as f:
+                        f.write(ai_file.getbuffer())
                     scrape_files(ai_path, "temp_files/ai.txt")
                    
                 # Process Job Description
@@ -111,6 +110,8 @@ if st.button("Calculate Score", type="primary"):
                 
                 elif job_file:
                     job_path = os.path.join("temp_files", job_file.name)
+                    with open(job_path, "wb") as f:
+                        f.write(job_file.getbuffer())
                     scrape_files(job_path, "temp_files/job.txt")
 
                 # Call API to process the applicant information and job description

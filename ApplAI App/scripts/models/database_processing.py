@@ -8,6 +8,7 @@ import pickle
 from typing import Optional
 import json
 
+# Configuration for Azure OpenAI
 API_KEY = "4u9eeKTcKNBvzIqH8PdwKGPcFt0oOIrVg03KDrRdshQBthudt701JQQJ99BEACHYHv6XJ3w3AAAAACOGdOzM"
 ENDPOINT = "https://tizia-maebl6ih-eastus2.cognitiveservices.azure.com/"
 DEPLOYMENT = "gpt-4o-mini-tiziano"
