@@ -6,7 +6,7 @@ st.set_page_config(page_title="ApplAI", page_icon="💼", layout="centered")
 st.markdown(
     """
     <div style='text-align: center;'>
-        <img src="data:image/png;base64,{}" width="400">
+        <img src="data:image/png;base64,{}" width="420">
     </div>
     """.format(
         base64.b64encode(open("imgs/applai_logo.png", "rb").read()).decode()
@@ -37,13 +37,13 @@ st.subheader("***Compatibility Score Calculator*** 📊")
 
 st.markdown("""Calculate your **compatibility score** between your **experience, skills and achievements** and the description of a **job** you would like to apply for using **AI**. Share your **profile** (LinkedIn, resume, or portfolio) and the **job ad**. We'll instantly analyze **how well you match the role**.""")
 
-st.subheader("***Smart Applicant Information Finder*** 🗃️ ")
-
-st.markdown("This feature uses a **RAG** (Retrieval-Augmented Generation)-based system to **identify the most suitable candidates** in your **database** for a **specific job position**. Simply **upload the job description** in any format and receive a list ordered by **score** of the **best-matched profiles**. Additionally, you can always **add new applicants to your database** whether by uploading a file or entering a LinkedIn or website link.")
-
 st.subheader("***Smart Job Finder*** 🔍")
 
 st.markdown("This system analyzes your **professional profile** and identifies **matching job opportunities** on **LinkedIn**. Simply **upload your profile** in any of the supported formats to receive a **personalized list of the best openings**, **ranked** by **relevance** and **compatibility** with your qualifications.")
+
+st.subheader("***Smart Applicant Information Finder*** 🗃️ ")
+
+st.markdown("This feature uses a **RAG** (Retrieval-Augmented Generation)-based system to **identify the most suitable candidates** in your **database** for a **specific job position**. Simply **upload the job description** in any format and receive a list ordered by **score** of the **best-matched profiles**. Additionally, you can always **add new applicants to your database** whether by uploading a file or entering a LinkedIn or website link.")
 
 st.title("Who are the creators of ApplAI ?")
 
@@ -55,7 +55,7 @@ st.markdown("""
             - ##### ***Fausto Pettinari***
             """)
 
-st.markdown("All of them are **Artificial Intelligence Engineering Students** at the ***University of San Andrés***. The project emerged from the **final project** in the ***Natural Language Processing*** course.")
+st.markdown("All of them are **Artificial Intelligence Engineering Students** at the ***University of San Andrés***. This project originated as the **final assignment** for the ***Natural Language Processing*** course.")
 
 st.markdown("---")
 st.markdown("© 2025 ApplAI. All rights reserved.")

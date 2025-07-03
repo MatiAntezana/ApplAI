@@ -1,15 +1,19 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import streamlit as st
 import asyncio
 import os
 from PIL import Image
 import base64
 from dotenv import load_dotenv
+
 from scripts.text_extraction.text_extractor_for_files import scrape_files
 from scripts.text_extraction.text_extractor_for_general_webs import scrape_web
 from scripts.text_extraction.text_extractor_for_linkedin_profiles import scrape_linkedin_profile
 from scripts.text_extraction.text_extractor_for_linkedin_jobs import scrape_linkedin_job
 from scripts.api_call.api_call_for_format_and_fe import (get_applicant_information, get_job_description)
-from scripts.models.model import calculate_score
+from scripts.models.model import calculate_score    
 
 # Load environment variables
 load_dotenv()
@@ -32,10 +36,10 @@ st.markdown("<br>", unsafe_allow_html=True)
 st.markdown(
     """
     <div style='text-align: center;'>
-        <img src="data:image/png;base64,{}" width="250">
+        <img src="data:image/png;base64,{}" width="300">
     </div>
     """.format(
-        base64.b64encode(open("imgs/applai_logo.png", "rb").read()).decode()
+        base64.b64encode(open("imgs/puntuacion_logo.png", "rb").read()).decode()
     ),
     unsafe_allow_html=True
 )
@@ -43,9 +47,7 @@ st.markdown(
 st.markdown(""" <br>*Calculate your **compatibility score** between your **experience, skills and achievements** and the description of a **job** 
             you would like to apply for using **AI**. Share your **profile** (LinkedIn, resume, or portfolio) and the **job ad**. We'll instantly analyze **how well you match the role**.*""", unsafe_allow_html=True)
 
-
 st.markdown("", unsafe_allow_html=True)
-
 
 st.subheader("Applicant Information Input")
 ai_url_linkedin = st.text_input("LinkedIn Profile URL")
@@ -58,7 +60,6 @@ st.subheader("Job Description Input")
 job_url_linkedin = st.text_input("Job Posting from LinkedIn URL")
 job_url_web = st.text_input("Job Posting from a Website URL")
 job_file = st.file_uploader("Upload Job Description File", type=["pdf", "docx", "txt", "pptx", "jpg", "png", "csv", "json"], accept_multiple_files=False)
-
 
 cv_ready = (ai_url_linkedin.strip() != "") or (ai_url_web.strip() != "") or (ai_file is not None)
 job_ready = (job_url_linkedin.strip() != "") or (job_url_web.strip() != "") or (job_file is not None)
