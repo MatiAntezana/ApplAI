@@ -1,0 +1,22 @@
+id,name,email,phone_number,cv_information
+1,Walter,walter@mail.com,123,"The candidate holds a PhD in Economics from the University of Michigan and has over 7 years of experience working as a Senior Economist at a Federal Reserve Bank. Their expertise includes macroeconomic modeling, labor economics, and policy evaluation. They are proficient in R, Python, and Stata, and have published extensively in peer-reviewed economic journals.
+
+At the Federal Reserve, they led a research team that analyzed monetary policy impacts on inflation and employment. Their econometric models were used to inform internal forecasts and were presented quarterly to policymakers.
+
+Prior to that, they worked at the Congressional Budget Office (CBO), where they evaluated fiscal policy proposals using dynamic scoring models and produced reports for Congress.
+
+They are a regular speaker at economic conferences and have taught graduate-level econometrics as an adjunct professor."
+2,Saul,saul@mail.com,456,"This candidate has a Master’s in Public Policy with a concentration in economic development and over 4 years of experience as a Research Analyst at a think tank. Their responsibilities included policy research, statistical analysis using Stata and Excel, and writing policy briefs related to labor markets and inequality.
+
+They have contributed to several collaborative projects involving economic impact assessments and supported senior economists in data cleaning, visualization, and preliminary econometric analysis.
+
+While they have a strong understanding of applied economics, they lack independent authorship of research and have limited experience in designing econometric models from scratch."
+3,Mike,mike@mail.com,789,"The candidate has a Bachelor’s degree in Economics and currently works as a Financial Analyst at a multinational corporation. They specialize in budget forecasting, financial planning, and business analytics. Their tools of choice include Excel and Tableau, and they have experience in analyzing corporate KPIs and market trends.
+
+While they have an economics background, their work is more aligned with corporate finance than academic or policy-oriented economics. They have no experience in econometric modeling or academic research and are unfamiliar with tools like R or Stata."
+4,Hank,hank@mail.com,012,"This candidate completed an online certificate in introductory economics but pursued a career as a project manager in the tech industry. They currently manage software development projects and are certified in Agile methodologies.
+
+Their only exposure to economics is from undergraduate electives and occasional interest in reading economic news. They have never worked in a research or policy role."
+5,Jessy,jessy@mai.comm,345,"The candidate is a Senior Graphic Designer with a decade of experience in branding, user interface design, and marketing visuals. They hold a BFA in Visual Communication and have no background in economics, statistics, or data analysis.
+
+Their career has focused entirely on visual storytelling and creative design. They are proficient in Adobe Creative Suite, Figma, and UI/UX principles."

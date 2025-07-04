@@ -163,22 +163,14 @@ def append_to_faiss(cv_id, info_cv_text, model, faiss_path, meta_path):
     with open(meta_path, "wb") as f:
         pickle.dump(metadata, f)
 
-def guardar_resultado(result: CleanedCV, csv_path: str, faiss_path: str, meta_path: str):
-    """ Guarda el resultado de la extracción en CSV y FAISS.
-    Args:
-        result (CleanedCV): Resultado de la extracción del CV.
-        csv_path (str): Ruta al archivo CSV donde se guardará el resultado.
-        faiss_path (str): Ruta al archivo FAISS donde se guardará el embedding.
-        meta_path (str): Ruta al archivo de metadatos para FAISS.
-    """
-    
+def guardar_resultado(result, cv_file_path="rag/cvs.csv"):
     # 1. Guardar en CSV y obtener ID
-    cv_id = append_to_csv(result, csv_path)
+    cv_id = append_to_csv(result, cv_file_path)
 
     # 2. Cargar modelo de embeddings
     model = SentenceTransformer("all-MiniLM-L6-v2")
 
     # 3. Agregar a FAISS
-    append_to_faiss(cv_id, result.cv_information, model, faiss_path, meta_path)
+    append_to_faiss(cv_id, result.cv_information, model, "../rag/cv_vector_db/cv_index.faiss", "../rag/cv_vector_db/cv_metadata.pkl")
 
     print(f"✅ Guardado correctamente: ID {cv_id}")
