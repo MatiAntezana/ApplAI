@@ -15,11 +15,14 @@ logger.setLevel(logging.INFO)
 
 # Lista global de claves API de SerpAPI
 SERPAPI_KEYS: List[str] = [
+    "88ae519ab5f8d325724173b9d6b37fe2a23aa010b4958804f5eef3b1976a1ad7"
     # "ad29f33b33bb8d2185a8eccb9e58ff9c45f3ac271282672f13f6fde9c130e712",
     # "debe90a698560d154bda75a96b129f2a6297e7fa7d952f60afca30b30cc9e9ff",
     # "92fc302224c584b72afc5748a5d6c023f99c33ff9bed324f2d584dc2f8d74702"
-    "0a304e6bf844eff593c386114ef9bc3dad61a658ae2a58b3025a2a3fc4818a4a"
-
+    # "0a304e6bf844eff593c386114ef9bc3dad61a658ae2a58b3025a2a3fc4818a4a",
+    # "855f7aa3665910576feb4e0bc8f53c4ff66f0f642f1ebfeaa701c549ecc52c8b",
+    # "b38a2ae1c7ab800d654574620ee36b70f122387452375556523685c7fb48e826",
+    # "aba13593b8f3b4f3cc1178028171e31149b33e13482a24fe5bf5617a034d4a40"
 ]
 
 LANG_REMOTE_TERMS = {

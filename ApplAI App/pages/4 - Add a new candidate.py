@@ -80,6 +80,8 @@ if st.button("Add", type="primary"):
                 
                 elif ai_file: 
                     ai_path = os.path.join("temp_files", ai_file.name)
+                    with open(ai_path, "wb") as f:
+                        f.write(ai_file.getbuffer())
                     scrape_files(ai_path, "temp_files/ai.txt")
 
                 # Save the AI information in the database

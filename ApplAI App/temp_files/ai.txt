@@ -1,0 +1,311 @@
+=== Basic Info ===
+Full name: Luciano Del Corro
+Occupation: Chief Scientific Officer | Co-founder at Stealth
+Headline: CSO & NLP Researcher | Applied AI
+Summary: At Microsoft Research's AI Frontiers, Luciano is developing the next-generation products using the latest large language models (LLMs) technology. As a senior research engineer, he focuses on creating highly efficient LLMs through distillation and adaptive computation, with the goal of broadening LLMs use through making them more cost-effective.
+
+During his time at Goldman Sachs, Luciano leveraged AI-based technology to develop and implement innovative financial applications, improving processes and generating new internal products. His work focused on the transformative potential of LLMs in processing complex data and generating insights.
+
+Luciano's academic background includes a Ph.D. in Computer Science from the Max Planck for Informatics and a master's in Computer Science from Imperial College London. Additionally, he holds an advanced bachelor's degree in Economics from the University of Buenos Aires and a master's in Economics from the University of San Andres. He also co-founded Ambiverse, a spin-off of the Max Planck Institute, where he continued exploring the use of language technology for various industrial applications.
+
+Luciano's diverse background provides him with a broad perspective that allows him to approach challenges from multiple angles in the search of innovative and effective solutions to drive innovation.
+Public identifier: lucianodelcorro
+Profile picture: None
+Background cover image: None
+City: Buenos Aires
+State: Buenos Aires Province
+Country: Argentina
+Pronouns: Not available
+Followers: 2409
+Connections: 500
+
+=== Work Experience ===
+Title: Chief Scientific Officer | Co-founder
+Company: Stealth
+Company URL: https://www.linkedin.com/company/stealthcareers/
+Start date: 01/08/2024
+End date: Not available
+Location: None
+Description: None
+--------------------------------------------------
+Title: Professor Natural Language Processing
+Company: Universidad de 'San Andrés'​
+Company URL: https://www.linkedin.com/school/universidad-de-san-andres/
+Start date: 01/02/2025
+End date: Not available
+Location: None
+Description: None
+--------------------------------------------------
+Title: Professor Natural Language Processing
+Company: Universidad de Buenos Aires
+Company URL: https://www.linkedin.com/school/universidad-de-buenos-aires/
+Start date: 01/08/2023
+End date: Not available
+Location: None
+Description: None
+--------------------------------------------------
+Title: Professor Natural Language Processing 
+Company: Universidad Torcuato Di Tella
+Company URL: https://www.linkedin.com/school/universidad-torcuato-di-tella/
+Start date: 01/08/2024
+End date: 31/03/2025
+Location: None
+Description: None
+--------------------------------------------------
+Title: Senior Research Engineer
+Company: Microsoft
+Company URL: https://www.linkedin.com/company/microsoft/
+Start date: 01/10/2021
+End date: 31/08/2024
+Location: Redmond, Washington, United States
+Description: Microsoft Research AI Frontiers
+--------------------------------------------------
+Title: Research Group Lead, Senior AI Research Scientist & Executive Director
+Company: Goldman Sachs
+Company URL: https://www.linkedin.com/company/goldman-sachs/
+Start date: 01/01/2019
+End date: 30/09/2021
+Location: Frankfurt am Main, Hessen, Germany
+Description: Leading the FirmKB NLP team at R&D focused on company proprietary data. Bridging the gap between research and practical applications. Research and technology development in information extraction and natural language understanding for the financial and legal domains. Transforming research into products.
+--------------------------------------------------
+Title: Senior AI Research Scientist & Executive Director
+Company: Goldman Sachs
+Company URL: https://www.linkedin.com/company/goldman-sachs/
+Start date: 01/01/2019
+End date: 31/08/2020
+Location: Frankfurt Rhine-Main Metropolitan Area
+Description: None
+--------------------------------------------------
+Title: Head of Innovation & Co-Founder
+Company: Ambiverse
+Company URL: None
+Start date: 01/09/2015
+End date: 31/12/2018
+Location: Saarbrücken Area, Germany
+Description: Lead development and research of the core natural language understanding/processing (NLU / NLP) technology. Research projects: Multilingual entity linking and relation extraction, word sense disambiguation, named entity recognition, fact extraction, fact salience, open information extraction, etc. Bringing research into production. Design and development of client-specific NLU solutions.
+--------------------------------------------------
+Title: Postdoctoral Researcher & Researcher Associate
+Company: Max Planck Institute for Informatics
+Company URL: https://www.linkedin.com/company/max-planck-institute-for-informatics/
+Start date: 01/09/2015
+End date: 31/12/2018
+Location: Saarbrücken Area, Germany
+Description: Research focused on Information Extraction and Natural Language Understanding.
+--------------------------------------------------
+Title: Doctoral Researcher
+Company: Max Planck Institute for Informatics
+Company URL: https://www.linkedin.com/company/max-planck-institute-for-informatics/
+Start date: 01/01/2012
+End date: 30/09/2015
+Location: Saarbrücken Area, Germany
+Description: Natural Language Processing (NLP) and Information Extraction (IE): Develop unsupervised methods for open information extraction, entity typing, sense disambiguation, and relation extraction.
+--------------------------------------------------
+Title: Teaching Assistant
+Company: Max Planck Institute for Informatics
+Company URL: https://www.linkedin.com/company/max-planck-institute-for-informatics/
+Start date: 01/01/2011
+End date: 31/01/2015
+Location: Saarbrücken Area, Germany
+Description: Scalable Uncertainty Management [Probabilistic databases] (advanced course, TA) and Selected Topics in Information Extraction (seminar).
+--------------------------------------------------
+Title: Research Assistant
+Company: Max Planck Institute for Informatics
+Company URL: https://www.linkedin.com/company/max-planck-institute-for-informatics/
+Start date: 01/11/2010
+End date: 31/12/2011
+Location: Saarbrücken Area, Germany
+Description: Probabilistic Graphical Models: Develop sampling technique for parallel inference in partitions of probabilistic graphs.
+--------------------------------------------------
+Title: Research Assistant
+Company: Universität Mannheim
+Company URL: https://www.linkedin.com/school/university-of-mannheim/
+Start date: 01/08/2014
+End date: 31/08/2015
+Location: Mannheim Area, Germany
+Description: Research in supervised and unsupervised methods for Information Extraction and Natural Language Understanding. Department of Practical Computer Science I: Data Analytics
+--------------------------------------------------
+Title: Financial/Economic News and Data Analyst
+Company: Agencia Nacional de Noticias Télam SE
+Company URL: https://www.linkedin.com/company/agencia-nacional-de-noticias-t-lam/
+Start date: 01/01/2007
+End date: 31/01/2009
+Location: Germany
+Description: Analyst for economic and financial news and data.
+--------------------------------------------------
+
+=== Education ===
+School: Max-Planck Institute for Informatics
+Degree: Doctor of Philosophy - PhD
+Field of study: Computer Science
+Start date: 01/01/2012
+End date: 31/01/2015
+Description: None
+--------------------------------------------------
+School: Imperial College London
+Degree: MSc in Computing Science
+Field of study: Computer Science
+Start date: 01/01/2009
+End date: 31/01/2010
+Description: None
+--------------------------------------------------
+School: Universidad de 'San Andrés'​
+Degree: Master in Economics
+Field of study: Economics
+Start date: 01/01/2006
+End date: 31/01/2006
+Description: None
+--------------------------------------------------
+School: University of Buenos Aires
+Degree: Licenciado en Economia
+Field of study: Economía
+Start date: 01/01/2000
+End date: 31/01/2005
+Description: None
+--------------------------------------------------
+School: University of Massachusetts Amherst
+Degree: Exchange program
+Field of study: None
+Start date: 01/01/2003
+End date: 31/01/2003
+Description: None
+--------------------------------------------------
+School: Beijing Language and Culture University
+Degree: Intensive Mandarin Chinese Language Program
+Field of study: None
+Start date: 01/01/2004
+End date: 31/01/2004
+Description: None
+--------------------------------------------------
+
+=== Skills ===
+No skills available.
+
+=== Certifications ===
+No certifications available.
+
+=== Languages ===
+English, German, Spanish
+
+=== Languages and Proficiencies ===
+English: NATIVE_OR_BILINGUAL
+German: PROFESSIONAL_WORKING
+Spanish: NATIVE_OR_BILINGUAL
+
+=== Projects ===
+No projects available.
+
+=== Publications ===
+Title: SkipDecode: Autoregressive Skip Decoding with Batching and Caching for Efficient LLM Inference
+Publisher: None
+Published on: 01/01/2023
+URL: https://arxiv.org/abs/2307.02628
+--------------------------------------------------
+Title: From Stock Prediction to Financial Relevance: Repurposing Attention Weights to Asses News Relevance Without Manual Annotations
+Publisher: CoRR
+Published on: 01/01/2020
+URL: https://arxiv.org/abs/2001.09466
+--------------------------------------------------
+Title: A Study of the Importance of External Knowledge in the Named Entity Recognition Task
+Publisher: ACL
+Published on: 01/01/2018
+URL: None
+--------------------------------------------------
+Title: Facts That Matter
+Publisher: EMNLP
+Published on: 01/01/2018
+URL: None
+--------------------------------------------------
+Title: diaNED: Time-Aware Named Entity Disambiguation for Diachronic Corpora
+Publisher: ACL
+Published on: 01/01/2018
+URL: None
+--------------------------------------------------
+Title: MinIE: Minimizing Facts in Open Information Extraction
+Publisher: EMNLP
+Published on: 01/01/2017
+URL: http://aclweb.org/anthology/D17-1277
+--------------------------------------------------
+Title: KnowNER: Incremental Multilingual Knowledge in Named Entity Recognition
+Publisher: CoRR
+Published on: 01/01/2017
+URL: https://arxiv.org/pdf/1709.03544.pdf
+--------------------------------------------------
+Title: Methods for Open Information Extraction and Sense Disambiguation on Natural Language Text
+Publisher: Max Planck Institut for Informatics -- Saarland University
+Published on: 01/01/2016
+URL: http://scidok.sulb.uni-saarland.de/volltexte/2016/6346/pdf/thesis.pdf
+--------------------------------------------------
+Title: CORE: Context-Aware Open Relation Extraction with Factorization Machines
+Publisher: EMNLP
+Published on: 01/01/2015
+URL: http://aclweb.org/anthology/D15-1204
+--------------------------------------------------
+Title: FINET: Context-Aware Fine-Grained Named Entity Typing
+Publisher: EMNLP
+Published on: 01/01/2015
+URL: http://www.aclweb.org/anthology/D15-1103
+--------------------------------------------------
+Title: Werdy: Recognition and Disambiguation of Verbs and Verb Phrases with Syntactic and Semantic Pruning
+Publisher: EMNLP
+Published on: 01/01/2014
+URL: http://anthology.aclweb.org/D/D14/D14-1042.pdf
+--------------------------------------------------
+Title: ClausIE: Clause-Based Open Information Extraction
+Publisher: WWW 2013
+Published on: 01/01/2013
+URL: http://www2013.w3c.br/proceedings/p355.pdf
+--------------------------------------------------
+Title: Fully Parallel Inference in Markov Logic Networks
+Publisher: BTW 2013
+Published on: 01/01/2013
+URL: https://pdfs.semanticscholar.org/2177/8cc89a004b320fa060ff844f09e742692c3c.pdf
+--------------------------------------------------
+
+=== Patents ===
+No patents available.
+
+=== Courses ===
+No courses available.
+
+=== Organizations ===
+No organizations available.
+
+=== Awards ===
+No awards available.
+
+=== Volunteer Work ===
+No volunteer work available.
+
+=== Recommendations ===
+No recommendations available.
+
+=== Articles ===
+No articles available.
+
+=== Inferred Salary ===
+None
+
+=== Gender ===
+None
+
+=== Birth Date ===
+None
+
+=== Industry ===
+None
+
+=== Interests ===
+No interests available.
+
+=== Personal Emails ===
+No personal emails available.
+
+=== Personal Phone Numbers ===
+No personal phone numbers available.
+
+=== Groups ===
+No groups available.
+
+=== Activities ===
+No activities available.
+

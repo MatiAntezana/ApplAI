@@ -7,7 +7,7 @@ from .database_processing import append_to_csv, append_to_faiss, extract_cv_info
 from .mainLinkeding import generate_linkedin_query, scrape_and_summarize, search_jobs_serpapi_verified, filter_url, extract_job_title
 
 # Load the models
-MODEL_SCORE = SentenceTransformer("sentence_transformer/mini_finetuned_Allmini")
+# MODEL_SCORE = SentenceTransformer("sentence_transformer/mini_finetuned_Allmini")
 
 MODEL_DB = SentenceTransformer("mixedbread-ai/mxbai-embed-large-v1")
 
@@ -28,8 +28,8 @@ def calculate_score(ai_text: str, job_text: str) -> float:
     float
         The similarity score between the AI text and job description text.
     """
-    ai_embedding = MODEL_SCORE.encode(ai_text)
-    job_description_embedding = MODEL_SCORE.encode(job_text)
+    ai_embedding = MODEL_DB.encode(ai_text)
+    job_description_embedding = MODEL_DB.encode(job_text)
     return util.cos_sim(ai_embedding, job_description_embedding)
 
 
