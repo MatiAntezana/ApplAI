@@ -12,6 +12,11 @@ from scripts.text_extraction.text_extractor_for_linkedin_jobs import scrape_link
 from scripts.api_call.api_call_for_format_and_fe import get_applicant_information, get_job_description
 from scripts.models.model import calculate_score    
 
+# Define paths for temporary files
+TEMP_DIR = "temp_files"
+AI_PATH = "temp_files/ai.txt"
+JOB_PATH = "temp_files/job.txt"
+
 # Load environment variables
 load_dotenv()
 
@@ -86,37 +91,37 @@ if st.button("Calculate Score", type="primary"):
     else:
         with st.spinner("Processing..."):
             try:
-                os.makedirs("temp_files", exist_ok=True)
+                os.makedirs(TEMP_DIR, exist_ok=True)
 
                 # Process Applicant Information
                 if ai_url_linkedin.strip() != "":
-                    scrape_linkedin_profile(ai_url_linkedin, "temp_files/ai.txt")
+                    scrape_linkedin_profile(ai_url_linkedin, AI_PATH)
                 
                 elif ai_url_web.strip() != "":
-                    scrape_web(ai_url_web, "temp_files/ai.txt")
+                    scrape_web(ai_url_web, AI_PATH)
                 
                 elif ai_file: 
-                    ai_path = os.path.join("temp_files", ai_file.name)
+                    ai_path = os.path.join(TEMP_DIR, ai_file.name)
                     with open(ai_path, "wb") as f:
                         f.write(ai_file.getbuffer())
-                    scrape_files(ai_path, "temp_files/ai.txt")
+                    scrape_files(ai_path, AI_PATH)
                    
                 # Process Job Description
                 if job_url_linkedin.strip() != "":
-                    scrape_linkedin_job(job_url_linkedin, "temp_files/job.txt")
+                    scrape_linkedin_job(job_url_linkedin, JOB_PATH)
                 
                 elif job_url_web.strip() != "":
-                    scrape_web(job_url_web, "temp_files/job.txt")
+                    scrape_web(job_url_web, JOB_PATH)
                 
                 elif job_file:
-                    job_path = os.path.join("temp_files", job_file.name)
+                    job_path = os.path.join(TEMP_DIR, job_file.name)
                     with open(job_path, "wb") as f:
                         f.write(job_file.getbuffer())
-                    scrape_files(job_path, "temp_files/job.txt")
+                    scrape_files(job_path, JOB_PATH)
 
                 # Call API to process the applicant information and job description
-                ai_model_input = get_applicant_information("temp_files/ai.txt")
-                job_model_input = get_job_description("temp_files/job.txt")
+                ai_model_input = get_applicant_information(AI_PATH)
+                job_model_input = get_job_description(JOB_PATH)
 
                 # Calculate the compatibility score
                 score = calculate_score(ai_model_input, job_model_input).item()
@@ -125,8 +130,8 @@ if st.button("Calculate Score", type="primary"):
                 st.success(f"Compatibility Score: {(score * 100):.2f}%")
 
                 # Delete all temporary files
-                for file in os.listdir("temp_files"):
-                    file_path = os.path.join("temp_files", file)
+                for file in os.listdir(TEMP_DIR):
+                    file_path = os.path.join(TEMP_DIR, file)
                     try:
                         if os.path.isfile(file_path):
                             os.unlink(file_path)

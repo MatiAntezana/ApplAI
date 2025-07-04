@@ -14,3 +14,5 @@ PyPDF2
 openai
 sentence-transformers
 aiohttp
+serpapi
+google-search-results

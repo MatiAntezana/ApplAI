@@ -2,6 +2,11 @@ import streamlit as st
 import os
 import base64
 from dotenv import load_dotenv
+import asyncio
+from scripts.text_extraction.text_extractor_for_files import scrape_files
+from scripts.text_extraction.text_extractor_for_general_webs import scrape_web
+from scripts.text_extraction.text_extractor_for_linkedin_profiles import scrape_linkedin_profile  
+from scripts.models.mainLinkeding import test_all
 
 # Load environment variables
 load_dotenv()
@@ -36,6 +41,12 @@ st.markdown("""<br>*This system analyzes your **professional profile** and ident
 
 st.markdown("", unsafe_allow_html=True)
 
+st.subheader("Number of Jobs to Return")
+top_k_jobs = st.number_input("How many jobs would you like to retrieve?", min_value=1, max_value=15, value=3, step=1)
+
+st.markdown("", unsafe_allow_html=True)
+
+st.subheader("Applicant Information Input")
 ai_url_linkedin = st.text_input("LinkedIn Profile URL")
 ai_url_web = st.text_input("Personal Website URL")
 ai_file = st.file_uploader("Upload AI File (CV, Cover Letter, Certificate, etc)", type=["pdf", "docx", "txt", "pptx", "jpg", "png", "csv", "json"], accept_multiple_files=False)
@@ -62,56 +73,46 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Lógica del Código a completar 
-
 if st.button("Find Jobs", type="primary"):
     if not (ai_ready):
         st.error("Please provide both a AI (URL or file).")
     else:
         with st.spinner("Processing..."):
             try:
-                # os.makedirs("temp_files", exist_ok=True)
+                os.makedirs("temp_files", exist_ok=True)
 
-                # # Process Applicant Information
-                # if ai_url_linkedin.strip() != "":
-                #     scrape_linkedin_profile(ai_url_linkedin, "temp_files/ai.txt")
+                # Process Applicant Information
+                if ai_url_linkedin.strip() != "":
+                    scrape_linkedin_profile(ai_url_linkedin, "temp_files/ai.txt")
                 
-                # elif ai_url_web.strip() != "":
-                #     scrape_web(ai_url_web, "temp_files/ai.txt")
+                elif ai_url_web.strip() != "":
+                    scrape_web(ai_url_web, "temp_files/ai.txt")
                 
-                # elif ai_file: 
-                #     ai_path = os.path.join("temp_files", ai_file.name)
-                #     scrape_files(ai_path, "temp_files/ai.txt")
+                elif ai_file: 
+                    ai_path = os.path.join("temp_files", ai_file.name)
+                    with open(ai_path, "wb") as f:
+                        f.write(ai_file.getbuffer())
+                    scrape_files(ai_path, "temp_files/ai.txt")
                    
-                # # Process Job Description
-                # if job_url_linkedin.strip() != "":
-                #     scrape_linkedin_job(job_url_linkedin, "temp_files/job.txt")
-                
-                # elif job_url_web.strip() != "":
-                #     scrape_web(job_url_web, "temp_files/job.txt")
-                
-                # elif job_file:
-                #     job_path = os.path.join("temp_files", job_file.name)
-                #     scrape_files(job_path, "temp_files/job.txt")
 
-                # # Call API to process the applicant information and job description
-                # ai_model_input = get_applicant_information("temp_files/ai.txt")
-                # job_model_input = get_job_description("temp_files/job.txt")
+                titles, links, resumes = asyncio.run(test_all("temp_files/ai.txt", "scripts/models/fineTuningAllMiniFinal", max_urls=top_k_jobs))
 
-                # # Calculate the compatibility score
-                # score = calculate_score(ai_model_input, job_model_input).item()
-                
-                # Display the compatibility score
-                st.success(f"Compatibility Score: ")
+                st.markdown(f"{titles}", unsafe_allow_html=True)
+                st.markdown(f"{links}", unsafe_allow_html=True)
+                st.markdown(f"{resumes}", unsafe_allow_html=True)
 
-                # # Delete all temporary files
-                # for file in os.listdir("temp_files"):
-                #     file_path = os.path.join("temp_files", file)
-                #     try:
-                #         if os.path.isfile(file_path):
-                #             os.unlink(file_path)
-                #     except Exception as e:
-                #         st.error(f"Error deleting file {file}: {str(e)}")
+                st.markdown("<h3 style='text-align: center;'>🏢  Top Jobs Found</h3>", unsafe_allow_html=True)
+               
+                # st.success(f"Todo Piola")
+
+                # Delete all temporary files
+                for file in os.listdir("temp_files"):
+                    file_path = os.path.join("temp_files", file)
+                    try:
+                        if os.path.isfile(file_path):
+                            os.unlink(file_path)
+                    except Exception as e:
+                        st.error(f"Error deleting file {file}: {str(e)}")
 
             except Exception as e:
                 st.error(str(e))

@@ -8,10 +8,10 @@ from huggingface_hub import login
 import json
 import re
 import requests
-from scrapeo import scrape_and_summarize
+from .scrapeo import scrape_and_summarize
 import asyncio
 # from searchUrls import search_jobs_serpapi_verified
-from searchUrl import search_jobs_serpapi_verified
+from .searchUrl import search_jobs_serpapi_verified
 
 # ── Configuración de Azure OpenAI ──────────────────────────────────────────────
 ENDPOINT = "https://fausp-mbmvwtiw-eastus2.cognitiveservices.azure.com/"
@@ -79,6 +79,14 @@ CV TEXT:
 {cv_text}
 """
 
+# ── SerpApi Search ──────────────────────────────────────────────────────────────
+SERPAPI_API_KEYS = [
+    "1a992f2a6dbaed0c95203a2ed73768f29b4b7f423a5f218c4834e355c5c31918" # tizi
+    # "e898c7f95cdb5692528a009eb2ee7d08d24a2f37c22f9623a065a96fd6072892", # mati
+    # "141d74f945c81589527847238881362de5f08cc31dae86209dcb2c04d7e5ccc7", # faus
+    # "c18acdb7b9b75162b53059cd6f094669c33323e898758841176351ac8a59e8c7" # giaco
+]
+
 def safe_json_load(content: str):
     opens = content.count('{')
     closes = content.count('}')
@@ -106,15 +114,6 @@ def generate_linkedin_query(cv_text: str) -> str:
     cv_information = data.get("cv_information", "")
 
     return [area_job, cv_information]
-
-
-# ── SerpApi Search ──────────────────────────────────────────────────────────────
-SERPAPI_API_KEYS = [
-    "1a992f2a6dbaed0c95203a2ed73768f29b4b7f423a5f218c4834e355c5c31918" # tizi
-    # "e898c7f95cdb5692528a009eb2ee7d08d24a2f37c22f9623a065a96fd6072892", # mati
-    # "141d74f945c81589527847238881362de5f08cc31dae86209dcb2c04d7e5ccc7", # faus
-    # "c18acdb7b9b75162b53059cd6f094669c33323e898758841176351ac8a59e8c7" # giaco
-]
 
 def pdf_a_string(ruta_pdf):
     doc = fitz.open(ruta_pdf)
@@ -164,9 +163,6 @@ def build_job_description_prompt(job):
     Now generate the `job_description`.
     """
 
-
-
-
 def filter_url(list_jobs):
   N = len(list_jobs)
   list_results = []
@@ -192,44 +188,72 @@ def predict(cv_desc, jb_desc, model):
 
     return util.cos_sim(embedding1, embedding2)
 
+def extract_job_title(description: str) -> str:
+    """
+    Llama al modelo para extraer un título de puesto en pocas palabras
+    a partir de la descripción completa.
+    """
+    system_prompt = (
+        "Eres un asistente que extrae, de forma muy concisa, "
+        "el título de un puesto a partir de su descripción completa."
+    )
+    user_prompt = (
+        "Dada la siguiente descripción de puesto, devuelve SOLO el título en pocas palabras:\n\n"
+        f"{description}"
+    )
+
+    response = client.chat.completions.create(
+        model=DEPLOYMENT,       # <— aquí va el nombre/deployment id del modelo
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user",   "content": user_prompt}
+        ],
+        temperature=0.0,
+        max_tokens=16,
+    )
+
+    title = response.choices[0].message.content.strip()
+    return title
+
+
 # Test workflow completo
 async def test_all(cv_path: str, modelPath: str, max_urls: int = 10):
     model = SentenceTransformer(modelPath)
-    # 1. Extraer texto CV y generar query
+
     cv_text = pdf_a_string(cv_path)
+    
     area_job, cv_information = generate_linkedin_query(cv_text)
 
-    # print(f"Query LinkedIn: {area_job}", f"cv_information:{cv_information}")
-    # 2. Buscar ofertas
-    print("empieza la busqueda")
-    # debug_serpapi_search(area_job, max_urls)
     links = search_jobs_serpapi_verified(area_job, max_urls=max_urls, antiguedad_maxima='mes')
-    print("Links Found:", links)
-
-    # links = ["https://in.linkedin.com/jobs/view/ai-ml-engineer-at-oneseven-tech-ost-4241281880"]
-
+   
     data_job, summary = [], []
     for url in links:
         cm = await scrape_and_summarize(url) # Await the coroutine to get the result
         data_job.append(cm.get("job", {}))
         summary.append(cm.get("summary", ""))
 
-    print("ontengo esto:")
     summaries = filter_url(data_job)
-    print(summaries)
     scores = [predict(cv_information, s, model) for s in summaries]
     sorted_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)
 
-    # 3. Usa esos índices para reordenar tus listas
     sorted_scores   = [scores[i]     for i in sorted_indices]
     sorted_summaries= [summaries[i]  for i in sorted_indices]
     
-    print("Scores en orden:")
     print(sorted_scores)
 
-    print("Resumen del trabajo",sorted_summaries)
-    sorted_data_job = [data_job[i]   for i in sorted_indices]
+    sorted_links = [links[i]   for i in sorted_indices]
 
-if __name__ == '__main__':
-    # Ejemplo de ejecución
-    asyncio.run(test_all('/Users/matias/4°AÑO/NLP/ApplAI/cvs/tizi_cv.pdf', '/Users/matias/4°AÑO/NLP/ApplAI/fineTuningAllMiniFinal', max_urls=3))
+    titulos = []
+    for summari_final in sorted_summaries:
+        titulo = extract_job_title(summari_final)
+        titulos.append(titulo)
+
+    print("Titulos:", titulos)
+
+    return titulos, sorted_links, sorted_summaries
+
+
+
+# if __name__ == '__main__':
+#     # Ejemplo de ejecución
+#     # a, b, c = asyncio.run(test_all('/Users/matias/4°AÑO/NLP/ApplAI/cvs/tizi_cv.pdf', '/Users/matias/4°AÑO/NLP/ApplAI/fineTuningAllMiniFinal', max_urls=3))

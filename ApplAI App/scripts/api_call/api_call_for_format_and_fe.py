@@ -177,7 +177,7 @@ async def process_applicant_information(source: str) -> str:
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
-        raise RuntimeError(f"Azure OpenAI API error (CV processing): {e}")
+        raise RuntimeError(f"Azure OpenAI API error (AI processing): {e}")
 
 
 async def process_job_description(source: str) -> str:

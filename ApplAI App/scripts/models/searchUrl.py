@@ -1,3 +1,4 @@
+
 import logging
 from typing import List, Dict, Optional, Tuple, Set
 from serpapi import GoogleSearch  # pip install google-search-results
@@ -14,7 +15,9 @@ logger.setLevel(logging.INFO)
 
 # Lista global de claves API de SerpAPI
 SERPAPI_KEYS: List[str] = [
-    "ad29f33b33bb8d2185a8eccb9e58ff9c45f3ac271282672f13f6fde9c130e712",
+    # "ad29f33b33bb8d2185a8eccb9e58ff9c45f3ac271282672f13f6fde9c130e712",
+    "debe90a698560d154bda75a96b129f2a6297e7fa7d952f60afca30b30cc9e9ff",
+    "92fc302224c584b72afc5748a5d6c023f99c33ff9bed324f2d584dc2f8d74702"
 ]
 
 LANG_REMOTE_TERMS = {
@@ -444,60 +447,91 @@ def search_jobs_serpapi_verified(
     if age_code := AGE_MAP.get(antiguedad_maxima.lower()):
         base_params['tbs'] = f'qdr:{age_code}'
     
-    verified_urls = []
+    # MODIFICACIÓN: Listas para separar resultados de alta calidad y de respaldo
+    high_quality_urls = []
+    fallback_candidates = []
+    
     seen_urls = set()
     search_iteration = 0
     
-    while len(verified_urls) < max_urls and search_iteration < max_search_iterations:
+    while len(high_quality_urls) < max_urls and search_iteration < max_search_iterations:
         search_iteration += 1
-        logger.info(f"=== BÚSQUEDA ITERACIÓN {search_iteration} | URLs Verificadas: {len(verified_urls)}/{max_urls} ===")
+        logger.info(f"=== BÚSQUEDA ITERACIÓN {search_iteration} | URLs de alta calidad: {len(high_quality_urls)}/{max_urls} ===")
         
         all_results = []
         
-        # FASES DE BÚSQUEDA (simplificadas)
+        # FASES DE BÚSQUEDA
         priority_queries = build_search_queries(query, localization, linkedin_only)
         all_results.extend(execute_searches(searcher, priority_queries, base_params, localization, seen_urls, parallel_workers))
         
-        if len(seen_urls) < max_urls * 2:
+        if len(seen_urls) < max_urls * 3: # Aumentar el factor para tener más candidatos
             fallback_queries = build_fallback_queries(query, localization, linkedin_only)
             all_results.extend(execute_searches(searcher, fallback_queries, base_params, localization, seen_urls, parallel_workers))
 
         all_results.sort(key=lambda x: -x['score'])
         
-        candidate_urls = [result['url'] for result in all_results if result['url'] not in verified_urls]
+        # Evitar verificar URLs ya procesadas
+        current_urls_in_lists = set(high_quality_urls) | {c.url for c in fallback_candidates}
+        candidate_urls = [result['url'] for result in all_results if result['url'] not in current_urls_in_lists]
         
-        logger.info(f"Encontradas {len(candidate_urls)} URLs candidatas para verificación")
+        logger.info(f"Encontradas {len(candidate_urls)} nuevas URLs candidatas para verificación")
         
         if candidate_urls:
             verification_results = verify_job_applications(candidate_urls, scraper, localization)
             
             for result in verification_results:
-                if len(verified_urls) >= max_urls:
+                if len(high_quality_urls) >= max_urls:
                     break
                 
                 is_valid_location = result.location_matches or result.is_fully_remote
                 
+                # Criterio estricto para URLs de alta calidad
                 if result.is_accepting and result.confidence >= verification_confidence and is_valid_location:
-                    verified_urls.append(result.url)
+                    high_quality_urls.append(result.url)
                     loc_reason = "Coincide localización" if result.location_matches else "Es remoto"
-                    logger.info(f"✅ URL verificada ({len(verified_urls)}/{max_urls}): {result.url} | Razón: {loc_reason}")
+                    logger.info(f"✅ URL de alta calidad ({len(high_quality_urls)}/{max_urls}): {result.url} | Razón: {loc_reason}")
                 else:
+                    # MODIFICACIÓN: Guardar el resto como candidatos de respaldo
+                    fallback_candidates.append(result)
                     rejection_reason = f"Acepta: {result.is_accepting}, Conf: {result.confidence:.2f}"
                     if not is_valid_location:
                         rejection_reason += f", LocMatch: {result.location_matches}, Remote: {result.is_fully_remote}"
-                    logger.warning(f"❌ URL rechazada: {result.url} | {rejection_reason}")
+                    logger.warning(f"⚠️ URL movida a fallbacks: {result.url} | {rejection_reason}")
         
-        if len(verified_urls) < max_urls and search_iteration < max_search_iterations:
-            logger.info(f"Relajando criterios de búsqueda para la siguiente iteración...")
+        if len(high_quality_urls) < max_urls and search_iteration < max_search_iterations:
+            logger.info("Relajando criterios de búsqueda para la siguiente iteración...")
             verification_confidence = max(0.4, verification_confidence - 0.1)
             logger.info(f"Nueva confianza mínima: {verification_confidence}")
 
-    if len(verified_urls) < max_urls:
-        logger.warning(f"Solo se encontraron {len(verified_urls)} URLs que cumplen todos los criterios.")
+    # --- MODIFICACIÓN: Lógica de relleno para garantizar max_urls ---
+    if len(high_quality_urls) < max_urls:
+        logger.info(f"No se alcanzaron las {max_urls} URLs de alta calidad. Buscando en {len(fallback_candidates)} candidatos de respaldo...")
+        
+        # Evitar duplicados
+        urls_in_high_quality = set(high_quality_urls)
+        unique_fallbacks = [res for res in fallback_candidates if res.url not in urls_in_high_quality]
+        
+        # Ordenar candidatos de respaldo por la mejor combinación de factores
+        unique_fallbacks.sort(key=lambda r: (
+            r.is_accepting, 
+            r.is_fully_remote or r.location_matches, 
+            r.confidence
+        ), reverse=True)
+        
+        needed = max_urls - len(high_quality_urls)
+        
+        for fallback in unique_fallbacks[:needed]:
+            logger.info(f"Añadiendo URL de respaldo: {fallback.url} (Acepta: {fallback.is_accepting}, Remoto/Local: {fallback.is_fully_remote or fallback.location_matches}, Conf: {fallback.confidence:.2f})")
+            high_quality_urls.append(fallback.url)
 
-    logger.info(f"=== RESULTADO FINAL ===")
-    logger.info(f"Se encontraron {len(verified_urls)} URLs que aceptan solicitudes y cumplen con la localización.")
-    for i, url in enumerate(verified_urls, 1):
-        logger.info(f"{i}. {url}")
+    final_results = high_quality_urls[:max_urls]
     
-    return verified_urls[:max_urls]
+    logger.info("=== RESULTADO FINAL ===")
+    if not final_results:
+        logger.warning("No se encontró ninguna URL que cumpla con los criterios.")
+    else:
+        logger.info(f"Se devolverán {len(final_results)} URLs ({len(high_quality_urls)} encontradas en total).")
+        for i, url in enumerate(final_results, 1):
+            logger.info(f"{i}. {url}")
+    
+    return final_results
