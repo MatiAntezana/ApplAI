@@ -92,6 +92,8 @@ if st.button("Find Candidates", type="primary"):
                         f.write(job_file.getbuffer())
                     scrape_files(job_path, "temp_files/job.txt")
 
+                print("Job description processed successfully.")
+
                 # Find candidates
                 get_candidates_and_recomendations(
                     "temp_files/job.txt",
@@ -105,16 +107,21 @@ if st.button("Find Candidates", type="primary"):
                 # Load and display candidates
                 candidates_df = pd.read_csv("temp_files/candidates.csv")
 
+                st.markdown("<br>", unsafe_allow_html=True)
+
                 st.markdown("<h3 style='text-align: center;'>🧠 Top Candidates Found</h3>", unsafe_allow_html=True)
 
                 for idx, row in candidates_df.iterrows():
+                    candidate_text = row['candidate_text'].replace('\n', '<br>')
                     st.markdown(f"""
                     <div style="border: 1px solid #DDD; padding: 15px; margin-bottom: 10px; border-radius: 10px;">
                         <h4 style="margin-bottom: 5px;">👤 {row['candidate_name']}</h4>
-                        <p style="font-size: 14px; line-height: 1.4;">{row['candidate_text']}</p>
+                        <p style="font-size: 14px; line-height: 1.4; margin: 0;">{candidate_text}</p>
                     </div>
                     """, unsafe_allow_html=True)
-
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+                
                 # Download button
                 csv_download = candidates_df.to_csv(index=False).encode('utf-8')
                 col1, col2, col3 = st.columns([1, 2, 1])

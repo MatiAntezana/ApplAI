@@ -10,7 +10,6 @@ import re
 import requests
 from .scrapeo import scrape_and_summarize
 import asyncio
-# from searchUrls import search_jobs_serpapi_verified
 from .searchUrl import search_jobs_serpapi_verified
 
 # ── Configuración de Azure OpenAI ──────────────────────────────────────────────
@@ -81,10 +80,10 @@ CV TEXT:
 
 # ── SerpApi Search ──────────────────────────────────────────────────────────────
 SERPAPI_API_KEYS = [
-    "1a992f2a6dbaed0c95203a2ed73768f29b4b7f423a5f218c4834e355c5c31918" # tizi
+    # "1a992f2a6dbaed0c95203a2ed73768f29b4b7f423a5f218c4834e355c5c31918" # tizi
     # "e898c7f95cdb5692528a009eb2ee7d08d24a2f37c22f9623a065a96fd6072892", # mati
     # "141d74f945c81589527847238881362de5f08cc31dae86209dcb2c04d7e5ccc7", # faus
-    # "c18acdb7b9b75162b53059cd6f094669c33323e898758841176351ac8a59e8c7" # giaco
+    "c18acdb7b9b75162b53059cd6f094669c33323e898758841176351ac8a59e8c7" # giaco
 ]
 
 def safe_json_load(content: str):
@@ -188,6 +187,7 @@ def predict(cv_desc, jb_desc, model):
 
     return util.cos_sim(embedding1, embedding2)
 
+
 def extract_job_title(description: str) -> str:
     """
     Llama al modelo para extraer un título de puesto en pocas palabras
@@ -241,7 +241,7 @@ async def test_all(cv_path: str, modelPath: str, max_urls: int = 10):
     
     print(sorted_scores)
 
-    sorted_links = [links[i]   for i in sorted_indices]
+    sorted_links = [links[i] for i in sorted_indices]
 
     titulos = []
     for summari_final in sorted_summaries:

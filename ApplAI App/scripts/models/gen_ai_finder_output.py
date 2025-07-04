@@ -133,10 +133,10 @@ def get_candidates_and_recomendations(job_description_txt, cv_info_path, faiss_p
         - candidate_text
         - recommendation
     """
-
+    print("Starting candidate search and recommendation generation...")
     # Obtener los mejores CVs
     best_cvs = get_best_candidates(job_description_txt, faiss_path, meta_path, top_k)
-
+    print(f"Top {top_k} candidates found for the job description.")
     # Generar recomendaciones para cada CV
     recommendations = []
     for cv_id, candidate_text in best_cvs:

@@ -16,8 +16,10 @@ logger.setLevel(logging.INFO)
 # Lista global de claves API de SerpAPI
 SERPAPI_KEYS: List[str] = [
     # "ad29f33b33bb8d2185a8eccb9e58ff9c45f3ac271282672f13f6fde9c130e712",
-    "debe90a698560d154bda75a96b129f2a6297e7fa7d952f60afca30b30cc9e9ff",
-    "92fc302224c584b72afc5748a5d6c023f99c33ff9bed324f2d584dc2f8d74702"
+    # "debe90a698560d154bda75a96b129f2a6297e7fa7d952f60afca30b30cc9e9ff",
+    # "92fc302224c584b72afc5748a5d6c023f99c33ff9bed324f2d584dc2f8d74702"
+    "0a304e6bf844eff593c386114ef9bc3dad61a658ae2a58b3025a2a3fc4818a4a"
+
 ]
 
 LANG_REMOTE_TERMS = {
@@ -30,11 +32,11 @@ LANG_REMOTE_TERMS = {
 
 VALID_JOB_DOMAINS = [
     "linkedin.com/jobs/view",
-    "indeed.com",
-    "computrabajo.com",
-    "glassdoor.com",
-    "bumeran.com",
-    "zonajobs.com"
+    # "indeed.com",
+    # "computrabajo.com",
+    # "glassdoor.com",
+    # "bumeran.com",
+    # "zonajobs.com"
 ]
 
 # Map antiguedad_maxima to Google 'tbs' filter codes
@@ -430,8 +432,7 @@ def verify_job_applications(urls: List[str], scraper: WebScraper, localization: 
 
     return verified_results
 
-def search_jobs_serpapi_verified(
-    query: str,
+def search_jobs_serpapi_verified(query: str,
     max_urls: int = 10,
     localization: str = "Buenos Aires",
     antiguedad_maxima: str = "semana",
@@ -440,6 +441,7 @@ def search_jobs_serpapi_verified(
     verification_confidence: float = 0.7,
     max_search_iterations: int = 3
 ) -> List[str]:
+    
     searcher = SerpAPISearcher(SERPAPI_KEYS)
     scraper = WebScraper()
     
