@@ -6,7 +6,7 @@
 
 
 <div style='text-align: center;'>
-    <img src="data:image/png;base64,{BASE64_STRING}" width="420">
+    <img src="data:image/png;base64,{BASE64_STRING}" width="500">
 </div>
 
 ## What is ApplAI ?
@@ -74,19 +74,24 @@ brew install tesseract
 choco install tesseract
 ```
 
-### 4. 
+### 4. Obtain API Keys
 
+To use the AI features, you need to obtain API keys for the following services:
 
+- [**Enrich Layer**](https://enrichlayer.com/): For web scraping and job search (only for LinkedIn Profiles and job ads).
+- [**SerpAPI**](https://serpapi.com/): For web scraping and job search.
+- [**Azure OpenAI**](https://azure.microsoft.com/es-es/free/students): For natural language processing and core AI capabilities.
 
+### 5. Run the Application
 
+From within the `ApplAI App` folder, launch the app with:
+```bash
+streamlit run "0 - ApplAI Information.py"
+```
+### Additional Notes
+The main application is entirely contained within the `ApplAI App` folder.
 
-
-
-
-
-
-
-
+The `development_and_research` directory includes **experiments**, **tests**, and **exploratory work** carried out during development. While it's not required to run the app, we recommend reviewing it to better understand the development process and how the final version was built.
 
 ## Who are the creators of ApplAI ?
 
@@ -101,13 +106,3 @@ All of them are **Artificial Intelligence Engineering Students** at the ***Unive
 ---
 
 © 2025 ApplAI. All rights reserved.
-
-
-
-sudo apt update
-sudo apt install tesseract-ocr
-
-
-SerpAPI
-Emrich coso
-Azure OpenAI
