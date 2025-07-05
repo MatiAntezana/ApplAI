@@ -76,7 +76,7 @@ choco install tesseract
 
 ### 4. Obtain API Keys
 
-To use the AI features, you need to obtain API keys for the following services:
+To use the AI features and web scraping capabilities, you need to obtain API keys for the following services:
 
 - [**Enrich Layer**](https://enrichlayer.com/): For web scraping and job search (only for LinkedIn Profiles and job ads).
 - [**SerpAPI**](https://serpapi.com/): For web scraping and job search.
@@ -89,7 +89,7 @@ From within the `ApplAI App` folder, launch the app with:
 streamlit run "0 - ApplAI Information.py"
 ```
 ### Additional Notes
-The main application is entirely contained within the `ApplAI App` folder.
+The **main application** is entirely contained within the `ApplAI App` folder.
 
 The `development_and_research` directory includes **experiments**, **tests**, and **exploratory work** carried out during development. While it's not required to run the app, we recommend reviewing it to better understand the development process and how the final version was built.
 
