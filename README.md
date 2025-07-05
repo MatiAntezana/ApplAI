@@ -9,9 +9,6 @@
     <img src="data:image/png;base64,{BASE64_STRING}" width="420">
 </div>
 
-### <div style='text-align: center;'>Fast Hiring. Better Jobs. Powered by AI 🤖</div>
-
-
 ## What is ApplAI ?
 
 **ApplAI** is an intelligent platform designed to **transform job searching and hiring**, using artificial intelligence to ensure **the best candidates find the most suitable roles**.
@@ -20,21 +17,76 @@ At **ApplAI**, we believe **a fairer and more efficient labor market is possible
 
 ## What are the features of ApplAI ?
 
-#### ***Compatibility Score Calculator*** 📊
+### ***Compatibility Score Calculator*** 📊
 
 Calculate your **compatibility score** between your **experience, skills and achievements** and the description of a **job** you would like to apply for using **AI**. Share your **profile** (LinkedIn, resume, or portfolio) and the **job ad**. We'll instantly analyze **how well you match the role**.
 
-#### ***Smart Job Finder*** 🔍
+### ***Smart Job Finder*** 🔍
 
 This system analyzes your **professional profile** and identifies **matching job opportunities** on **LinkedIn**. Simply **upload your profile** in any of the supported formats to receive a **personalized list of the best openings**, **ranked** by **relevance** and **compatibility** with your qualifications.
 
-#### ***Smart Applicant Information Finder*** 🗃️
+### ***Smart Applicant Information Finder*** 🗃️
 
 This feature uses a **RAG** (Retrieval-Augmented Generation)-based system to **identify the most suitable candidates** in your **database** for a **specific job position**. Simply **upload the job description** in any format and receive a list ordered by **score** of the **best-matched profiles**.
 
-#### ***Add a new candidate*** 💾
+### ***Add a new candidate*** 💾
 
 Easily add **new applicants to your database** by uploading **files** or entering **LinkedIn/website links**. Our system automatically **processes** and **standardizes** all information.
+
+## Installation
+
+To get **ApplAI** up and running, follow these steps:
+
+### 1. Clone the repository
+
+Download or clone this repository to your local machine.
+
+### 2. Install dependencies
+
+Navigate to the main application folder:
+
+```bash
+cd "ApplAI App"
+```
+
+Install the required Python dependencies using `pip` and the provided `requirements.txt` file:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Install Tesseract OCR
+
+The application uses **Tesseract for Optical Character Recognition (OCR)** allowing it to extract text from images (e.g., screenshots or scanned resumes).
+
+Install it according to your operating system:
+
+- Linux (Debian/Ubuntu):
+```bash
+sudo apt install tesseract-ocr
+```
+- macOS:
+```bash
+brew install tesseract
+```
+- Windows:
+```bash
+choco install tesseract
+```
+
+### 4. 
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Who are the creators of ApplAI ?
 
