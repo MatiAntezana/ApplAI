@@ -41,9 +41,13 @@ st.subheader("***Smart Job Finder*** 🔍")
 
 st.markdown("This system analyzes your **professional profile** and identifies **matching job opportunities** on **LinkedIn**. Simply **upload your profile** in any of the supported formats to receive a **personalized list of the best openings**, **ranked** by **relevance** and **compatibility** with your qualifications.")
 
-st.subheader("***Smart Applicant Information Finder*** 🗃️ ")
+st.subheader("***Smart Applicant Information Finder*** 🗃️")
 
-st.markdown("This feature uses a **RAG** (Retrieval-Augmented Generation)-based system to **identify the most suitable candidates** in your **database** for a **specific job position**. Simply **upload the job description** in any format and receive a list ordered by **score** of the **best-matched profiles**. Additionally, you can always **add new applicants to your database** whether by uploading a file or entering a LinkedIn or website link.")
+st.markdown("This feature uses a **RAG** (Retrieval-Augmented Generation)-based system to **identify the most suitable candidates** in your **database** for a **specific job position**. Simply **upload the job description** in any format and receive a list ordered by **score** of the **best-matched profiles**.")
+
+st.subheader("***Add a new candidate*** 💾")
+
+st.markdown("Easily add **new applicants to your database** by uploading **files** or entering **LinkedIn/website links**. Our system automatically **processes** and **standardizes** all information.")
 
 st.title("Who are the creators of ApplAI ?")
 

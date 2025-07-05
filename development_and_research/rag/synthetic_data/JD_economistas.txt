@@ -1,0 +1,26 @@
+Position: Economist
+Location: Washington, D.C.
+Job Type: Full-Time, On-Site
+Department: Economic Research and Policy
+
+Description:
+We are seeking an experienced Economist to join our Economic Research and Policy division. The ideal candidate will be responsible for conducting macroeconomic and microeconomic analysis, developing econometric models, interpreting statistical data, and producing policy-oriented research. This individual will play a key role in informing strategic decisions through data-driven insights and forecasts.
+
+Responsibilities:
+Conduct in-depth economic research and policy analysis
+Design and implement quantitative models to forecast trends
+Interpret and visualize complex datasets using statistical software
+Author reports, whitepapers, and policy briefs
+Present findings to stakeholders, both technical and non-technical
+Collaborate with cross-functional teams including finance, strategy, and government affairs
+
+Required Qualifications:
+Master’s or PhD in Economics, Applied Economics, or related field
+Strong background in econometrics, statistics, and policy evaluation
+Proficiency in R, Stata, Python, or similar statistical tools
+Experience in presenting research findings in professional or academic settings
+Excellent written and verbal communication skills
+
+Preferred Qualifications:
+Experience in government, central banking, or think tank research
+Familiarity with macroeconomic forecasting or labor market economics

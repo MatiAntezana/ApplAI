@@ -4,11 +4,11 @@ import pickle
 import faiss
 from sentence_transformers import SentenceTransformer, util
 from .database_processing import append_to_csv, append_to_faiss, extract_cv_info
-from .mainLinkeding import generate_linkedin_query, scrape_and_summarize, search_jobs_serpapi_verified, filter_url, extract_job_title
+from .linkedin_job_finder import generate_linkedin_query, scrape_and_summarize, search_jobs_serpapi_verified, filter_url, extract_job_title
 
 # Load the models
 # MODEL_SCORE = SentenceTransformer("sentence_transformer/mini_finetuned_Allmini")
-
+# MODEL_SCORE_MAX = SentenceTransformer("sentence_transformer/fineTuningAllMiniFinal")
 MODEL_DB = SentenceTransformer("mixedbread-ai/mxbai-embed-large-v1")
 
 # Function that uses the model
@@ -52,7 +52,6 @@ def save_ai_in_db(ai_txt_path: str, cv_info_path: str, faiss_path: str, meta_pat
     -------
     None
     """
-
     if not isinstance(ai_txt_path, str) or not ai_txt_path.strip():
         raise ValueError("Invalid file path provided.")
     if not os.path.isfile(ai_txt_path):
@@ -81,9 +80,25 @@ def save_ai_in_db(ai_txt_path: str, cv_info_path: str, faiss_path: str, meta_pat
     append_to_faiss(cv_id, result.cv_information, MODEL_DB, faiss_path, meta_path)
 
 
-def get_best_candidates(job_description, faiss_path="cv_vector_db/cv_index.faiss", meta_path="cv_vector_db/cv_metadata.pkl", top_k=3):
+def get_best_candidates(job_description: str, faiss_path: str, meta_path: str, top_k: int = 5) -> list:
     """
-    FALTAAAA
+    Retrieve the best candidates for a given job description from the FAISS index.
+
+    Parameters
+    ----------
+    job_description : str
+        The job description text to search for candidates.
+    faiss_path : str
+        Path to the FAISS index file.
+    meta_path : str
+        Path to the metadata file for the FAISS index.
+    top_k : int, optional
+        The number of top candidates to retrieve, by default 5.
+
+    Returns
+    -------
+    list
+        A list of tuples containing the IDs and texts of the best candidates.
     """
     try:
         index = faiss.read_index(faiss_path)
@@ -100,11 +115,10 @@ def get_best_candidates(job_description, faiss_path="cv_vector_db/cv_index.faiss
         return [(resume_ids[idx], resume_texts[idx]) for idx in I[0]]
     
     except Exception as e:
-        print(f"Error retrieving best candidates: {e}")
         return []
 
 
-async def find_and_rank_linkedin_jobs(ai_txt_path: str, max_urls: int = 10):
+async def find_and_rank_linkedin_jobs(ai_txt_path: str, max_urls: int = 10) -> tuple:
     """
     Find and rank LinkedIn job postings based on the AI text provided.
 
@@ -155,8 +169,24 @@ async def find_and_rank_linkedin_jobs(ai_txt_path: str, max_urls: int = 10):
 
     return titulos, sorted_links, sorted_summaries
 
-def get_ideal_linkedin_jobs(ai_txt_path: str, max_urls: int = 10):
 
-    # Agrega los chequeos de path 
+def get_ideal_linkedin_jobs(ai_txt_path: str, max_urls: int = 10) -> tuple:
+    """
+    Get the ideal LinkedIn jobs based on the AI text provided.
 
+    Parameters
+    ----------
+    ai_txt_path : str
+        Path to the text file containing the AI or CV information.
+    max_urls : int, optional
+        Maximum number of job URLs to retrieve, by default 10.
+
+    Returns
+    -------
+    tuple
+        A tuple containing:
+        - A list of job titles.
+        - A list of job URLs.
+        - A list of job summaries.
+    """
     return asyncio.run(find_and_rank_linkedin_jobs(ai_txt_path, max_urls))

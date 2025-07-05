@@ -25,7 +25,6 @@ st.markdown(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Set the title and header
 st.markdown(
     """
     <div style='text-align: center;'>
@@ -39,7 +38,9 @@ st.markdown(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-st.markdown("", unsafe_allow_html=True)
+st.markdown("Easily add **new applicants to your database** by uploading **files** or entering **LinkedIn/website links**. Our system automatically **processes** and **standardizes** all information.")
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 ai_url_linkedin = st.text_input("LinkedIn Profile URL")
 ai_url_web = st.text_input("Personal Website URL")

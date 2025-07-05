@@ -34,7 +34,6 @@ st.markdown(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Set the title and header
 st.markdown(
     """
     <div style='text-align: center;'>
@@ -68,7 +67,6 @@ job_ready = (job_url_linkedin.strip() != "") or (job_url_web.strip() != "") or (
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Estilo del botón
 st.markdown("""
     <style>
     div.stButton > button {
@@ -87,7 +85,7 @@ st.markdown("""
 
 if st.button("Calculate Score", type="primary"):
     if not (cv_ready and job_ready):
-        st.error("Please provide both a CV and a job posting (URL or file).")
+        st.error("Please provide both a Applicant Information and a job posting (URL or file).")
     else:
         with st.spinner("Processing..."):
             try:

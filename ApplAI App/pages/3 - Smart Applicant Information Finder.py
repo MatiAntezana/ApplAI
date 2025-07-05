@@ -25,7 +25,6 @@ st.markdown(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Set the title and header
 st.markdown(
     """
     <div style='text-align: center;'>
@@ -72,10 +71,9 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Main logic
 if st.button("Find Candidates", type="primary"):
     if not job_ready:
-        st.error("Please provide a job posting (URL or file).")
+        st.error("Please provide a Job Posting (URL or file).")
     else:
         with st.spinner("Processing..."):
             try:
@@ -84,15 +82,15 @@ if st.button("Find Candidates", type="primary"):
                 # Process Job Description
                 if job_url_linkedin.strip() != "":
                     scrape_linkedin_job(job_url_linkedin, "temp_files/job.txt")
+
                 elif job_url_web.strip() != "":
                     scrape_web(job_url_web, "temp_files/job.txt")
+
                 elif job_file:
                     job_path = os.path.join("temp_files", job_file.name)
                     with open(job_path, "wb") as f:
                         f.write(job_file.getbuffer())
                     scrape_files(job_path, "temp_files/job.txt")
-
-                print("Job description processed successfully.")
 
                 # Find candidates
                 get_candidates_and_recomendations(

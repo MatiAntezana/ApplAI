@@ -27,7 +27,6 @@ st.markdown(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Set the title and header
 st.markdown(
     """
     <div style='text-align: center;'>
@@ -95,6 +94,7 @@ if st.button("Find Jobs", type="primary"):
                         f.write(ai_file.getbuffer())
                     scrape_files(ai_path, "temp_files/ai.txt")
 
+                # Find and rank LinkedIn jobs
                 titles, links, resumes = get_ideal_linkedin_jobs("temp_files/ai.txt", max_urls=top_k_jobs)
 
                 st.markdown("<br>", unsafe_allow_html=True)

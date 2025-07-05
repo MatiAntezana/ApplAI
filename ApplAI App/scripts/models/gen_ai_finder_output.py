@@ -1,4 +1,3 @@
-import tqdm
 import pandas as pd
 import asyncio
 from openai import AsyncAzureOpenAI
@@ -16,16 +15,21 @@ client = AsyncAzureOpenAI(
     azure_endpoint=ENDPOINT
 )
 
-async def generate_recommendation(job_description_txt_text: str, candidate_text: str):
+async def generate_recommendation(job_description_txt_text: str, candidate_text: str) -> str:
     """
-    Genera una recomendación sobre si un candidato es adecuado para un trabajo basado en la descripción del trabajo y el texto del candidato.
-    
-    Args:
-        job_description_txt_text (str): Descripción del trabajo.
-        candidate_text (str): Texto del candidato.
-    
-    Returns:
-        str: Recomendación sobre si el candidato es adecuado para el trabajo.
+    Generates a recommendation for a candidate based on the job description and the candidate's text.
+
+    Parameters
+    ----------
+    job_description_txt_text : str
+        The job description text to evaluate against.
+    candidate_text : str
+        The candidate's text, which may include their resume, experience, skills, education, etc
+
+    Returns
+    -------
+    str
+        A formatted evaluation report that includes the candidate's fit level, strengths, and missing areas.
     """
 
     SYSTEM_PROMPT = """
@@ -77,16 +81,21 @@ async def generate_recommendation(job_description_txt_text: str, candidate_text:
     return recommendation
 
 
-def get_contact_info(candidate_id, cv_info_path):
+def get_contact_info(candidate_id: str, cv_info_path: str) -> tuple:
     """
-    Obtiene la información de contacto de un candidato dado su ID.
-    
-    Args:
-        candidate_id (str): ID del candidato.
-        cv_info_path (str): Ruta al archivo CSV que contiene la base de datos de candidatos.
-    
-    Returns:
-        tuple: Nombre, email y teléfono del candidato.
+    Gets the contact information of a candidate from a CSV file based on their ID.
+
+    Parameters
+    ----------
+    candidate_id : str
+        The ID of the candidate whose contact information is to be retrieved.
+    cv_info_path : str
+        The path to the CSV file containing candidate information.
+
+    Returns
+    -------
+    tuple
+        A tuple containing the candidate's name, email, and phone number. If the candidate is not found, returns "Not Found" for each field.
     """
     df = pd.read_csv(cv_info_path)
     candidate_row = df[df['id'] == candidate_id]
@@ -100,44 +109,57 @@ def get_contact_info(candidate_id, cv_info_path):
         return "Not Found", "Not Found", "Not Found"
 
 
-def save_recommendations_to_csv(recommendations, csv_path):
+def save_recommendations_to_csv(recommendations: list, csv_path: str) -> None:
     """
-    Guarda las recomendaciones en un archivo csv
+    Saves the recommendations to a CSV file.
     
-    Args:
-        recommendations (list): Lista de diccionarios con las recomendaciones.
-        csv_path (str): Ruta donde se guardará el archivo csv.
+    Parameters
+    ----------
+    recommendations : list
+        A list of dictionaries containing the recommendations for each candidate.
+    csv_path : str
+        The path where the CSV file will be saved.
+
+    Returns
+    -------
+    None
     """
     df = pd.DataFrame(recommendations)
     df.to_csv(csv_path, index=False, encoding='utf-8-sig')
-    print(f"Recomendaciones guardadas en {csv_path}")
 
 
-def get_candidates_and_recomendations(job_description_txt, cv_info_path, faiss_path, meta_path, rank_and_recom_path, top_k=3):
+def get_candidates_and_recomendations(job_description_txt: str, 
+                                      cv_info_path: str, 
+                                      faiss_path: str, 
+                                      meta_path: str, 
+                                      rank_and_recom_path: str, 
+                                      top_k: int = 5) -> None:
     """
-    Busca los CVs más similares a una descripción de trabajo dada utilizando FAISS y un modelo de embeddings. Luego, genera recomendaciones 
-    mediante un modelo de lenguaje para determinar si los candidatos son adecuados para el trabajo y por qué razones. Estas recomendaciones 
-    se guardan en un archivo .csv
-    
-    Args:
-        job_description_txt (str): Descripción del trabajo para la cual se buscan CVs.
-        faiss_path (str): Ruta al índice FAISS.
-        meta_path (str): Ruta al archivo de metadatos.
-        top_k (int): Número de CVs a retornar.
-    
-    Returns:
-        CREATES a csv file with the top_k candidates and opinions about if they are suitable for the job or not.
-        The csv file will contain the following columns:
-        - cv_id
-        - candidate_name
-        - candidate_text
-        - recommendation
+    Finds the best candidates for a job description and generates recommendations for each candidate. 
+
+    Parameters
+    ----------
+    job_description_txt : str
+        The job description text to evaluate against.
+    cv_info_path : str
+        The path to the CSV file containing candidate information.
+    faiss_path : str
+        The path to the FAISS index file where the AI embeddings are stored.
+    meta_path : str
+        The path to the metadata file for the FAISS index.
+    rank_and_recom_path : str
+        The path where the recommendations will be saved as a CSV file.
+    top_k : int, optional
+        The number of top candidates to retrieve, by default 5.
+
+    Returns
+    -------
+    None
     """
-    print("Starting candidate search and recommendation generation...")
-    # Obtener los mejores CVs
+    # Get the best candidates based on the job description
     best_cvs = get_best_candidates(job_description_txt, faiss_path, meta_path, top_k)
-    print(f"Top {top_k} candidates found for the job description.")
-    # Generar recomendaciones para cada CV
+  
+    # Generate recommendations for each candidate
     recommendations = []
     for cv_id, candidate_text in best_cvs:
         recommendation = asyncio.run(generate_recommendation(job_description_txt, candidate_text))
@@ -150,19 +172,7 @@ def get_candidates_and_recomendations(job_description_txt, cv_info_path, faiss_p
             "candidate_text": candidate_text,
             "recommendation": recommendation
         })
-    # Guardar las recomendaciones en un archivo CSV
+
+    # Save the recommendations to a CSV file
     save_recommendations_to_csv(recommendations, rank_and_recom_path)
-
-
-
-
-
-
-# if __name__ == "__main__":
-#     job_description_txt = "We are looking for an IT Support Specialist with experience in healthcare environments, " \
-#     "particularly with Epic Systems. The role involves providing technical assistance to clinical staff, supporting " \
-#     "and maintaining EMR systems, resolving hardware and software issues, and training end-users. Strong communication " \
-#     "skills, knowledge of networks and databases, and prior experience in hospitals or government institutions are highly valued."
-#     top_k_candidates = 3
-#     get_candidates_and_recomendations(job_description_txt, top_k=top_k_candidates)
     

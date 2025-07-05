@@ -16,3 +16,13 @@ sentence-transformers
 aiohttp
 serpapi
 google-search-results
+pandas
+faiss-cpu
+numpy
+pydantic 
+beautifulsoup4
+huggingface-hub
+torch
+chardet
+html5lib
+lxml

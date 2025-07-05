@@ -92,6 +92,7 @@ async def extract_cv_info(text: str) -> CleanedCV:
     CV TEXT:
     {text}
     """
+
     # Call the Azure OpenAI API to get the structured CV information
     try:
         response = await azure_client.chat.completions.create(
@@ -195,18 +196,18 @@ def append_to_faiss(cv_id: int, info_cv_text: str, model, faiss_path: str, meta_
     # Encode the CV information text into embeddings
     embedding = model.encode([info_cv_text], normalize_embeddings=True)
 
-    # Cargar o crear FAISS index
+    # Load or create the FAISS index
     if os.path.exists(faiss_path):
         index = faiss.read_index(faiss_path)
     else:
         dim = embedding.shape[1]
         index = faiss.IndexFlatIP(dim)  
 
-    # Agregar embedding
+    # Add the embedding to the FAISS index
     index.add(embedding)
     faiss.write_index(index, faiss_path)
 
-    # Cargar o crear metadatos
+    # Create or update the metadata file
     if os.path.exists(meta_path):
         with open(meta_path, "rb") as f:
             metadata = pickle.load(f)
